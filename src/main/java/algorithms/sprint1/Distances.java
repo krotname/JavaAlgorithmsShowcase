@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.Arrays;
 
+// https://contest.yandex.ru/contest/22450/run-report/157017559/
 public class Distances {
 
     // -------------------- SOLUTION --------------------
@@ -8,29 +9,19 @@ public class Distances {
         int n = a.length;
         int[] dist = new int[n];
 
-        int lastZero = -1;
+        int lastZero = -n;
         for (int i = 0; i < n; i++) {
             if (a[i] == 0) {
                 lastZero = i;
-                dist[i] = 0;
-            } else if (lastZero != -1) {
-                dist[i] = i - lastZero;
-            } else {
-                dist[i] = -1;
             }
+            dist[i] = i - lastZero;
         }
 
-        int nextZero = -1;
-        for (int i = n - 1; i >= 0; i--) {
-            if (a[i] == 0) {
-                nextZero = i;
-                dist[i] = 0;
-            } else if (nextZero != -1) {
-                int right = nextZero - i;
-                dist[i] = (dist[i] == -1) ? right : Math.min(dist[i], right);
-            }
+        int nextZero = n;
+        for (int i = lastZero; i >= 0; i--) {
+            if (a[i] == 0) nextZero = i;
+            dist[i] = Math.min(dist[i], nextZero - i);
         }
-
         return dist;
     }
 
@@ -159,7 +150,10 @@ public class Distances {
 
     // -------------------- MAIN --------------------
     public static void main(String[] args) throws Exception {
-        test();
-//        run();
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            test();
+        } else {
+            run();
+        }
     }
 }
