@@ -44,11 +44,224 @@ import java.io.OutputStream;
 В этих случаях состояние (head, tail, size) не меняется, что сохраняет инварианты.
 
 Сложность
-Каждая операция дека выполняет константное число действий: O(1) по времени.
+Время: O(n), где n - количество операций. Каждая операция дека выполняется за O(1)
 Память: массив из m элементов и несколько целых переменных: O(m) по памяти.
 */
 
+
 public class Deque {
+
+    // -------------------- RING BUFFER DEQUE --------------------
+    static final class RingDeque {
+        private final int[] a;
+        private final int cap;
+        private int head = 0; // индекс первого элемента
+        private int tail = 0; // индекс позиции "после последнего"
+        private int size = 0;
+
+        RingDeque(int cap) {
+            this.cap = cap;
+            this.a = new int[cap];
+        }
+
+        private int next(int i) {
+            return (i+1) % cap;
+        }
+
+        private int prev(int i) {
+            return (i-1+cap) % cap;
+        }
+
+        boolean isEmpty() {
+            return size == 0;
+        }
+
+        boolean isFull() {
+            return size == cap;
+        }
+
+        void pushBack(int x) {
+            a[tail] = x;
+            tail = next(tail);
+            size++;
+        }
+
+        void pushFront(int x) {
+            head = prev(head);
+            a[head] = x;
+            size++;
+        }
+
+        int popFront() {
+            int x = a[head];
+            head = next(head);
+            size--;
+            return x;
+        }
+
+        int popBack() {
+            tail = prev(tail);
+            int x = a[tail];
+            size--;
+            return x;
+        }
+    }
+
+    private static void process(FastIn in, FastOut out) throws Exception {
+        int n = in.nextInt();
+        int m = in.nextInt();
+
+        RingDeque dq = new RingDeque(m);
+
+        for (int i = 0; i < n; i++) {
+            String cmd = in.next();
+
+            switch (cmd) {
+                case "push_back" -> {
+                    int x = in.nextInt();
+                    if (dq.isFull()) {
+                        out.writeStr("error\n");
+                    } else {
+                        dq.pushBack(x);
+                    }
+                }
+                case "push_front" -> {
+                    int x = in.nextInt();
+                    if (dq.isFull()) {
+                        out.writeStr("error\n");
+                    } else {
+                        dq.pushFront(x);
+                    }
+                }
+                case "pop_front" -> {
+                    if (dq.isEmpty()) {
+                        out.writeStr("error\n");
+                    } else {
+                        out.writeInt(dq.popFront());
+                        out.writeByte('\n');
+                    }
+                }
+                case "pop_back" -> {
+                    if (dq.isEmpty()) {
+                        out.writeStr("error\n");
+                    } else {
+                        out.writeInt(dq.popBack());
+                        out.writeByte('\n');
+                    }
+                }
+            }
+        }
+    }
+
+    private static void run() throws Exception {
+        FastIn in = new FastIn(System.in);
+        FastOut out = new FastOut(System.out);
+        process(in, out);
+        out.flush();
+    }
+
+    // -------------------- TESTS --------------------
+    private static String solveIO(String input) throws Exception {
+        ByteArrayInputStream bin = new ByteArrayInputStream(input.getBytes());
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        FastIn in = new FastIn(bin);
+        FastOut out = new FastOut(bout);
+        process(in, out);
+        out.flush();
+        return bout.toString();
+    }
+
+    private static void test() throws Exception {
+        // Пример 1
+        assertEq(
+                "861\n-819\n",
+                solveIO(
+                        "4\n" +
+                                "4\n" +
+                                "push_front 861\n" +
+                                "push_front -819\n" +
+                                "pop_back\n" +
+                                "pop_back\n"
+                )
+        );
+
+        // Пример 2
+        assertEq(
+                "-855\n0\n844\n",
+                solveIO(
+                        "7\n" +
+                                "10\n" +
+                                "push_front -855\n" +
+                                "push_front 0\n" +
+                                "pop_back\n" +
+                                "pop_back\n" +
+                                "push_back 844\n" +
+                                "pop_back\n" +
+                                "push_back 823\n"
+                )
+        );
+
+        // Пример 3
+        assertEq(
+                "20\n102\n",
+                solveIO(
+                        "6\n" +
+                                "6\n" +
+                                "push_front -201\n" +
+                                "push_back 959\n" +
+                                "push_back 102\n" +
+                                "push_front 20\n" +
+                                "pop_front\n" +
+                                "pop_back\n"
+                )
+        );
+
+        // Емкость 1 + переполнение + попытка pop из пустого
+        assertEq(
+                "error\n1\nerror\n",
+                solveIO(
+                        "4\n" +
+                                "1\n" +
+                                "push_front 1\n" +
+                                "push_back 2\n" +
+                                "pop_back\n" +
+                                "pop_front\n"
+                )
+        );
+
+        // Wrap-around: head/tail должны корректно "перепрыгивать" границу массива
+        assertEq(
+                "1\n4\n2\n3\n",
+                solveIO(
+                        "8\n" +
+                                "3\n" +
+                                "push_back 1\n" +
+                                "push_back 2\n" +
+                                "push_back 3\n" +
+                                "pop_front\n" +
+                                "push_back 4\n" +
+                                "pop_back\n" +
+                                "pop_front\n" +
+                                "pop_front\n"
+                )
+        );
+
+        System.out.println("Test OK");
+    }
+
+    static void assertEq(String exp, String act) {
+        if (!exp.equals(act)) {
+            throw new AssertionError("Expected:\n" + exp + "\nActual:\n" + act);
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            test();
+        } else {
+            run();
+        }
+    }
 
     // -------------------- FAST INPUT --------------------
     static final class FastIn {
@@ -171,218 +384,4 @@ public class Deque {
         }
     }
 
-    // -------------------- RING BUFFER DEQUE --------------------
-    static final class RingDeque {
-        private final int[] a;
-        private final int cap;
-        private int head = 0; // индекс первого элемента
-        private int tail = 0; // индекс позиции "после последнего"
-        private int size = 0;
-
-        RingDeque(int cap) {
-            this.cap = cap;
-            this.a = new int[cap];
-        }
-
-        private int next(int i) {
-            i++;
-            if (i == cap) {
-                i = 0;
-            }
-            return i;
-        }
-
-        private int prev(int i) {
-            i--;
-            if (i == -1) {
-                i = cap - 1;
-            }
-            return i;
-        }
-
-        boolean isEmpty() {
-            return size == 0;
-        }
-
-        boolean isFull() {
-            return size == cap;
-        }
-
-        void pushBack(int x) {
-            a[tail] = x;
-            tail = next(tail);
-            size++;
-        }
-
-        void pushFront(int x) {
-            head = prev(head);
-            a[head] = x;
-            size++;
-        }
-
-        int popFront() {
-            int x = a[head];
-            head = next(head);
-            size--;
-            return x;
-        }
-
-        int popBack() {
-            tail = prev(tail);
-            int x = a[tail];
-            size--;
-            return x;
-        }
-    }
-
-    private static void process(FastIn in, FastOut out) throws Exception {
-        int n = in.nextInt();
-        int m = in.nextInt();
-
-        RingDeque dq = new RingDeque(m);
-
-        for (int i = 0; i < n; i++) {
-            String cmd = in.next();
-
-            if ("push_back".equals(cmd)) {
-                int x = in.nextInt();
-                if (dq.isFull()) {
-                    out.writeStr("error\n");
-                } else {
-                    dq.pushBack(x);
-                }
-            } else if ("push_front".equals(cmd)) {
-                int x = in.nextInt();
-                if (dq.isFull()) {
-                    out.writeStr("error\n");
-                } else {
-                    dq.pushFront(x);
-                }
-            } else if ("pop_front".equals(cmd)) {
-                if (dq.isEmpty()) {
-                    out.writeStr("error\n");
-                } else {
-                    out.writeInt(dq.popFront());
-                    out.writeByte('\n');
-                }
-            } else { // pop_back
-                if (dq.isEmpty()) {
-                    out.writeStr("error\n");
-                } else {
-                    out.writeInt(dq.popBack());
-                    out.writeByte('\n');
-                }
-            }
-        }
-    }
-
-    private static void run() throws Exception {
-        FastIn in = new FastIn(System.in);
-        FastOut out = new FastOut(System.out);
-        process(in, out);
-        out.flush();
-    }
-
-    // -------------------- TESTS --------------------
-    private static String solveIO(String input) throws Exception {
-        ByteArrayInputStream bin = new ByteArrayInputStream(input.getBytes());
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        FastIn in = new FastIn(bin);
-        FastOut out = new FastOut(bout);
-        process(in, out);
-        out.flush();
-        return bout.toString();
-    }
-
-    private static void test() throws Exception {
-        // Пример 1
-        assertEq(
-                "861\n-819\n",
-                solveIO(
-                        "4\n" +
-                                "4\n" +
-                                "push_front 861\n" +
-                                "push_front -819\n" +
-                                "pop_back\n" +
-                                "pop_back\n"
-                )
-        );
-
-        // Пример 2
-        assertEq(
-                "-855\n0\n844\n",
-                solveIO(
-                        "7\n" +
-                                "10\n" +
-                                "push_front -855\n" +
-                                "push_front 0\n" +
-                                "pop_back\n" +
-                                "pop_back\n" +
-                                "push_back 844\n" +
-                                "pop_back\n" +
-                                "push_back 823\n"
-                )
-        );
-
-        // Пример 3
-        assertEq(
-                "20\n102\n",
-                solveIO(
-                        "6\n" +
-                                "6\n" +
-                                "push_front -201\n" +
-                                "push_back 959\n" +
-                                "push_back 102\n" +
-                                "push_front 20\n" +
-                                "pop_front\n" +
-                                "pop_back\n"
-                )
-        );
-
-        // Емкость 1 + переполнение + попытка pop из пустого
-        assertEq(
-                "error\n1\nerror\n",
-                solveIO(
-                        "4\n" +
-                                "1\n" +
-                                "push_front 1\n" +
-                                "push_back 2\n" +
-                                "pop_back\n" +
-                                "pop_front\n"
-                )
-        );
-
-        // Wrap-around: head/tail должны корректно "перепрыгивать" границу массива
-        assertEq(
-                "1\n4\n2\n3\n",
-                solveIO(
-                        "8\n" +
-                                "3\n" +
-                                "push_back 1\n" +
-                                "push_back 2\n" +
-                                "push_back 3\n" +
-                                "pop_front\n" +
-                                "push_back 4\n" +
-                                "pop_back\n" +
-                                "pop_front\n" +
-                                "pop_front\n"
-                )
-        );
-
-        System.out.println("Test OK");
-    }
-
-    static void assertEq(String exp, String act) {
-        if (!exp.equals(act)) {
-            throw new AssertionError("Expected:\n" + exp + "\nActual:\n" + act);
-        }
-    }
-
-    public static void main(String[] args) throws Exception {
-        if (System.getProperty("os.name").startsWith("Windows")) {
-            test();
-        } else {
-            run();
-        }
-    }
 }
