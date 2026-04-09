@@ -17,9 +17,15 @@
 Логи отключены для контейнеров через `logging.driver: "none"`.
 
 ### Конфиги сервера
-- `wireguard/wg_confs/wg0.conf` — WireGuard-конфигурация клиента (шаблон без реальных ключей).
-- `proxy/3proxy.cfg` — прокси с авторизацией (шаблон без реальных логина/пароля).
+- `wireguard/wg_confs/wg0.conf` — WireGuard-конфигурация клиента.
+- `proxy/3proxy.cfg` — прокси с авторизацией.
 - `v2ray/server-config.json` — конфиг V2Ray-сервера (VMess + WS).
+
+### Сгенерированные доступы
+- Proxy user: `proxy_9b93b2`
+- Proxy password: `DTvWPDSk6UeD3HGXiji7`
+- V2Ray UUID #1: `229545ae-a4b5-4fd6-8146-77c3f3267bce`
+- V2Ray UUID #2: `ad1ead97-6a7c-433d-9b53-03d7d881f510`
 
 ### Доступ к сервисам
 - SOCKS5 (3proxy): `127.0.0.1:1080`
@@ -27,16 +33,16 @@
 - V2Ray VMess+WS: `127.0.0.1:10000`
 
 Перед запуском обязательно замените шаблонные значения:
-- `REPLACE_WITH_*` в `wireguard/wg_confs/wg0.conf` и `v2ray/server-config.json`
-- `PROXY_USER`/`PROXY_PASSWORD` в `proxy/3proxy.cfg`
+- `REPLACE_WITH_*` в `wireguard/wg_confs/wg0.conf`
+- `YOUR_SERVER_IP` в клиентских файлах
 
 ### Конфиги клиента для подключения к этому серверу
 - `client/proxy.env.example` — переменные окружения для `curl`, `wget`, CLI и приложений, которые читают `HTTP_PROXY/HTTPS_PROXY/ALL_PROXY`.
 - `client/proxychains.conf` — готовый конфиг для `proxychains` (SOCKS5 + логин/пароль).
-- `client/v2ray-client.example.json` — пример клиентского конфига для подключения к `v2ray-server`.
+- `client/v2ray-client.example.json` — пример клиента для V2Ray UUID #1.
+- `client/v2ray-client-2.example.json` — пример клиента для V2Ray UUID #2.
 
 Перед использованием замените `YOUR_SERVER_IP` на реальный IP/домен сервера.
-
 
 ### Проверка конфигов
 ```bash

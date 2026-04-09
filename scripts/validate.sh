@@ -15,6 +15,7 @@ from pathlib import Path
 files = [
     'v2ray/server-config.json',
     'client/v2ray-client.example.json',
+    'client/v2ray-client-2.example.json',
 ]
 
 for f in files:
@@ -31,6 +32,7 @@ required=(
   "client/proxy.env.example"
   "client/proxychains.conf"
   "client/v2ray-client.example.json"
+  "client/v2ray-client-2.example.json"
 )
 
 for file in "${required[@]}"; do

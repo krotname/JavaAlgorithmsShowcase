@@ -11,7 +11,11 @@
       "settings": {
         "clients": [
           {
-            "id": "REPLACE_WITH_CLIENT_UUID",
+            "id": "229545ae-a4b5-4fd6-8146-77c3f3267bce",
+            "alterId": 0
+          },
+          {
+            "id": "ad1ead97-6a7c-433d-9b53-03d7d881f510",
             "alterId": 0
           }
         ]
