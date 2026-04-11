@@ -8,8 +8,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-// https://contest.yandex.ru/contest/24414/run-report/160043341/
-
 class FindSystem {
 
     /*

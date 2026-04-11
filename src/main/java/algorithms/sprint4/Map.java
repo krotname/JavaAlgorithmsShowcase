@@ -2,6 +2,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+// https://contest.yandex.ru/contest/24414/run-report/160043341/
+
 public class Map {
 
     /*
