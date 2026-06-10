@@ -1,0 +1,24 @@
+name: No Releases
+
+on:
+  release:
+    types: [created, published, prereleased, released]
+  push:
+    tags:
+      - "v*"
+      - "release/*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  no-releases:
+    name: Repository has no release process
+    runs-on: ubuntu-latest
+    steps:
+      - name: Explain release policy
+        run: |
+          echo "::error title=No releases::CodewarsKataJava is a kata practice repository and does not publish GitHub releases or release tags. Use the regular CI workflow for validation."
+          echo "This workflow exists only to make accidental release or release-tag events visible."
+          exit 1
