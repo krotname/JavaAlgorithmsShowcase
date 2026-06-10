@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Codewars Kata Java</title>
+  <desc id="desc">Java kata practice mark with code brackets, tests, and quality gates.</desc>
+  <rect width="1200" height="630" fill="#101820"/>
+  <rect x="80" y="70" width="1040" height="490" rx="36" fill="#f4f7fb"/>
+  <path d="M345 230 230 315l115 85" fill="none" stroke="#0f766e" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M855 230 970 315l-115 85" fill="none" stroke="#0f766e" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M545 430 655 200" fill="none" stroke="#b42318" stroke-width="34" stroke-linecap="round"/>
+  <circle cx="600" cy="315" r="72" fill="#f59e0b"/>
+  <path d="M570 316h60M600 286v60" stroke="#101820" stroke-width="20" stroke-linecap="round"/>
+  <text x="600" y="505" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="56" font-weight="700" fill="#101820">Codewars Kata Java</text>
+</svg>
