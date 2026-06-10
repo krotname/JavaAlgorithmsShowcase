@@ -1,11 +1,11 @@
 # Codewars Solutions / Решения с Codewars
 
-[![CI](https://github.com/krotname/Codewars/actions/workflows/maven.yml/badge.svg)](https://github.com/krotname/Codewars/actions/workflows/maven.yml)
-[![CodeQL](https://github.com/krotname/Codewars/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/krotname/Codewars/actions/workflows/codeql-analysis.yml)
-[![Coverage](https://codecov.io/gh/krotname/Codewars/branch/main/graph/badge.svg)](https://codecov.io/gh/krotname/Codewars)
-[![Quality Gate](https://github.com/krotname/Codewars/actions/workflows/maven.yml/badge.svg?label=quality)](https://github.com/krotname/Codewars/actions/workflows/maven.yml)
-[![Quality Gates](https://github.com/krotname/Codewars/actions/workflows/quality.yml/badge.svg)](https://github.com/krotname/Codewars/actions/workflows/quality.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-0f8a16)](LICENSE)
+[![CI](https://github.com/krotname/CodewarsKataJava/actions/workflows/maven.yml/badge.svg)](https://github.com/krotname/CodewarsKataJava/actions/workflows/maven.yml)
+[![CodeQL](https://github.com/krotname/CodewarsKataJava/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/krotname/CodewarsKataJava/actions/workflows/codeql-analysis.yml)
+[![Coverage](https://codecov.io/gh/krotname/CodewarsKataJava/branch/main/graph/badge.svg)](https://codecov.io/gh/krotname/CodewarsKataJava)
+[![Quality Gate](https://github.com/krotname/CodewarsKataJava/actions/workflows/maven.yml/badge.svg?label=quality)](https://github.com/krotname/CodewarsKataJava/actions/workflows/maven.yml)
+[![Quality Gates](https://github.com/krotname/CodewarsKataJava/actions/workflows/quality.yml/badge.svg)](https://github.com/krotname/CodewarsKataJava/actions/workflows/quality.yml)
+[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-0f8a16)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-17%2B-007396.svg)](https://adoptium.net/)
 [![JUnit](https://img.shields.io/badge/JUnit-6-25A162.svg)](https://junit.org/)
 [![Maven](https://img.shields.io/badge/Maven-3.9%2B-C71A36.svg)](https://maven.apache.org/)
