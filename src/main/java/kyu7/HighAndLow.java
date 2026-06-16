@@ -1,6 +1,8 @@
 package kyu7;
 
 
+import static common.SafeParse.parseInt;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.IntSummaryStatistics;
@@ -29,7 +31,11 @@ public class HighAndLow {
         if (numbers == null || numbers.trim().isEmpty()) {
             return java.util.stream.Stream.empty();
         }
-        return Arrays.stream(numbers.trim().split("\\s+")).map(Integer::valueOf);
+        return Arrays.stream(numbers.trim().split("\\s+")).map(HighAndLow::parseNumber);
+    }
+
+    private static Integer parseNumber(String value) {
+        return parseInt(value);
     }
 
 

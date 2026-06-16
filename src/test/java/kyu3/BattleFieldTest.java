@@ -1,5 +1,7 @@
 package kyu3;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -51,6 +53,63 @@ class BattleFieldTest {
         assertFalse(BattleField.fieldValidator(field));
     }
 
+    @Test
+    void shouldRejectMalformedFields() {
+        assertFalse(BattleField.fieldValidator(null));
+        assertFalse(BattleField.fieldValidator(new int[0][0]));
+        assertFalse(BattleField.fieldValidator(new int[][]{null}));
+        assertFalse(BattleField.fieldValidator(new int[][]{{1, 0}, null}));
+        assertFalse(BattleField.fieldValidator(new int[][]{{1, 0}, {1}}));
+    }
+
+    @Test
+    void shouldRejectCellsOutsideBinaryDomain() {
+        int[][] field = validField();
+        field[9][9] = 2;
+
+        assertFalse(BattleField.fieldValidator(field));
+    }
+
+    @Test
+    void shouldRejectBentShips() {
+        int[][] field = emptyField();
+        field[0][0] = 1;
+        field[0][1] = 1;
+        field[1][0] = 1;
+
+        assertFalse(BattleField.fieldValidator(field));
+    }
+
+    @Test
+    void shouldRejectSideContactAlongHorizontalShipBody() {
+        int[][] field = validField();
+        field[1][2] = 1;
+
+        assertFalse(BattleField.fieldValidator(field));
+    }
+
+    @Test
+    void shouldRejectSideContactAlongVerticalShipBody() {
+        int[][] field = transpose(validField());
+        field[2][1] = 1;
+
+        assertFalse(BattleField.fieldValidator(field));
+    }
+
+    @Test
+    void shouldPadFieldWithZeroEdges() {
+        int[][] padded = BattleField.fieldWithEdges(new int[][]{
+                {1, 0},
+                {0, 1}
+        });
+
+        assertEquals(4, padded.length);
+        assertArrayEquals(new int[]{0, 0, 0, 0}, padded[0]);
+        assertArrayEquals(new int[]{0, 1, 0, 0}, padded[1]);
+        assertArrayEquals(new int[]{0, 0, 1, 0}, padded[2]);
+        assertArrayEquals(new int[]{0, 0, 0, 0}, padded[3]);
+    }
+
     private static int[][] validField() {
         return new int[][]{
                 {1, 1, 1, 1, 0, 0, 1, 1, 0, 0},
@@ -64,6 +123,10 @@ class BattleFieldTest {
                 {1, 1, 0, 0, 0, 1, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
         };
+    }
+
+    private static int[][] emptyField() {
+        return new int[10][10];
     }
 
     private static int[][] transpose(int[][] field) {

@@ -2,6 +2,7 @@ package kyu5;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -11,13 +12,15 @@ public class Scrambles {
     // 5 https://www.codewars.com/kata/55c04b4cc56a697bb0000048/train/java
 
     public static boolean scramble(String str1, String str2) {
-        ArrayList<Character> list1
-                = (ArrayList<Character>) str1.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
-        ArrayList<Character> list2
-                = (ArrayList<Character>) str2.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
-        for (Character c2 : list2
+        List<Character> list1 = str1.chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.toCollection(ArrayList::new));
+        List<Character> list2 = str2.chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.toList());
+        for (char c2 : list2
         ) {
-            if (!list1.remove(c2)) return false;
+            if (!list1.remove(Character.valueOf(c2))) return false;
         }
         return true;
     }

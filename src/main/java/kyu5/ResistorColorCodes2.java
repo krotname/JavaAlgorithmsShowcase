@@ -1,6 +1,8 @@
 package kyu5;
 
 
+import static common.SafeParse.parseDouble;
+
 
 public class ResistorColorCodes2 {
     //5
@@ -16,10 +18,10 @@ public class ResistorColorCodes2 {
         double tempValue;
         String[] tempArray = ohmsString.split("\\s");
         if (tempArray[0].endsWith("k"))
-            tempValue = Double.parseDouble(tempArray[0].trim().substring(0, tempArray[0].length() - 1)) * 1_000;
+            tempValue = parseDouble(tempArray[0].trim().substring(0, tempArray[0].length() - 1)) * 1_000;
         else if (tempArray[0].endsWith("M"))
-            tempValue = Double.parseDouble(tempArray[0].trim().substring(0, tempArray[0].length() - 1)) * 1_000_000;
-        else tempValue = Double.parseDouble(tempArray[0].trim());
+            tempValue = parseDouble(tempArray[0].trim().substring(0, tempArray[0].length() - 1)) * 1_000_000;
+        else tempValue = parseDouble(tempArray[0].trim());
         return (int) Math.round(tempValue);
     }
 

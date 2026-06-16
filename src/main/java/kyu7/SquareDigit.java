@@ -1,6 +1,8 @@
 package kyu7;
 
 
+import static common.SafeParse.parseInt;
+
 
 public class SquareDigit {
 
@@ -14,7 +16,7 @@ public class SquareDigit {
             n /= 10;
             stringBuilder.insert(0, i * i);
         }
-        return Integer.parseInt(stringBuilder.toString());
+        return parseInt(stringBuilder.toString());
     }
 
 }

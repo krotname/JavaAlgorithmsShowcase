@@ -17,7 +17,7 @@ public class BuildAPileOfCubes {
     public static long findM(long n) {
         long t = n;
         long r = 0;
-        for (int i = 0; i < n; i++) {
+        for (long i = 0; i < n; i++) {
             r += t * t * t;
             t--;
         }

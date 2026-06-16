@@ -34,7 +34,7 @@ public class Order {
         final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
         final Matcher matcher = pattern.matcher(word);
         if (matcher.find()) {
-            return Integer.parseInt(matcher.group(0));
+            return Character.digit(matcher.group(0).charAt(0), 10);
         }
         return 0;
     }

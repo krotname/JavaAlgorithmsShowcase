@@ -1,5 +1,7 @@
 package algorithms.sprint0;
 
+import static common.SafeParse.parseInt;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +21,7 @@ public class Utils {
             throw new NumberFormatException("EOF");
         }
         return Arrays.stream(line.trim().split("\\s+"))
-                .map(Integer::parseInt)
+                .map(Utils::parseInteger)
                 .collect(Collectors.toList());
     }
 
@@ -38,6 +40,10 @@ public class Utils {
         if (line == null) {
             throw new NumberFormatException("EOF");
         }
-        return Integer.parseInt(line);
+        return parseInt(line);
+    }
+
+    private static Integer parseInteger(String value) {
+        return parseInt(value);
     }
 }

@@ -2,7 +2,6 @@ package kyu7;
 
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 
 public class MinimumLine {
@@ -10,11 +9,10 @@ public class MinimumLine {
     // 7 https://www.codewars.com/kata/5ac6932b2f317b96980000ca/train/java
 
     public static int minValue(int[] values) {
-        return Integer.parseInt(Arrays.stream(values)
+        return Arrays.stream(values)
                 .sorted()
                 .distinct()
-                .mapToObj(String::valueOf)
-                .collect(Collectors.joining()));
+                .reduce(0, (result, digit) -> result * 10 + digit);
     }
 
 }

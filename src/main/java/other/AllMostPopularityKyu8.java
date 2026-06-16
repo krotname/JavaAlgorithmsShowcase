@@ -1,6 +1,8 @@
 package other;
 
 
+import static common.SafeParse.parseInt;
+
 import java.util.Arrays;
 
 
@@ -69,7 +71,7 @@ public class AllMostPopularityKyu8 {
     }
 
     public static int stringToNumber(String str) {
-        return Integer.parseInt(str);
+        return parseInt(str);
     }
 
     public static String reverseWords(String str) {

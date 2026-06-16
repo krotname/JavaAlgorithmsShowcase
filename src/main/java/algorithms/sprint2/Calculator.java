@@ -1,5 +1,7 @@
 package algorithms.sprint2;
 
+import static common.SafeParse.parseInt;
+
 import java.io.ByteArrayInputStream;
 import java.io.EOFException;
 import java.io.IOException;
@@ -62,7 +64,7 @@ public class Calculator {
                 }
             }
 
-            st.push(Integer.parseInt(t));
+            st.push(parseInt(t));
         }
 
         return st.peek();

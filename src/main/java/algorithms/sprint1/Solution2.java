@@ -1,5 +1,7 @@
 package algorithms.sprint1;
 
+import static common.SafeParse.parseInt;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -35,11 +37,11 @@ public class Solution2 {
     public static void main(String[] args) throws IOException {
         StringBuilder outputBuffer = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
-        int lineCount = Integer.parseInt(reader.readLine());
+        int lineCount = parseInt(reader.readLine());
         for (int i = 0; i < lineCount; ++i) {
             StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
-            int firstValue = Integer.parseInt(tokenizer.nextToken());
-            int secondValue = Integer.parseInt(tokenizer.nextToken());
+            int firstValue = parseInt(tokenizer.nextToken());
+            int secondValue = parseInt(tokenizer.nextToken());
             int result = firstValue + secondValue;
             outputBuffer.append(result).append("\n");
         }

@@ -1,5 +1,7 @@
 package algorithms.sprint0;
 
+import static common.SafeParse.parseInt;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.EOFException;
@@ -36,7 +38,7 @@ public class Zip {
             if (sizeLine == null) {
                 throw new EOFException("Missing list size");
             }
-            int n = Integer.parseInt(sizeLine.trim());
+            int n = parseInt(sizeLine.trim());
             List<Integer> a = readList(reader);
             List<Integer> b = readList(reader);
             printList(zip(a, b, n), writer);

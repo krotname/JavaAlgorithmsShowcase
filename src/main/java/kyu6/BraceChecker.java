@@ -11,7 +11,7 @@ public class BraceChecker {
 
     public static boolean isValid(String braces) {
         var bracketsStack = new LinkedList<Character>();
-        for (Character c : braces.toCharArray()) {
+        for (char c : braces.toCharArray()) {
             if (c == '(') bracketsStack.add(c);
             if (c == '[') bracketsStack.add(c);
             if (c == '{') bracketsStack.add(c);

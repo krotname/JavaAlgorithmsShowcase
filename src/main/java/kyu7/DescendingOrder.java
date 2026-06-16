@@ -18,12 +18,12 @@ public class DescendingOrder {
             arrayList.add(i);
         }
         arrayList.sort(Comparator.reverseOrder());
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Integer i : arrayList
+        int result = 0;
+        for (int i : arrayList
         ) {
-            stringBuilder.append(i);
+            result = result * 10 + i;
         }
-        return Integer.parseInt(stringBuilder.toString());
+        return result;
     }
 
 }

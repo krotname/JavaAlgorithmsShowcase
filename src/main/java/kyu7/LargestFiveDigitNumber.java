@@ -2,7 +2,6 @@ package kyu7;
 
 
 import java.util.Comparator;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -24,7 +23,7 @@ public class LargestFiveDigitNumber {
             for (int j = 0; j < SEQUENCE; j++) {
                 currentSB.append(split[i + j]);
             }
-            current = Integer.parseInt(currentSB.toString());
+            current = digitsValue(currentSB);
 
             max = Math.max(current, max);
         }
@@ -35,18 +34,37 @@ public class LargestFiveDigitNumber {
     public static int solveStream(final String digits) {
         return IntStream.range(0, digits.length() - 4)
                 .mapToObj(i -> digits.substring(i, i + 5))
-                .mapToInt(Integer::parseInt)
+                .mapToInt(LargestFiveDigitNumber::digitsValue)
                 .max()
                 .orElse(0);
     }
 
     public static int maxValueFrom5Dig(final String digits) {
-        return Integer.parseInt(Stream.of(digits.split(""))
-                .map(Integer::parseInt)
+        return Stream.of(digits.split(""))
+                .map(LargestFiveDigitNumber::digitValue)
                 .sorted(Comparator.reverseOrder())
                 .limit(5)
-                .map(String::valueOf)
-                .collect(Collectors.joining("")));
+                .reduce(0, (result, digit) -> result * 10 + digit);
+    }
+
+    private static int digitsValue(CharSequence digits) {
+        int value = 0;
+        for (int i = 0; i < digits.length(); i++) {
+            value = value * 10 + digitValue(digits.charAt(i));
+        }
+        return value;
+    }
+
+    private static int digitValue(String digit) {
+        return digitValue(digit.charAt(0));
+    }
+
+    private static int digitValue(char digit) {
+        int value = Character.digit(digit, 10);
+        if (value < 0) {
+            throw new IllegalArgumentException("Invalid digit: " + digit);
+        }
+        return value;
     }
 
 }

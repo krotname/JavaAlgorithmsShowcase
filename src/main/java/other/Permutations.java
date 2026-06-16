@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Permutations {
 
-    private static final List<int[]> RESULT = new ArrayList<>();
+    private final List<int[]> result = new ArrayList<>();
 
     private static void arrSwap(int[] pa, int i, int j) {
         int k = pa[i];
@@ -19,12 +19,12 @@ public class Permutations {
         pa[j] = k;
     }
 
-    private static void arrOut(int[] pa) {
+    private void arrOut(int[] pa) {
         int[] clone = pa.clone();
         for (int i = 0; i < clone.length; i++) {
             clone[i] *= 11;
         }
-        RESULT.add(clone);
+        result.add(clone);
     }
 
     public void permutations(int[] pa, int i) {
@@ -39,4 +39,9 @@ public class Permutations {
         }
     }
 
+    public List<int[]> result() {
+        return result.stream()
+                .map(int[]::clone)
+                .toList();
+    }
 }

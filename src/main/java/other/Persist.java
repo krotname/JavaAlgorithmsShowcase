@@ -11,9 +11,9 @@ public class Persist {
         int result = 0;
         while (n > 9) {
             char[] s = String.valueOf(n).toCharArray();
-            int temp = Integer.parseInt(String.valueOf(s[0]));
+            int temp = Character.digit(s[0], 10);
             for (int i = 1; i < s.length; i++) {
-                temp *= Integer.parseInt(String.valueOf(s[i]));
+                temp *= Character.digit(s[i], 10);
             }
             n = temp;
             result++;

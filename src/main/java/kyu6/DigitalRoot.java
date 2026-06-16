@@ -9,7 +9,7 @@ public class DigitalRoot {
     public static int digitalRootRecursiveStream(int n) {
         return n < 10 ? n : digitalRootRecursiveStream(String.valueOf(n)
                 .chars()
-                .map(i -> Integer.parseInt(String.valueOf((char) i)))
+                .map(i -> Character.digit((char) i, 10))
                 .sum());
     }
 

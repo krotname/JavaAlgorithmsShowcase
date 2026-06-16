@@ -1,6 +1,7 @@
 package coderun;
 
 
+import static common.SafeParse.parseInt;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -73,9 +74,13 @@ public class AverageElement {
         return Arrays
                 .stream(list)
                 .sequential()
-                .map(Integer::valueOf)
+                .map(AverageElement::parseInteger)
                 .sorted()
                 .toList()
                 .get(1);
+    }
+
+    private static Integer parseInteger(String value) {
+        return parseInt(value);
     }
 }

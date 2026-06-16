@@ -28,12 +28,12 @@ public class DuplicateEncoder {
     public static String encode(String word) {
         StringBuilder result = new StringBuilder();
         Map<Character, Integer> map = new HashMap<>();
-        for (Character c : word.toCharArray()
+        for (char c : word.toCharArray()
         ) {
             map.putIfAbsent(Character.toLowerCase(c), 0);
             map.put(Character.toLowerCase(c), map.get(Character.toLowerCase(c)) + 1);
         }
-        for (Character c : word.toCharArray()
+        for (char c : word.toCharArray()
         ) {
             if (map.get(Character.toLowerCase(c)) > 1) {
                 result.append(")");
