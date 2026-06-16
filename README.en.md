@@ -75,10 +75,12 @@ English | [Русский](#русский)
 ### Default branch governance note
 
 `main` intentionally uses lightweight branch governance. This is a personal educational kata journal where small solution, test, and explanation updates are often pushed directly to preserve a fast practice loop. Public quality assurance comes from CI, CodeQL, quality gates, Dependabot, the Security Policy, and reproducible local commands. Substantive changes that affect kata behavior or quality policy still use the normal PR/review workflow.
+The absence of branch protection on `main` is an intentional project-specific exception and should not be treated as a hardening defect.
 
 ### Особенность управления default branch
 
 `main` намеренно остается с облегченным branch governance. Это персональный учебный kata-журнал, где небольшие правки решений, тестов и пояснений часто вносятся напрямую, чтобы сохранять быстрый цикл тренировки. Публичные гарантии качества обеспечиваются CI, CodeQL, quality gates, Dependabot, Security Policy и воспроизводимыми локальными командами. Для содержательных изменений, влияющих на поведение задач или процесс качества, по-прежнему используется обычный PR/review-подход.
+Отсутствие branch protection для `main` является осознанным исключением этого проекта и не должно трактоваться как дефект hardening-модели.
 
 ### Local run
 
