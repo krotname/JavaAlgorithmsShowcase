@@ -32,14 +32,14 @@ English | [Русский](#русский)
 - `src/test/java` — tests and quality suites
   - `quality.SmokeSuite` (unit/smoke partition)
   - `quality.IntegrationSuite` (transactions scenario tests)
-  - `quality.PropertySuite` (property-based tests, currently curated)
+  - `quality.PropertySuite` (curated property-based tests)
 - `.github` — CI workflows, dependabot and repo templates
 - `ARCHITECTURE.md` — architectural and reviewability notes.
 - `CHANGELOG.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `TESTING.md` — project governance
 
 ### Testing strategy
 
-- **Smoke / Unit baseline** — each kata has direct tests; grouped by `quality.SmokeSuite`.
+- **Smoke / Unit tests** — each kata has direct tests; grouped by `quality.SmokeSuite`.
 - **Integration** — transaction validation state and ordering, via `quality.IntegrationSuite`.
 - **Property-based** — jqwik property tests are grouped in `quality.PropertySuite`.
 - **UI tests** — not applicable (`N/A` for this repository, no UI layer).
@@ -55,15 +55,12 @@ English | [Русский](#русский)
   - uploaded test and coverage artifacts
 - Quality workflow: `.github/workflows/quality.yml`
   - runs static checks with `checkstyle`, `pmd`, and `spotbugs` without executing tests
-  - Checkstyle, PMD and SpotBugs are kept clean in the current quality baseline
-  - Checkstyle uses a project-specific baseline in `config/checkstyle/checkstyle.xml`
+  - Checkstyle, PMD and SpotBugs are enforced in the quality gate
+  - Checkstyle uses project-specific rules in `config/checkstyle/checkstyle.xml`
   - Generated smoke wrappers have explicit suppressions in `config/checkstyle/suppressions.xml`
   - SpotBugs is kept clean with documented compatibility exceptions in `config/spotbugs-exclude.xml`
 - Security workflow: `.github/workflows/codeql-analysis.yml`
 - Dependency automation: `.github/dependabot.yml`
-- Coverage tracked in JaCoCo + Codecov; the current local baseline is 455 tests with 91.4% line,
-  85.1% branch and 92.7% instruction coverage.
-
 ### Portfolio checklist
 
 - Deterministic implementations with package-localized responsibilities.

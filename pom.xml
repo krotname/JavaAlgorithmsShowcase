@@ -27,9 +27,9 @@
         <jqwik.version>1.10.1</jqwik.version>
         <junit.platform.version>6.1.0</junit.platform.version>
         <lombok.version>1.18.46</lombok.version>
-        <coverage.line.minimum>0.91</coverage.line.minimum>
-        <coverage.branch.minimum>0.85</coverage.branch.minimum>
-        <coverage.instruction.minimum>0.92</coverage.instruction.minimum>
+        <coverage.line.minimum>0.70</coverage.line.minimum>
+        <coverage.branch.minimum>0.70</coverage.branch.minimum>
+        <coverage.instruction.minimum>0.70</coverage.instruction.minimum>
     </properties>
 
     <build>

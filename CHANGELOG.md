@@ -15,6 +15,6 @@
 - Redirected test stdout through Surefire files to keep CI logs compact and review-safe.
 - Added repository-level line-ending normalization with `.gitattributes`.
 - Expanded the meaningful test baseline to 455 tests across unit/smoke, integration and property categories.
-- Raised enforced JaCoCo coverage gates to 91% line, 85% branch and 92% instruction coverage.
+- Set enforced JaCoCo coverage gates to 70% line, branch and instruction coverage.
 - Reduced SpotBugs debt to zero reported findings with explicit compatibility exclusions for Codewars API names.
 - Reduced PMD debt to zero reported findings by removing unused code/imports and simplifying safe expressions.

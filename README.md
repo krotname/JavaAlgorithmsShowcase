@@ -44,11 +44,9 @@
 - **Coverage-gate**: JaCoCo ломает `mvn verify`, если покрытие ниже 70% строк, ветвлений
   или инструкций.
 - **Отдельный quality-гейт**: workflow `.github/workflows/quality.yml` для чистых статических проверок без прогона тестов.
-- **Checkstyle / PMD / SpotBugs**: чистый текущий baseline.
+- **Checkstyle / PMD / SpotBugs**: статические проверки заведены в quality-гейт.
 - **Checkstyle**: проектный набор правил в `config/checkstyle/checkstyle.xml` и явные suppressions для generated smoke-тестов.
 - **SpotBugs**: чистый отчёт с явными исключениями совместимости в `config/spotbugs-exclude.xml`.
-- **Текущий baseline**: 455 тестов; 91.4% line, 85.1% branch и 92.7% instruction coverage.
-
 ### Как запускать
 
 ```bash

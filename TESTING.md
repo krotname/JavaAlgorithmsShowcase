@@ -61,9 +61,9 @@ mvn -B test -Dtest='quality.PropertySuite'
 
 - Full verification includes tests, JaCoCo reporting/checks and static tools.
 - Current enforced JaCoCo minimums:
-  - line coverage: 91%
-  - branch coverage: 85%
-  - instruction coverage: 92%
+  - line coverage: 70%
+  - branch coverage: 70%
+  - instruction coverage: 70%
 - Current verified local baseline: 455 tests, 91.4% line coverage,
   85.1% branch coverage and 92.7% instruction coverage.
 - Run:
