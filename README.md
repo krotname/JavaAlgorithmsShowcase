@@ -5,7 +5,7 @@
 [![CI](https://github.com/krotname/CodewarsKataJava/actions/workflows/maven.yml/badge.svg)](https://github.com/krotname/CodewarsKataJava/actions/workflows/maven.yml)
 [![Quality Gates](https://github.com/krotname/CodewarsKataJava/actions/workflows/quality.yml/badge.svg)](https://github.com/krotname/CodewarsKataJava/actions/workflows/quality.yml)
 [![CodeQL](https://github.com/krotname/CodewarsKataJava/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/krotname/CodewarsKataJava/actions/workflows/codeql-analysis.yml)
-[![Coverage Gate](https://img.shields.io/badge/coverage%20gate-JaCoCo%2070%25%2B-2ea44f)](TESTING.md)
+[![Coverage](https://codecov.io/gh/krotname/CodewarsKataJava/branch/main/graph/badge.svg)](https://app.codecov.io/gh/krotname/CodewarsKataJava)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/krotname/CodewarsKataJava/badge)](https://securityscorecards.dev/viewer/?uri=github.com/krotname/CodewarsKataJava)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13151/badge)](https://www.bestpractices.dev/projects/13151)
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-0f8a16)](LICENSE)
