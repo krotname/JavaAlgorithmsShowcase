@@ -12,21 +12,21 @@ public class NumberOfTrailingZerosOfN {
         return zeroOfTrailing(factorial(n));
     }
 
-    private static int zeroOfTrailing(Long l) {
+    private static int zeroOfTrailing(BigInteger l) {
         int count = 0;
-        while (l % 10 == 0) {
+        while (l.signum() != 0 && l.mod(BigInteger.TEN).signum() == 0) {
             count++;
-            l /= 10;
+            l = l.divide(BigInteger.TEN);
         }
         return count;
     }
 
-    private static long factorial(int n) {
+    private static BigInteger factorial(int n) {
         BigInteger result = BigInteger.ONE;
         for (int i = 1; i <= n; i++) {
             result = result.multiply(BigInteger.valueOf(i));
         }
-        return result.longValue();
+        return result;
     }
 
 }

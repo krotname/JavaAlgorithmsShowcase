@@ -1,7 +1,6 @@
 package kyu6;
 
 
-import java.util.Arrays;
 import java.util.LinkedList;
 
 
@@ -12,9 +11,6 @@ public class TheSupermarketQueue {
     public static int solveSuperMarketQueue(int[] customers, int n) {
 
         if (customers.length == 0) return 0;
-        int max = Arrays.stream(customers).max().orElseThrow();
-
-        if (max < n) return max;
 
         LinkedList<Integer> integers = new LinkedList<>();
         for (int i : customers)

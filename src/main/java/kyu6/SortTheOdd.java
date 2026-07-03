@@ -15,14 +15,19 @@ public class SortTheOdd {
     public static int[] sortArray(int[] array) {
         ArrayList<Integer> odd = new ArrayList<>();
 
-        for (int i = 0; i < array.length; i += 2) {
-            odd.add(array[i]);
+        for (int value : array) {
+            if (value % 2 != 0) {
+                odd.add(value);
+            }
         }
 
         Collections.sort(odd);
 
-        for (int i = 0; i < array.length; i += 2) {
-            array[i] = odd.get((int) (i / 2.0 + 0.5));
+        int index = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] % 2 != 0) {
+                array[i] = odd.get(index++);
+            }
         }
         return array;
     }
@@ -30,7 +35,7 @@ public class SortTheOdd {
     public static int[] sortArrayStream(int[] array) {
         LinkedList<Integer> oddSorted = IntStream
                 .range(0, array.length)
-                .filter(x -> x % 2 == 0)
+                .filter(x -> array[x] % 2 != 0)
                 .map(x -> array[x])
                 .sorted()
                 .boxed()
@@ -38,7 +43,7 @@ public class SortTheOdd {
 
         IntStream.range(0, array.length).forEach(
                 x -> {
-                    if (x % 2 == 0) {
+                    if (array[x] % 2 != 0) {
                         array[x] = oddSorted.pollFirst();
                     }
                 });

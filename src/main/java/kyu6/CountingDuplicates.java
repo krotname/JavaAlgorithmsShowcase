@@ -11,7 +11,7 @@ public class CountingDuplicates {
 
     public static int duplicateCountStream(String text) {
         return (int) text.chars()
-                .mapToObj(i -> (char) i)
+                .mapToObj(i -> Character.toLowerCase((char) i))
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet()
                 .stream()
