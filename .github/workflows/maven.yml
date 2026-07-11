@@ -24,8 +24,8 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: maven
-      - name: Prime the exact Maven dependency set
-        run: mvn -B -ntp -DskipTests test --file pom.xml
+      - name: Prime the exact Maven test runtime
+        run: mvn -B -ntp -Dtest=quality.SmokeMethodTestHarnessTest test --file pom.xml
       - name: Run the strict offline test gate
         shell: pwsh
         run: .\scripts\run-offline-gate.ps1 -Goal test -StrictDependencies
