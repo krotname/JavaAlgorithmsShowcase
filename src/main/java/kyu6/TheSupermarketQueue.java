@@ -1,8 +1,7 @@
 package kyu6;
 
 
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 
 //6 https://www.codewars.com/kata/57b06f90e298a7b53d000a86/train/java
@@ -10,53 +9,25 @@ import java.util.LinkedList;
 public class TheSupermarketQueue {
 
     public static int solveSuperMarketQueue(int[] customers, int n) {
-
-        if (customers.length == 0) return 0;
-        int max = Arrays.stream(customers).max().orElseThrow();
-
-        if (max < n) return max;
-
-        LinkedList<Integer> integers = new LinkedList<>();
-        for (int i : customers)
-            integers.add(i);
-
-        int[] workList = new int[n];
-
-        for (int i = 0; i < n; i++) {
-            if (!integers.isEmpty()) {
-
-                workList[i] = integers.pollFirst();
-            } else {
-                workList[i] = 0;
-            }
+        if (customers == null) {
+            throw new IllegalArgumentException("customers must not be null");
+        }
+        if (n <= 0) {
+            throw new IllegalArgumentException("the number of tills must be positive");
         }
 
-        int count = 0;
-
-        while (true) {
-            int stopCount = 0;
-            for (int j : workList) {
-                if (j == -1) {
-                    stopCount++;
-                }
-            }
-
-            if (stopCount == n) break;
-
-            count++;
-
-            for (int i = 0; i < workList.length; i++) {
-                if (workList[i] > 1) {
-                    workList[i]--;
-                } else if (!integers.isEmpty()) {
-                    workList[i] = integers.pollFirst();
-                } else {
-                    workList[i] = -1;
-                }
-            }
+        PriorityQueue<Long> tills = new PriorityQueue<>();
+        for (int i = 0; i < Math.min(n, customers.length); i++) {
+            tills.add(0L);
         }
-
-        return count;
+        for (int customer : customers) {
+            if (customer < 0) {
+                throw new IllegalArgumentException("service times must not be negative");
+            }
+            long availableAt = tills.remove();
+            tills.add(availableAt + customer);
+        }
+        return tills.isEmpty() ? 0 : Math.toIntExact(tills.stream().mapToLong(Long::longValue).max().orElse(0L));
     }
 
 }

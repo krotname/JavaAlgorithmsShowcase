@@ -11,7 +11,7 @@ public class CountingDuplicates {
 
     public static int duplicateCountStream(String text) {
         return (int) text.chars()
-                .mapToObj(i -> (char) i)
+                .mapToObj(i -> Character.toLowerCase((char) i))
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet()
                 .stream()
@@ -21,14 +21,13 @@ public class CountingDuplicates {
 
     public static int duplicateCount(String text) {
         int result = 0;
-        long[] ascii = new long[127];
+        long[] characterCounts = new long[Character.MAX_VALUE + 1];
 
-        char[] chars = text.toLowerCase().toCharArray();
-        for (char aChar : chars) {
-            ascii[aChar]++;
+        for (char current : text.toCharArray()) {
+            characterCounts[Character.toLowerCase(current)]++;
         }
-        for (long l : ascii) {
-            if (l > 1) {
+        for (long count : characterCounts) {
+            if (count > 1) {
                 result++;
             }
         }

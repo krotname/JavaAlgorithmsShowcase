@@ -21,4 +21,10 @@ public class TriangleTesterTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.TriangleTester.class);
     }
+
+    @Test
+    void shouldNotOverflowWhenSidesAreLarge() {
+        assertTrue(isTriangle(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE));
+        assertFalse(isTriangle(Integer.MAX_VALUE, 1, Integer.MAX_VALUE - 1));
+    }
 }

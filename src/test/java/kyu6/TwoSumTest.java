@@ -33,6 +33,10 @@ public class TwoSumTest {
     @Test
     void shouldReturnEmptyIfNoPair() {
         assertArrayEquals(new int[0], twoSum(new int[]{1, 2, 3}, 100));
+        assertArrayEquals(
+                new int[0],
+                twoSum(new int[]{Integer.MAX_VALUE, Integer.MAX_VALUE}, -2)
+        );
     }
 
     @Test

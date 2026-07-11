@@ -21,4 +21,17 @@ public class NumberOfTrailingZerosOfNTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu5.NumberOfTrailingZerosOfN.class);
     }
+
+    @Test
+    void shouldCountFactorsOfFiveWithoutBuildingTheFactorial() {
+        assertEquals(0, zeros(0));
+        assertEquals(1, zeros(5));
+        assertEquals(6, zeros(25));
+        assertTimeoutPreemptively(java.time.Duration.ofSeconds(1), () -> assertEquals(24, zeros(100)));
+    }
+
+    @Test
+    void shouldRejectNegativeInput() {
+        assertThrows(IllegalArgumentException.class, () -> zeros(-1));
+    }
 }

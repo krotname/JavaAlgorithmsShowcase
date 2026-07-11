@@ -2,6 +2,7 @@ package kyu7;
 
 
 import java.util.HashSet;
+import java.util.Locale;
 
 
 public class Isogram {
@@ -10,7 +11,7 @@ public class Isogram {
 
     public static boolean isIsogram(String str) {
         HashSet<Character> characters = new HashSet<>();
-        for (char c : str.toLowerCase().toCharArray()) {
+        for (char c : str.toLowerCase(Locale.ROOT).toCharArray()) {
             if (characters.contains(c)) return false;
             characters.add(c);
         }

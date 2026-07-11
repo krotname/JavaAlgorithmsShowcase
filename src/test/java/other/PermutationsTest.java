@@ -21,4 +21,16 @@ public class PermutationsTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(other.Permutations.class);
     }
+
+    @Test
+    void shouldResetResultsBetweenTopLevelInvocations() {
+        other.Permutations permutations = new other.Permutations();
+        permutations.permutations(new int[]{1, 2}, 0);
+        assertEquals(2, permutations.result().size());
+
+        permutations.permutations(new int[]{3}, 0);
+        assertEquals(1, permutations.result().size());
+        assertArrayEquals(new int[]{33}, permutations.result().get(0));
+        assertThrows(IllegalArgumentException.class, () -> permutations.permutations(new int[]{1}, 1));
+    }
 }

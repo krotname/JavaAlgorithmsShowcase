@@ -21,4 +21,19 @@ public class SortTheOddTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu6.SortTheOdd.class);
     }
+
+    @Test
+    void shouldSortOddValuesAndLeaveEvenValuesInPlace() {
+        int[] input = {5, 3, 2, 8, 1, 4};
+        int[] expected = {1, 3, 2, 8, 5, 4};
+
+        assertArrayEquals(expected, sortArray(input));
+        assertArrayEquals(new int[]{5, 3, 2, 8, 1, 4}, input);
+        assertArrayEquals(expected, sortArrayStream(input));
+    }
+
+    @Test
+    void shouldRecognizeNegativeOddValues() {
+        assertArrayEquals(new int[]{-5, 2, -3}, sortArray(new int[]{-3, 2, -5}));
+    }
 }

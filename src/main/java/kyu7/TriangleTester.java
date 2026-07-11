@@ -7,7 +7,10 @@ public class TriangleTester {
     //7 https://www.codewars.com/kata/56606694ec01347ce800001b/train/java
 
     public static boolean isTriangle(int a, int b, int c) {
-        return a > 0 && b > 0 && c > 0 && a + b > c && a + c > b && b + c > a;
+        return a > 0 && b > 0 && c > 0
+                && (long) a + b > c
+                && (long) a + c > b
+                && (long) b + c > a;
     }
 
 }

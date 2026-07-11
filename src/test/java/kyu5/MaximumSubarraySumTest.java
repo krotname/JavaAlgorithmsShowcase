@@ -21,4 +21,12 @@ public class MaximumSubarraySumTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu5.MaximumSubarraySum.class);
     }
+
+    @Test
+    void shouldFindMaximumContiguousSumWithoutEnumeratingSubarrays() {
+        assertEquals(6, sequence(new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4}));
+        assertEquals(0, sequence(new int[]{-4, -2, -7}));
+        assertEquals(0, sequence(new int[0]));
+        assertThrows(ArithmeticException.class, () -> sequence(new int[]{Integer.MAX_VALUE, 1}));
+    }
 }

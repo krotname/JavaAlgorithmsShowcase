@@ -10,15 +10,23 @@ public class ArmstrongNumber {
             return false;
         }
 
-        int result = 0;
+        long result = 0L;
         int currentNumber = number;
         int power = numberOfDigits(number);
         do {
             int currentDigit = currentNumber % 10;
             currentNumber /= 10;
-            result += (int) Math.pow(currentDigit, power);
+            result += pow(currentDigit, power);
         } while (currentNumber > 0);
         return result == number;
+    }
+
+    private static long pow(int base, int exponent) {
+        long result = 1L;
+        for (int i = 0; i < exponent; i++) {
+            result *= base;
+        }
+        return result;
     }
 
 

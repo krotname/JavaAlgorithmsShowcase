@@ -58,7 +58,7 @@ public final class SmokeMethodTestHarness {
         }
 
         String summary = String.format("%s attempted=%d failed=%d", clazz.getSimpleName(), attempted, failed);
-        Assertions.assertTrue(summary.startsWith(clazz.getSimpleName()), () -> "Unexpected smoke summary: " + summary);
+        Assertions.assertTrue(failed < attempted, () -> "Every executable smoke path failed: " + summary);
     }
 
     private static Object resolveTargetInstance(Method method, Class<?> clazz) throws Exception {
@@ -146,7 +146,7 @@ public final class SmokeMethodTestHarness {
         if (type.isArray()) {
             Class<?> componentType = type.getComponentType();
             if (componentType == int.class) {
-                return new int[]{1, 2, 3};
+                return new int[10];
             }
             if (componentType == long.class) {
                 return new long[]{1L, 2L};

@@ -5,14 +5,26 @@ package kyu7;
 public class ReverseWords {
 
     public static String reverseWords(final String original) {
-        if (original.matches("\\s+")) return original;
-        StringBuilder stringBuilder = new StringBuilder();
-        String[] s = original.split("\\s");
-        for (String s1 : s
-        ) {
-            stringBuilder.append(new StringBuilder(s1).reverse()).append(" ");
+        if (original == null) {
+            throw new IllegalArgumentException("input must not be null");
         }
-        return stringBuilder.substring(0, stringBuilder.length() - 1);
+        StringBuilder result = new StringBuilder(original.length());
+        int wordStart = 0;
+        while (wordStart < original.length()) {
+            if (Character.isWhitespace(original.charAt(wordStart))) {
+                result.append(original.charAt(wordStart++));
+                continue;
+            }
+            int wordEnd = wordStart + 1;
+            while (wordEnd < original.length() && !Character.isWhitespace(original.charAt(wordEnd))) {
+                wordEnd++;
+            }
+            for (int i = wordEnd - 1; i >= wordStart; i--) {
+                result.append(original.charAt(i));
+            }
+            wordStart = wordEnd;
+        }
+        return result.toString();
     }
 
 }

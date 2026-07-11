@@ -38,5 +38,7 @@ class MergeIntervalsTest {
         assertThrows(IllegalArgumentException.class, () -> merger.merge(null));
         assertThrows(IllegalArgumentException.class, () -> merger.merge(new int[][]{null}));
         assertThrows(IllegalArgumentException.class, () -> merger.merge(new int[][]{{1}}));
+        assertThrows(IllegalArgumentException.class, () -> merger.merge(new int[][]{{2, 1}}));
+        assertThrows(IllegalArgumentException.class, () -> merger.merge(new int[][]{{1, 2, 3}}));
     }
 }

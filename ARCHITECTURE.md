@@ -9,6 +9,7 @@
   - `IntegrationSuite` – stateful transaction validation behavior.
   - `PropertySuite` – jqwik property/invariant tests.
 - `.github` contains CI, templates, and dependency automation.
+- `scripts/run-offline-gate.ps1` provides a network-free local Maven quality gate.
 
 ## Design principles used in this repo
 
@@ -33,5 +34,5 @@
 ## Future quality directions
 
 - Increase property coverage into additional stable, pure utilities where invariant checks are natural.
-- Add explicit domain-level integration tests for edge-case transaction flows (duplicates / ordering / insufficient balance).
+- Expand domain-level integration coverage when new transaction rules are introduced.
 - Keep production methods with concise intent comments for non-obvious logic.

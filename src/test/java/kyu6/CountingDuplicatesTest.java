@@ -21,4 +21,11 @@ public class CountingDuplicatesTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu6.CountingDuplicates.class);
     }
+
+    @Test
+    void implementationsShouldBothIgnoreCase() {
+        assertEquals(2, duplicateCount("aA11"));
+        assertEquals(2, duplicateCountStream("aA11"));
+        assertEquals(2, duplicateCountStream("Indivisibilities"));
+    }
 }

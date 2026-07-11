@@ -42,7 +42,7 @@ public class MergeIntervals {
     }
 
     private static int[] copyInterval(int[] interval) {
-        if (interval == null || interval.length < 2) {
+        if (interval == null || interval.length != 2 || interval[0] > interval[1]) {
             throw new IllegalArgumentException("Each interval must contain start and end values");
         }
         return new int[]{interval[0], interval[1]};

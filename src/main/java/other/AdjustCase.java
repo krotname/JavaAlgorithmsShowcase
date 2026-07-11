@@ -12,7 +12,7 @@ public class AdjustCase {
 
     public String adjustCaseToLower(String string) {
         if (string == null || string.length() == 0) return string;
-        if (string.length() == 1) return string.toUpperCase();
+        if (string.length() == 1) return string.toUpperCase(Locale.ROOT);
         var stringLover = string.toLowerCase(Locale.ROOT).substring(1);
         var firstChar = string.substring(0, 1).toUpperCase(Locale.ROOT);
         return firstChar + stringLover;
@@ -23,7 +23,7 @@ public class AdjustCase {
         var lower = string.chars()
                 .mapToObj(i -> (char) i)
                 .map(Object::toString)
-                .map(String::toLowerCase)
+                .map(value -> value.toLowerCase(Locale.ROOT))
                 .collect(Collectors.joining())
                 .substring(1);
         return string.chars()
@@ -31,7 +31,7 @@ public class AdjustCase {
                 .map(Object::toString)
                 .findFirst()
                 .orElse("")
-                .toUpperCase() + lower;
+                .toUpperCase(Locale.ROOT) + lower;
     }
 
     public String adjustCaseFor(String string) {

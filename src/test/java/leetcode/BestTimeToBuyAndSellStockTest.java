@@ -21,4 +21,12 @@ public class BestTimeToBuyAndSellStockTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(leetcode.BestTimeToBuyAndSellStock.class);
     }
+
+    @Test
+    void shouldTrackTheLowestEarlierPriceInOnePass() {
+        assertEquals(5, maxProfit1(new int[]{7, 1, 5, 3, 6, 4}));
+        assertEquals(0, maxProfit1(new int[]{7, 6, 4, 3, 1}));
+        assertThrows(IllegalArgumentException.class, () -> maxProfit1(null));
+        assertThrows(IllegalArgumentException.class, () -> maxProfit1(new int[]{1, -1, 2}));
+    }
 }

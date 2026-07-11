@@ -21,4 +21,12 @@ public class RoundToTheNextMultipleOf5Test {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.RoundToTheNextMultipleOf5.class);
     }
+
+    @Test
+    void shouldRoundNegativeValuesUpAndReportUnrepresentableResults() {
+        assertEquals(0, roundToNext5(-1));
+        assertEquals(-5, roundToNext5(-6));
+        assertEquals(15, roundToNext5(12));
+        assertThrows(ArithmeticException.class, () -> roundToNext5(Integer.MAX_VALUE));
+    }
 }

@@ -1,10 +1,7 @@
 package kyu5;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.StringJoiner;
 
 
 public class SumSquaredDivisors {
@@ -12,49 +9,48 @@ public class SumSquaredDivisors {
     //5 https://www.codewars.com/kata/55aa075506463dac6600010d/train/java
 
     public static String listSquared(long m, long n) {
-        Map<Long, Long> result = new TreeMap<>();
-        for (long i = m; i <= n; i++) {
-            long sumSquare = sumSquareList(listDivisor(i));
-            if (checkSquare(sumSquare)) {
-                result.putIfAbsent(i, sumSquare);
+        if (m < 1L || n < m) {
+            throw new IllegalArgumentException("range must satisfy 1 <= m <= n");
+        }
+        StringJoiner result = new StringJoiner(", ", "[", "]");
+        for (long value = m; ; value++) {
+            long sumSquare = sumSquaredDivisors(value);
+            if (isPerfectSquare(sumSquare)) {
+                result.add("[" + value + ", " + sumSquare + "]");
+            }
+            if (value == n) {
+                break;
             }
         }
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("[");
-        for (Map.Entry<Long, Long> entry : result.entrySet()
-        ) {
-            stringBuilder.append("[").append(entry.getKey()).append(", ").append(entry.getValue()).append("], ");
-        }
-        String substring = "[";
-        if (stringBuilder.length() > 2) {
-            substring = stringBuilder.substring(0, stringBuilder.length() - 2);
-        }
-        substring = substring + "]";
-
-        return substring;
+        return result.toString();
     }
 
-    private static boolean checkSquare(long n) {
-        return Math.sqrt(n) % 1 == 0.0;
-    }
-
-    private static List<Long> listDivisor(long n) {
-        List<Long> l = new ArrayList<>();
-        for (long i = 1; i <= n; i++) {
-            if ((n % i) == 0) {
-                l.add(i);
+    private static long sumSquaredDivisors(long value) {
+        long sum = 0L;
+        for (long divisor = 1L; divisor <= value / divisor; divisor++) {
+            if (value % divisor == 0L) {
+                long pairedDivisor = value / divisor;
+                sum = Math.addExact(sum, Math.multiplyExact(divisor, divisor));
+                if (pairedDivisor != divisor) {
+                    sum = Math.addExact(sum, Math.multiplyExact(pairedDivisor, pairedDivisor));
+                }
             }
         }
-        return l;
+        return sum;
     }
 
-    private static long sumSquareList(List<Long> list) {
-        long result = 0;
-        for (long i : list) {
-            result += i * i;
+    private static boolean isPerfectSquare(long value) {
+        if (value < 0L) {
+            return false;
         }
-        return result;
+        long root = (long) Math.sqrt(value);
+        while (root > 0L && root > value / root) {
+            root--;
+        }
+        while (root + 1L <= value / (root + 1L)) {
+            root++;
+        }
+        return root * root == value;
     }
 
     /**

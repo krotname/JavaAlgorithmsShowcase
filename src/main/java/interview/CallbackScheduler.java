@@ -33,8 +33,21 @@ public class CallbackScheduler implements AutoCloseable {
     public void schedule(Runnable callback, Instant when) {
         Objects.requireNonNull(callback);
         Objects.requireNonNull(when);
-        long delayMillis = Math.max(0L, Duration.between(Instant.now(), when).toMillis());
+        long delayMillis = delayMillisUntil(when);
         scheduler.schedule(callback, delayMillis, TimeUnit.MILLISECONDS);
+    }
+
+    private static long delayMillisUntil(Instant when) {
+        Duration delay = Duration.between(Instant.now(), when);
+        if (delay.isNegative() || delay.isZero()) {
+            return 0L;
+        }
+        try {
+            return delay.toMillis();
+        } catch (ArithmeticException ignored) {
+            // Instant supports a wider range than a millisecond delay stored in a long.
+            return Long.MAX_VALUE;
+        }
     }
 
     @Override

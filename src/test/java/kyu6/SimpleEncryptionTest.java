@@ -21,4 +21,25 @@ public class SimpleEncryptionTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu6.SimpleEncryption.class);
     }
+
+    @Test
+    void shouldRoundTripWithoutRecursiveStackGrowth() {
+        String plainText = "This is a test!";
+        String encrypted = encrypt(plainText, 10_000);
+
+        assertEquals(plainText, decrypt(encrypted, 10_000));
+        assertNull(encrypt(null, 3));
+        assertEquals("", decrypt("", 3));
+    }
+
+    @Test
+    void shouldMatchExamplesAndHandleMaximumIterationCountEfficiently() {
+        assertEquals("hsi  etTi sats!", encrypt("This is a test!", 1));
+        assertEquals("s eT ashi tist!", encrypt("This is a test!", 2));
+        assertEquals("This is a test!", decrypt("hsi  etTi sats!", 1));
+        assertEquals("This is a test!", decrypt("s eT ashi tist!", 2));
+
+        String encrypted = encrypt("bounded permutation", Integer.MAX_VALUE);
+        assertEquals("bounded permutation", decrypt(encrypted, Integer.MAX_VALUE));
+    }
 }

@@ -4,21 +4,22 @@ package other;
 import static common.SafeParse.parseInt;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 
 public class AllMostPopularityKyu8 {
 
     public static int sumR(int[] arr) {
-        int rezult = 0;
+        long result = 0L;
         if (arr == null || arr.length == 0) {
-            return rezult;
+            return 0;
         }
         for (int num : arr) {
             if (num > 0) {
-                rezult += num;
+                result += num;
             }
         }
-        return rezult;
+        return Math.toIntExact(result);
     }
 
     public static String repeatStr(final int repeat, final String string) {
@@ -26,12 +27,15 @@ public class AllMostPopularityKyu8 {
     }
 
     public static String removeFirstAndLastChar(String str) {
+        if (str == null || str.length() < 2) {
+            throw new IllegalArgumentException("input must contain at least two characters");
+        }
         return str.substring(1, str.length() - 1);
 
     }
 
     public static int opposite(int number) {
-        return number * -1;
+        return Math.negateExact(number);
     }
 
     public static String evenOrOdd(int number) {
@@ -45,7 +49,7 @@ public class AllMostPopularityKyu8 {
         }
         int max = Integer.MIN_VALUE;
         int min = Integer.MAX_VALUE;
-        int sum = 0;
+        long sum = 0L;
         for (int n : numbers) {
             sum += n;
             if (n > max) {
@@ -55,7 +59,7 @@ public class AllMostPopularityKyu8 {
                 min = n;
             }
         }
-        return sum - max - min;
+        return Math.toIntExact(sum - max - (long) min);
     }
 
     public static String fakeBin(String numberString) {
@@ -84,11 +88,11 @@ public class AllMostPopularityKyu8 {
     }
 
     public static int[] allTo2(int[] arr) {
-        return Arrays.stream(arr).map(x -> x * 2).toArray();
+        return Arrays.stream(arr).map(x -> Math.multiplyExact(x, 2)).toArray();
     }
 
     public static int[] invert(int[] array) {
-        return Arrays.stream(array).map(x -> x * -1).toArray();
+        return Arrays.stream(array).map(Math::negateExact).toArray();
     }
 
     public static int getAverage(int[] marks) {
@@ -105,7 +109,7 @@ public class AllMostPopularityKyu8 {
             if (i > 0) {
                 countPositive++;
             } else if (i < 0) {
-                summNegative += i;
+                summNegative = Math.addExact(summNegative, i);
             }
         }
         int[] result = new int[2];
@@ -115,18 +119,27 @@ public class AllMostPopularityKyu8 {
     }
 
     public static String abbrevName(String name) {
-        String[] s = name.split(" ");
-        return s[0].substring(0, 1).toUpperCase() + "." + s[1].substring(0, 1).toUpperCase();
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("name must contain exactly two non-empty parts");
+        }
+        String[] s = name.trim().split("\\s+");
+        if (s.length != 2 || s[0].isEmpty() || s[1].isEmpty()) {
+            throw new IllegalArgumentException("name must contain exactly two non-empty parts");
+        }
+        return s[0].substring(0, 1).toUpperCase(Locale.ROOT)
+                + "." + s[1].substring(0, 1).toUpperCase(Locale.ROOT);
     }
 
     public static int timeInSeconds(int h, int m, int s) {
-        return s * 1000 + m * 60 * 1000 + h * 60 * 60 * 1000;
+        long milliseconds = s * 1_000L + m * 60_000L + h * 3_600_000L;
+        return Math.toIntExact(milliseconds);
     }
 
     public static int[] digitize(long n) {
-        String digits = Long.toString(Math.abs(n));
-        int[] r = new int[digits.length()];
-        for (int i = 0; i < digits.length(); i++) {
+        String digits = Long.toString(n);
+        int firstDigit = digits.charAt(0) == '-' ? 1 : 0;
+        int[] r = new int[digits.length() - firstDigit];
+        for (int i = 0; i < r.length; i++) {
             r[i] = Character.digit(digits.charAt(digits.length() - 1 - i), 10);
         }
         return r;
@@ -144,7 +157,7 @@ public class AllMostPopularityKyu8 {
         if (n <= 0) {
             return 0;
         }
-        return n * (n + 1) / 2;
+        return Math.toIntExact((long) n * (n + 1L) / 2L);
     }
 
     public static String noSpace(final String x) {
@@ -192,15 +205,15 @@ public class AllMostPopularityKyu8 {
         if (n == null || n.length == 0) {
             return 0;
         }
-        int sum = 0;
+        long sum = 0L;
         for (int i : n) {
-            sum += i * i;
+            sum = Math.addExact(sum, Math.multiplyExact((long) i, i));
         }
-        return sum;
+        return Math.toIntExact(sum);
     }
 
     public static int century(int number) {
-        return number <= 0 ? 0 : (number + 99) / 100;
+        return number <= 0 ? 0 : (number - 1) / 100 + 1;
     }
 
     public static int liters(double time) {
@@ -219,10 +232,12 @@ public class AllMostPopularityKyu8 {
             throw new IllegalArgumentException();
         }
         return switch (op) {
-            case "+" -> v1 + v2;
-            case "-" -> v1 - v2;
-            case "*" -> v1 * v2;
-            case "/" -> v1 / v2;
+            case "+" -> Math.addExact(v1, v2);
+            case "-" -> Math.subtractExact(v1, v2);
+            case "*" -> Math.multiplyExact(v1, v2);
+            case "/" -> v1 == Integer.MIN_VALUE && v2 == -1
+                    ? Math.negateExact(v1)
+                    : v1 / v2;
             default -> throw new IllegalArgumentException();
         };
     }

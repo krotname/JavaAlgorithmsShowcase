@@ -21,4 +21,20 @@ public class ProductFibTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu5.ProductFib.class);
     }
+
+    @Test
+    void shouldFindExactAndNextFibonacciProducts() {
+        assertArrayEquals(new long[]{0, 1, 1}, productFib(0));
+        assertArrayEquals(new long[]{21, 34, 1}, productFib(714));
+        assertArrayEquals(new long[]{34, 55, 0}, productFib(800));
+        assertArrayEquals(new long[]{2_971_215_073L, 4_807_526_976L, 0}, productFib(Long.MAX_VALUE));
+    }
+
+    @Test
+    void shouldCalculateFibonacciValuesExactlyWithinLongRange() {
+        assertEquals(12_586_269_025L, getFibonacciValue(50));
+        assertEquals(7_540_113_804_746_346_429L, getFibonacciValue(92));
+        assertThrows(ArithmeticException.class, () -> getFibonacciValue(93));
+        assertThrows(IllegalArgumentException.class, () -> productFib(-1));
+    }
 }

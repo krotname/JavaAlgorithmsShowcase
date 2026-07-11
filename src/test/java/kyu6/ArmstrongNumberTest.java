@@ -19,7 +19,7 @@ class ArmstrongNumberTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {-1, 10, 100, 9475})
+    @ValueSource(ints = {-1, 10, 100, 9475, Integer.MAX_VALUE})
     void shouldRejectNonNarcissisticNumbers(int number) {
         assertFalse(ArmstrongNumber.isNarcissistic(number));
     }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -51,12 +52,15 @@ public class VINChecker {
     }
 
     public static boolean checkVin(String vin) {
-        if (vin == null || vin.toUpperCase().contains("I") || vin.toUpperCase().contains("O")
-                || vin.toUpperCase().contains("Q") || vin.length() != 17) return false;
-
+        if (vin == null) {
+            return false;
+        }
+        String normalizedVin = vin.toUpperCase(Locale.ROOT);
+        if (normalizedVin.contains("I") || normalizedVin.contains("O")
+                || normalizedVin.contains("Q") || normalizedVin.length() != 17) return false;
 
         ArrayList<Integer> convertedToNumber = new ArrayList<>();
-        char[] vinChars = vin.toUpperCase().toCharArray();
+        char[] vinChars = normalizedVin.toCharArray();
         for (Character c : vinChars
         ) {
             if (!LETTERS.containsKey(c)) return false;

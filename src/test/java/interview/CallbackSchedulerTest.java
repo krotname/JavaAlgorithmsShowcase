@@ -1,5 +1,6 @@
 package interview;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Instant;
@@ -41,5 +42,13 @@ class CallbackSchedulerTest {
         CallbackScheduler.InstantRunnable later = CallbackScheduler.task(callback, now.plusSeconds(1));
 
         assertTrue(earlier.compareTo(later) < 0);
+    }
+
+    @Test
+    void shouldSaturateDelayForTheMaximumInstant() {
+        try (CallbackScheduler scheduler = new CallbackScheduler()) {
+            assertDoesNotThrow(() -> scheduler.schedule(() -> {
+            }, Instant.MAX));
+        }
     }
 }

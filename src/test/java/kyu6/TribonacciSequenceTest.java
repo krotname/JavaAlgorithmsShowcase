@@ -1,6 +1,7 @@
 package kyu6;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -23,5 +24,12 @@ class TribonacciSequenceTest {
                 new double[]{1, 1, 1, 3, 5, 9, 17, 31, 57, 105},
                 TribonacciSequence.tribonacci(new double[]{1, 1, 1}, 10)
         );
+    }
+
+    @Test
+    void shouldRejectInvalidSignatureAndLength() {
+        assertThrows(IllegalArgumentException.class, () -> TribonacciSequence.tribonacci(null, 1));
+        assertThrows(IllegalArgumentException.class, () -> TribonacciSequence.tribonacci(new double[]{1, 1}, 2));
+        assertThrows(IllegalArgumentException.class, () -> TribonacciSequence.tribonacci(new double[]{1, 1, 1}, -1));
     }
 }

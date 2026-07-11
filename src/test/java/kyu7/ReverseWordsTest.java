@@ -21,4 +21,15 @@ public class ReverseWordsTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.ReverseWords.class);
     }
+
+    @Test
+    void shouldPreserveLeadingTrailingAndRepeatedWhitespace() {
+        assertEquals("  cba\t fed  ", reverseWords("  abc\t def  "));
+        assertEquals("", reverseWords(""));
+    }
+
+    @Test
+    void shouldRejectNullInput() {
+        assertThrows(IllegalArgumentException.class, () -> reverseWords(null));
+    }
 }

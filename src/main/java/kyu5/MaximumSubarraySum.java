@@ -1,34 +1,21 @@
 package kyu5;
 
 
-import java.util.Arrays;
-
-
 public class MaximumSubarraySum {
 
     //5
 
     public static int sequence(int[] arr) {
-        int maximumSubArraySum = arraySum(arr);
-        for (int i = 0; i <= arr.length; i++) {
-            for (int j = arr.length; j >= i; j--) {
-                int[] ints = Arrays.copyOfRange(arr, i, j);
-                int subArraySum = arraySum(ints);
-                if (subArraySum > maximumSubArraySum) {
-                    maximumSubArraySum = subArraySum;
-                }
-            }
+        if (arr == null) {
+            throw new IllegalArgumentException("array must not be null");
         }
-        return maximumSubArraySum;
-    }
-
-    private static int arraySum(int[] arr) {
-        int result = 0;
-        for (int i : arr
-        ) {
-            result += i;
+        long best = 0L;
+        long current = 0L;
+        for (int value : arr) {
+            current = Math.max(0L, current + value);
+            best = Math.max(best, current);
         }
-        return result;
+        return Math.toIntExact(best);
     }
 
     /**

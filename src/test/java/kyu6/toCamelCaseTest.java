@@ -1,5 +1,7 @@
 package kyu6;
 
+import java.util.Locale;
+
 import net.jqwik.api.ForAll;
 import net.jqwik.api.constraints.AlphaChars;
 import net.jqwik.api.constraints.StringLength;
@@ -32,7 +34,10 @@ class toCamelCaseTest {
 
     @Test
     void shouldFailOnEmptySegments() {
-        assertThrows(RuntimeException.class, () -> toCamelCase("--"));
+        assertThrows(IllegalArgumentException.class, () -> toCamelCase("--"));
+        assertThrows(IllegalArgumentException.class, () -> toCamelCase("word-"));
+        assertThrows(IllegalArgumentException.class, () -> toCamelCase("-word"));
+        assertThrows(IllegalArgumentException.class, () -> toCamelCase("two--words"));
     }
 
     @Property
@@ -40,7 +45,7 @@ class toCamelCaseTest {
     void shouldHandleWordPairWithSingleSeparator(@ForAll @AlphaChars @StringLength(min = 1, max = 12) String head,
                                                @ForAll @AlphaChars @StringLength(min = 1, max = 12) String tail) {
         String input = head + "-" + tail;
-        assertEquals(head + tail.substring(0, 1).toUpperCase() + tail.substring(1), toCamelCase(input));
+        assertEquals(head + tail.substring(0, 1).toUpperCase(Locale.ROOT) + tail.substring(1), toCamelCase(input));
         assertNotNull(toCamelCase(input));
     }
 
