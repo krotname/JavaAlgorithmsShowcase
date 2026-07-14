@@ -21,4 +21,11 @@ public class MaxMultipleTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.MaxMultiple.class);
     }
+
+    @Test
+    void shouldCalculateDirectlyForLargeBounds() {
+        assertEquals(1_999_999_998, maxMultiple(3, 2_000_000_000));
+        assertEquals(15, maxMultiple(5, 17));
+        assertThrows(IllegalArgumentException.class, () -> maxMultiple(0, 10));
+    }
 }

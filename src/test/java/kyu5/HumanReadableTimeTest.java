@@ -21,4 +21,12 @@ public class HumanReadableTimeTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu5.HumanReadableTime.class);
     }
+
+    @Test
+    void shouldFormatBoundariesAndRejectOutOfRangeValues() {
+        assertEquals("00:00:00", makeReadable(0));
+        assertEquals("99:59:59", makeReadable(359_999));
+        assertThrows(IllegalArgumentException.class, () -> makeReadable(-1));
+        assertThrows(IllegalArgumentException.class, () -> makeReadable(360_000));
+    }
 }

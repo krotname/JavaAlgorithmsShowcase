@@ -21,4 +21,12 @@ public class AccumulTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.Accumul.class);
     }
+
+    @Test
+    void implementationsShouldHandleEmptyAndMixedCaseInputConsistently() {
+        assertEquals("", accum(""));
+        assertEquals("", streamAccum(""));
+        assertEquals("R-Qq-Aaa", accum("RqA"));
+        assertEquals(streamAccum("RqA"), accum("RqA"));
+    }
 }

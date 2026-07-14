@@ -7,28 +7,19 @@ public class TribonacciSequence {
     //6 https://www.codewars.com/kata/556deca17c58da83c00002db
 
     public static double[] tribonacci(double[] s, int n) {
-        if (n == 0) {
-            return new double[0];
+        if (s == null || s.length != 3) {
+            throw new IllegalArgumentException("signature must contain exactly three values");
         }
-        if (n == 1) {
-            double[] doubles = new double[1];
-            doubles[0] = s[0];
-            return doubles;
+        if (n < 0) {
+            throw new IllegalArgumentException("sequence length must not be negative");
         }
-        if (n == 2) {
-            double[] doubles = new double[2];
-            doubles[0] = s[0];
-            doubles[1] = s[1];
-            return doubles;
-        }
-        double[] doubles = new double[n];
-
-        System.arraycopy(s, 0, doubles, 0, s.length);
-
+        double[] result = new double[n];
+        int signatureLength = Math.min(s.length, n);
+        System.arraycopy(s, 0, result, 0, signatureLength);
         for (int i = s.length; i < n; i++) {
-            doubles[i] = doubles[i - 1] + doubles[i - 2] + doubles[i - 3];
+            result[i] = result[i - 1] + result[i - 2] + result[i - 3];
         }
-        return doubles;
+        return result;
     }
 
 }

@@ -1,18 +1,27 @@
 package kyu7;
 
 
-
 public class JadenCase {
 
     //7 https://www.codewars.com/kata/5390bac347d09b7da40006f6/train/java
 
     public static String toJadenCase(String phrase) {
-        if (phrase == null || phrase.length() == 0) return null;
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String s : phrase.split("\\s")) {
-            stringBuilder.append(s.substring(0, 1).toUpperCase()).append(s.substring(1)).append(" ");
+        if (phrase == null || phrase.isEmpty()) {
+            return null;
         }
-        return stringBuilder.toString().trim();
+        StringBuilder result = new StringBuilder(phrase.length());
+        boolean capitalizeNext = true;
+        for (int i = 0; i < phrase.length(); i++) {
+            char current = phrase.charAt(i);
+            if (Character.isWhitespace(current)) {
+                result.append(current);
+                capitalizeNext = true;
+            } else {
+                result.append(capitalizeNext ? Character.toUpperCase(current) : current);
+                capitalizeNext = false;
+            }
+        }
+        return result.toString();
     }
 
 

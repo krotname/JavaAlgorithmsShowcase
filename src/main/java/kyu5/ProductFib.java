@@ -8,19 +8,39 @@ public class ProductFib {
     //5
 
     public static long[] productFib(long prod) {
-        long n = 0, i = 1;
-        while (n < prod) {
-            n = getFibonacciValue(i) * getFibonacciValue(i + 1);
-            i++;
+        if (prod < 0) {
+            throw new IllegalArgumentException("product must not be negative");
         }
-        return new long[]{getFibonacciValue(i - 1), getFibonacciValue(i), n == prod ? 1 : 0};
+        long first = 0L;
+        long second = 1L;
+        while (productIsLessThan(first, second, prod)) {
+            long next = Math.addExact(first, second);
+            first = second;
+            second = next;
+        }
+        boolean exact = first == 0L ? prod == 0L : first <= prod / second && first * second == prod;
+        return new long[]{first, second, exact ? 1L : 0L};
     }
 
     public static long getFibonacciValue(final long n) {
-        // https://ru.stackoverflow.com/questions/39229/Последовательности-чисел-Фибоначчи
-        double p = (1 + Math.sqrt(5)) / 2;
-        double q = 1 / p;
-        return (long) ((Math.pow(p, n) + Math.pow(q, n)) / Math.sqrt(5));
+        if (n < 0) {
+            throw new IllegalArgumentException("index must not be negative");
+        }
+        long first = 0L;
+        long second = 1L;
+        for (long i = 0L; i < n; i++) {
+            if (i == n - 1L) {
+                return second;
+            }
+            long next = Math.addExact(first, second);
+            first = second;
+            second = next;
+        }
+        return first;
+    }
+
+    private static boolean productIsLessThan(long first, long second, long target) {
+        return first == 0L ? target > 0L : first <= target / second && first * second < target;
     }
 
     /**

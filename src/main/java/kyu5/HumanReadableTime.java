@@ -21,8 +21,8 @@ public class HumanReadableTime {
     private static final int SIXTY = 60;
 
     public static String makeReadable(int seconds) {
-        if (seconds > 359999) {
-            throw new IllegalArgumentException("very long arguments");
+        if (seconds < 0 || seconds > 359999) {
+            throw new IllegalArgumentException("seconds must be between 0 and 359999");
         }
         int HH = 0;
         int MM = 0;

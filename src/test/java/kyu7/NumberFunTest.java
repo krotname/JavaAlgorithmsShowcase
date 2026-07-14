@@ -21,4 +21,12 @@ public class NumberFunTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.NumberFun.class);
     }
+
+    @Test
+    void shouldHandleLongBoundariesWithoutFloatingPointMisclassification() {
+        assertEquals(1, findNextSquare(0));
+        assertEquals(9_223_372_030_926_249_001L, findNextSquare(9_223_372_024_852_248_004L));
+        assertEquals(-1, findNextSquare(Long.MAX_VALUE));
+        assertThrows(ArithmeticException.class, () -> findNextSquare(9_223_372_030_926_249_001L));
+    }
 }

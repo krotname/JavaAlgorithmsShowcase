@@ -1,7 +1,6 @@
 package other;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -10,48 +9,39 @@ import java.util.List;
 
 public class HowManyNumbers {
 
-    private static long sumDigits(long n) {
-        long result = 0;
-        while (n > 0) {
-            result = result + n % 10;
-            n /= 10;
-        }
-        return result;
-    }
-
-    private static boolean digitsIncreasingOrder(long n) {
-        long temp = n % 10;
-        n /= 10;
-        while (n > 0) {
-            if (n % 10 > temp) return false;
-            temp = n % 10;
-            n /= 10;
-        }
-        return true;
-    }
-
     public List<Long> findAll(final int sumDigits, final int numDigits) {
-        long firstValue = 0L;
-        long lastValue = 0L;
-        long countValue = 0L;
-        long start = (long) Math.pow(10, numDigits - 1.0);
-        long finish = start * 10;
-        for (long i = start; i < finish; i++) {
-            if (digitsIncreasingOrder(i) && sumDigits(i) == sumDigits) {
-                countValue++;
-                lastValue = i;
-                if (firstValue == 0L) firstValue = i;
-            }
+        if (numDigits <= 0 || numDigits > 18 || sumDigits < 0) {
+            throw new IllegalArgumentException("numDigits must be between 1 and 18 and sumDigits must be non-negative");
         }
-
-        List<Long> result = new ArrayList<>(3);
-        if (countValue > 0L) {
-            result.add(countValue);
-            result.add(firstValue);
-            result.add(lastValue);
+        if (sumDigits < numDigits || sumDigits > 9 * numDigits) {
+            return List.of();
         }
-        return result;
+        long[] summary = new long[3];
+        collect(0, numDigits, 1, sumDigits, 0L, summary);
+        return summary[0] == 0L ? List.of() : List.of(summary[0], summary[1], summary[2]);
     }
 
+    private static void collect(int position, int totalDigits, int minimumDigit,
+                                int remainingSum, long value, long[] summary) {
+        if (position == totalDigits) {
+            if (remainingSum == 0) {
+                summary[0]++;
+                if (summary[0] == 1L) {
+                    summary[1] = value;
+                }
+                summary[2] = value;
+            }
+            return;
+        }
+        int positionsAfter = totalDigits - position - 1;
+        for (int digit = minimumDigit; digit <= 9; digit++) {
+            int nextSum = remainingSum - digit;
+            if (nextSum < digit * positionsAfter || nextSum > 9 * positionsAfter) {
+                continue;
+            }
+            long nextValue = Math.addExact(Math.multiplyExact(value, 10L), digit);
+            collect(position + 1, totalDigits, digit, nextSum, nextValue, summary);
+        }
+    }
 
 }

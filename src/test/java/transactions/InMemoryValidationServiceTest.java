@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -80,5 +81,61 @@ class InMemoryValidationServiceTest {
         assertTrue(actual.getTransactions().get(0).status());
         assertFalse(actual.getTransactions().get(1).status());
         assertTrue(actual.getTransactions().get(2).status());
+    }
+
+    @Test
+    void shouldRejectInvalidAmountsAndBalanceOverflowAndCascadeByOrder() {
+        List<Transaction> transactions = List.of(
+                createTransaction(1, 10, -1, TransactionType.BET),
+                createTransaction(2, 10, 1, TransactionType.WIN),
+                createTransaction(3, 20, 1, TransactionType.WIN)
+        );
+
+        ValidationResult invalidAmount = service.validate(transactions, 10);
+        assertFalse(invalidAmount.getTransactions().get(0).status());
+        assertFalse(invalidAmount.getTransactions().get(1).status());
+        assertTrue(invalidAmount.getTransactions().get(2).status());
+
+        ValidationResult overflow = service.validate(
+                List.of(createTransaction(1, 30, 1, TransactionType.WIN)),
+                Long.MAX_VALUE
+        );
+        assertFalse(overflow.getTransactions().get(0).status());
+    }
+
+    @Test
+    void shouldInvalidateEarlierTransactionsAndRemoveTheirBalanceEffectsWhenOrderFailsLater() {
+        ValidationResult intrinsicFailure = service.validate(List.of(
+                createTransaction(1, 10, 50, TransactionType.BET),
+                createTransaction(2, 20, 50, TransactionType.BET),
+                createTransaction(3, 10, -1, TransactionType.WIN)
+        ), 50);
+
+        assertFalse(intrinsicFailure.getTransactions().get(0).status());
+        assertTrue(intrinsicFailure.getTransactions().get(1).status());
+        assertFalse(intrinsicFailure.getTransactions().get(2).status());
+
+        ValidationResult balanceFailure = service.validate(List.of(
+                createTransaction(1, 30, 80, TransactionType.BET),
+                createTransaction(2, 40, 10, TransactionType.WIN),
+                createTransaction(3, 30, 31, TransactionType.BET)
+        ), 100);
+
+        assertFalse(balanceFailure.getTransactions().get(0).status());
+        assertTrue(balanceFailure.getTransactions().get(1).status());
+        assertFalse(balanceFailure.getTransactions().get(2).status());
+    }
+
+    @Test
+    void shouldRejectNullEntriesAndExposeAnImmutableResult() {
+        List<Transaction> withNull = new ArrayList<>();
+        withNull.add(null);
+        assertThrows(IllegalArgumentException.class, () -> service.validate(withNull, 0));
+
+        ValidationResult result = service.validate(
+                List.of(createTransaction(1, 1, 0, TransactionType.BET)),
+                0
+        );
+        assertThrows(UnsupportedOperationException.class, () -> result.getTransactions().clear());
     }
 }

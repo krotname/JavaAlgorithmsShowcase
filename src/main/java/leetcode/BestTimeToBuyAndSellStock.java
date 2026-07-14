@@ -15,19 +15,19 @@ public class BestTimeToBuyAndSellStock {
      */
 
     public static int maxProfit1(int[] prices) {
-        var maxProfits = 0;
-        for (int i = 0; i < prices.length; i++) {
-            var currentMax = 0;
-            for (int j = i + 1; j < prices.length; j++) {
-                if (prices[j] > prices[i]) {
-                    currentMax = Math.max(currentMax, prices[j] - prices[i]);
-                } else {
-                    break;
-                }
-            }
-            maxProfits = Math.max(currentMax, maxProfits);
+        if (prices == null) {
+            throw new IllegalArgumentException("prices must not be null");
         }
-        return maxProfits;
+        long minimumPrice = Long.MAX_VALUE;
+        long maximumProfit = 0L;
+        for (int price : prices) {
+            if (price < 0) {
+                throw new IllegalArgumentException("prices must not be negative");
+            }
+            minimumPrice = Math.min(minimumPrice, price);
+            maximumProfit = Math.max(maximumProfit, price - minimumPrice);
+        }
+        return Math.toIntExact(maximumProfit);
     }
 
 

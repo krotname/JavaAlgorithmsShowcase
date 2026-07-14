@@ -10,6 +10,26 @@ permissions:
   contents: read
 
 jobs:
+  offline-gate:
+    name: Offline gate (Windows, JDK 21)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - name: Set up JDK
+        uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+      - name: Prime the exact Maven test runtime
+        run: mvn -B -ntp "-Dtest=quality.SmokeMethodTestHarnessTest" test --file pom.xml
+      - name: Run the strict offline test gate
+        shell: pwsh
+        run: .\scripts\run-offline-gate.ps1 -Goal test -StrictDependencies
+
   category-tests:
     name: Test (${{ matrix.category }})
     runs-on: ubuntu-latest

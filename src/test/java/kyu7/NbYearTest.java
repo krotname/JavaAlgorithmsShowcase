@@ -21,4 +21,11 @@ public class NbYearTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.NbYear.class);
     }
+
+    @Test
+    void shouldCalculateGrowthAndRejectAnUnreachableTarget() {
+        assertEquals(15, nbYear(1_500, 5.0, 100, 5_000));
+        assertThrows(IllegalArgumentException.class, () -> nbYear(1_000, 0.0, 0, 1_001));
+        assertThrows(IllegalArgumentException.class, () -> nbYear(1_000, Double.NaN, 1, 1_001));
+    }
 }

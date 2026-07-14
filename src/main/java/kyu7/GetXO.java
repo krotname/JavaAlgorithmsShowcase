@@ -15,10 +15,15 @@ public class GetXO {
     }
 
     public static int counterStr(String str, String target) {
-
+        if (str == null || target == null || target.isEmpty()) {
+            throw new IllegalArgumentException("input and target must not be null or empty");
+        }
         int result = 0;
-        for (char element : str.toLowerCase().toCharArray()) {
-            if (element == target.toLowerCase().toCharArray()[0]) result++;
+        char expected = Character.toLowerCase(target.charAt(0));
+        for (char element : str.toCharArray()) {
+            if (Character.toLowerCase(element) == expected) {
+                result++;
+            }
         }
         return result;
     }

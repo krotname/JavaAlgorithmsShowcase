@@ -21,4 +21,15 @@ public class DigPowTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu6.DigPow.class);
     }
+
+    @Test
+    void shouldMatchExamplesAndRejectInvalidOrOverflowingInputs() {
+        assertEquals(1, digPow(89, 1));
+        assertEquals(-1, digPow(92, 1));
+        assertEquals(2, digPow(695, 2));
+        assertEquals(51, digPow(46288, 3));
+        assertThrows(IllegalArgumentException.class, () -> digPow(0, 1));
+        assertThrows(IllegalArgumentException.class, () -> digPow(89, 0));
+        assertThrows(ArithmeticException.class, () -> digPow(9, Integer.MAX_VALUE));
+    }
 }

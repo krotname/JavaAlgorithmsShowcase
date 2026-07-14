@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+- Corrected boundary, overflow, validation, determinism and complexity defects across kata utilities.
+- Hardened transaction validation and made returned status collections immutable.
+- Replaced unbounded iteration in encryption and range-counting helpers with logarithmic algorithms.
+- Made the generated smoke harness fail when every executable API path fails.
+- Added regression coverage for scheduler extremes, queueing, Fibonacci, trailing zeros and other edge cases.
+- Added a PowerShell offline quality gate with strict dependency-cache mode and a documented cached-JUnit fallback.
+- Added a Windows CI job that primes dependencies and then exercises the strict offline gate.
+- Expanded the verified test baseline to 594 tests.
+
 ## 1.1 - public quality hardening (2026-06-09)
 
 - Added CI, static analysis, and dependency management updates for repository quality.

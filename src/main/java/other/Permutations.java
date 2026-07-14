@@ -28,6 +28,19 @@ public class Permutations {
     }
 
     public void permutations(int[] pa, int i) {
+        if (pa == null) {
+            throw new IllegalArgumentException("array must not be null");
+        }
+        if (i < 0 || i > pa.length || (pa.length > 0 && i == pa.length)) {
+            throw new IllegalArgumentException("start index is outside the array");
+        }
+        if (i == 0) {
+            result.clear();
+        }
+        if (pa.length == 0) {
+            result.add(new int[0]);
+            return;
+        }
         if (i == pa.length - 1) {
             arrOut(pa);
         } else {

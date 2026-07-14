@@ -21,4 +21,17 @@ public class TheSupermarketQueueTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu6.TheSupermarketQueue.class);
     }
+
+    @Test
+    void shouldQueueAllCustomersEvenWhenEveryServiceTimeIsShorterThanTillCount() {
+        assertEquals(3, solveSuperMarketQueue(new int[]{1, 1, 1, 1, 1}, 2));
+        assertEquals(9, solveSuperMarketQueue(new int[]{2, 2, 3, 3, 4, 4}, 2));
+    }
+
+    @Test
+    void shouldRejectInvalidQueueConfiguration() {
+        assertThrows(IllegalArgumentException.class, () -> solveSuperMarketQueue(null, 1));
+        assertThrows(IllegalArgumentException.class, () -> solveSuperMarketQueue(new int[]{1}, 0));
+        assertThrows(IllegalArgumentException.class, () -> solveSuperMarketQueue(new int[]{-1}, 1));
+    }
 }

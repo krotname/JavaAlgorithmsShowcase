@@ -37,6 +37,10 @@ class AllMostPopularityKyu8Test {
         assertArrayEquals(new int[0], AllMostPopularityKyu8.countPositivesSumNegatives(null));
         assertArrayEquals(new int[]{0}, AllMostPopularityKyu8.digitize(0));
         assertArrayEquals(new int[]{1, 3, 2, 5, 3}, AllMostPopularityKyu8.digitize(35_231));
+        assertArrayEquals(
+                new int[]{8, 0, 8, 5, 7, 7, 4, 5, 8, 6, 3, 0, 2, 7, 3, 3, 2, 2, 9},
+                AllMostPopularityKyu8.digitize(Long.MIN_VALUE)
+        );
     }
 
     @Test
@@ -67,6 +71,7 @@ class AllMostPopularityKyu8Test {
             "1905, 20",
             "2000, 20",
             "2001, 21",
+            "2147483647, 21474837",
             "0, 0"
     })
     void shouldCalculateCentury(int year, int century) {
@@ -83,5 +88,23 @@ class AllMostPopularityKyu8Test {
         assertEquals(12, AllMostPopularityKyu8.basicMath("*", 3, 4));
         assertEquals(3, AllMostPopularityKyu8.basicMath("/", 12, 4));
         assertThrows(IllegalArgumentException.class, () -> AllMostPopularityKyu8.basicMath("/", 1, 0));
+    }
+
+    @Test
+    void shouldFailWhenAnIntegerResultCannotBeRepresented() {
+        assertThrows(ArithmeticException.class, () -> AllMostPopularityKyu8.opposite(Integer.MIN_VALUE));
+        assertThrows(ArithmeticException.class,
+                () -> AllMostPopularityKyu8.sumR(new int[]{Integer.MAX_VALUE, 1}));
+        assertThrows(ArithmeticException.class,
+                () -> AllMostPopularityKyu8.sumArray(
+                        new int[]{Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, 0}));
+        assertThrows(ArithmeticException.class,
+                () -> AllMostPopularityKyu8.timeInSeconds(Integer.MAX_VALUE, 0, 0));
+        assertThrows(ArithmeticException.class,
+                () -> AllMostPopularityKyu8.squareSum(new int[]{Integer.MAX_VALUE}));
+        assertThrows(ArithmeticException.class,
+                () -> AllMostPopularityKyu8.basicMath("+", Integer.MAX_VALUE, 1));
+        assertThrows(IllegalArgumentException.class, () -> AllMostPopularityKyu8.abbrevName(null));
+        assertThrows(IllegalArgumentException.class, () -> AllMostPopularityKyu8.removeFirstAndLastChar("x"));
     }
 }

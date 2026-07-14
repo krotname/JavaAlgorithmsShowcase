@@ -21,4 +21,11 @@ public class CountTheDigitTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.CountTheDigit.class);
     }
+
+    @Test
+    void shouldSquareUsingLongArithmetic() {
+        assertEquals(54_139, nbDig(50_000, 2));
+        assertThrows(IllegalArgumentException.class, () -> nbDig(-1, 2));
+        assertThrows(IllegalArgumentException.class, () -> nbDig(10, 10));
+    }
 }

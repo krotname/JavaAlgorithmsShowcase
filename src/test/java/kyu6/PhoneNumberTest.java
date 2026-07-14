@@ -21,4 +21,13 @@ public class PhoneNumberTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu6.PhoneNumber.class);
     }
+
+    @Test
+    void shouldFormatAndValidateExactlyTenDigits() {
+        assertEquals("(123) 456-7890", createPhoneNumber(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}));
+        assertThrows(IllegalArgumentException.class, () -> createPhoneNumber(null));
+        assertThrows(IllegalArgumentException.class, () -> createPhoneNumber(new int[9]));
+        assertThrows(IllegalArgumentException.class,
+                () -> createPhoneNumber(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}));
+    }
 }

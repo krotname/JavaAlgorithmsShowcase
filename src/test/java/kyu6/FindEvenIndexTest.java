@@ -21,4 +21,19 @@ public class FindEvenIndexTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu6.FindEvenIndex.class);
     }
+
+    @Test
+    void implementationsShouldHandleNegativeSumsAndOverflow() {
+        int[][] inputs = {
+                {20, 10, -80, 10, 10, 15, 35},
+                {1, 2, 3, 4, 3, 2, 1},
+                {Integer.MAX_VALUE, 0, Integer.MAX_VALUE}
+        };
+        int[] expected = {0, 3, 1};
+
+        for (int i = 0; i < inputs.length; i++) {
+            assertEquals(expected[i], findEvenIndexV1(inputs[i]));
+            assertEquals(expected[i], findEvenIndexV2(inputs[i]));
+        }
+    }
 }

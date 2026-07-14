@@ -21,4 +21,11 @@ public class GetSumTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.GetSum.class);
     }
+
+    @Test
+    void shouldUseWideIntermediatesForBoundaryRanges() {
+        assertEquals(Integer.MIN_VALUE, getSum(Integer.MIN_VALUE, Integer.MAX_VALUE));
+        assertEquals(3, getSum(-2, 3));
+        assertThrows(ArithmeticException.class, () -> getSum(Integer.MAX_VALUE - 1, Integer.MAX_VALUE));
+    }
 }

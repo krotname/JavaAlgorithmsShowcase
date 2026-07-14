@@ -1,26 +1,25 @@
 package kyu5;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-
-
 public class Scrambles {
 
     // 5 https://www.codewars.com/kata/55c04b4cc56a697bb0000048/train/java
 
     public static boolean scramble(String str1, String str2) {
-        List<Character> list1 = str1.chars()
-                .mapToObj(c -> (char) c)
-                .collect(Collectors.toCollection(ArrayList::new));
-        List<Character> list2 = str2.chars()
-                .mapToObj(c -> (char) c)
-                .collect(Collectors.toList());
-        for (char c2 : list2
-        ) {
-            if (!list1.remove(Character.valueOf(c2))) return false;
+        if (str1 == null || str2 == null) {
+            throw new IllegalArgumentException("inputs must not be null");
+        }
+        if (str2.length() > str1.length()) {
+            return false;
+        }
+        int[] available = new int[Character.MAX_VALUE + 1];
+        for (int i = 0; i < str1.length(); i++) {
+            available[str1.charAt(i)]++;
+        }
+        for (int i = 0; i < str2.length(); i++) {
+            if (--available[str2.charAt(i)] < 0) {
+                return false;
+            }
         }
         return true;
     }

@@ -21,4 +21,12 @@ public class ScramblesTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu5.Scrambles.class);
     }
+
+    @Test
+    void shouldConsumeEveryCharacterAtMostOnce() {
+        assertTrue(scramble("cedewaraaossoqqyt", "codewars"));
+        assertFalse(scramble("katas", "steak"));
+        assertFalse(scramble("a", "aa"));
+        assertThrows(IllegalArgumentException.class, () -> scramble(null, "a"));
+    }
 }

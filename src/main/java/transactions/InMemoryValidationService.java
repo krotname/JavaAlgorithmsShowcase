@@ -1,11 +1,12 @@
 package transactions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.Objects;
+import java.util.Set;
 
 class InMemoryValidationService implements ValidationService {
 
@@ -21,56 +22,62 @@ class InMemoryValidationService implements ValidationService {
 
     @Override
     public ValidationResult validate(List<Transaction> transactions, long balance) {
-        // Processes transactions in deterministic id order, marks duplicate ids
-        // and orderId-cascading invalid sequences, then applies BET/WIN business
-        // rules to the balance.
         if (transactions == null || transactions.isEmpty() || balance < 0) {
             return ValidationResult.empty();
+        }
+        if (transactions.stream().anyMatch(Objects::isNull)) {
+            throw new IllegalArgumentException("transactions must not contain null values");
         }
 
         List<Transaction> sortedTransactions = transactions.stream()
                 .sorted()
                 .toList();
 
-        Set<Long> transactionsIds = new HashSet<>();
-        Set<Long> failedOrderIds = new HashSet<>();
         Set<Long> duplicateIds = findDuplicateIds(sortedTransactions);
+        Set<Long> failedOrderIds = findIntrinsicallyFailedOrders(sortedTransactions, duplicateIds);
+        while (true) {
+            SimulationResult simulation = simulate(sortedTransactions, balance, failedOrderIds);
+            if (simulation.failedOrderId() == null) {
+                return new ValidationResult(simulation.statuses());
+            }
+            if (!failedOrderIds.add(simulation.failedOrderId())) {
+                throw new IllegalStateException("validation did not make progress");
+            }
+        }
+    }
 
-        List<TransactionStatus> transactionStatuses = new ArrayList<>();
-
-        for (Transaction transaction : sortedTransactions) {
-            boolean alreadyInvalid = transactionsIds.contains(transaction.id())
-                    || duplicateIds.contains(transaction.id())
-                    || failedOrderIds.contains(transaction.orderId());
-
-            if (alreadyInvalid) {
-                transactionStatuses.add(new TransactionStatus(transaction, false));
+    private static Set<Long> findIntrinsicallyFailedOrders(List<Transaction> transactions, Set<Long> duplicateIds) {
+        Set<Long> failedOrderIds = new HashSet<>();
+        for (Transaction transaction : transactions) {
+            if (duplicateIds.contains(transaction.id()) || transaction.amount() < 0 || transaction.type() == null) {
                 failedOrderIds.add(transaction.orderId());
-                transactionsIds.add(transaction.id());
+            }
+        }
+        return failedOrderIds;
+    }
+
+    private static SimulationResult simulate(List<Transaction> transactions, long initialBalance,
+                                             Set<Long> failedOrderIds) {
+        long balance = initialBalance;
+        List<TransactionStatus> statuses = new ArrayList<>(transactions.size());
+        for (Transaction transaction : transactions) {
+            if (failedOrderIds.contains(transaction.orderId())) {
+                statuses.add(new TransactionStatus(transaction, false));
                 continue;
             }
-
             if (transaction.type() == TransactionType.BET) {
-                boolean negativeBalance = balance < transaction.amount();
-
-                if (negativeBalance) {
-                    transactionStatuses.add(new TransactionStatus(transaction, false));
-                    failedOrderIds.add(transaction.orderId());
-                } else {
-                    balance -= transaction.amount();
-                    transactionStatuses.add(new TransactionStatus(transaction, true));
+                if (balance < transaction.amount()) {
+                    return SimulationResult.failed(transaction.orderId());
                 }
-            }
-
-            if (transaction.type() == TransactionType.WIN) {
+                balance -= transaction.amount();
+            } else if (Long.MAX_VALUE - balance < transaction.amount()) {
+                return SimulationResult.failed(transaction.orderId());
+            } else {
                 balance += transaction.amount();
-                transactionStatuses.add(new TransactionStatus(transaction, true));
             }
-            transactionsIds.add(transaction.id());
-
+            statuses.add(new TransactionStatus(transaction, true));
         }
-
-        return new ValidationResult(transactionStatuses);
+        return SimulationResult.success(statuses);
     }
 
     private static Set<Long> findDuplicateIds(List<Transaction> transactions) {
@@ -88,5 +95,16 @@ class InMemoryValidationService implements ValidationService {
         }
 
         return duplicateIds;
+    }
+
+    private record SimulationResult(List<TransactionStatus> statuses, Long failedOrderId) {
+
+        private static SimulationResult success(List<TransactionStatus> statuses) {
+            return new SimulationResult(statuses, null);
+        }
+
+        private static SimulationResult failed(long orderId) {
+            return new SimulationResult(List.of(), orderId);
+        }
     }
 }

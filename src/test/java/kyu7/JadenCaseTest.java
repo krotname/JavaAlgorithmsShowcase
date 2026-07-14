@@ -21,4 +21,12 @@ public class JadenCaseTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.JadenCase.class);
     }
+
+    @Test
+    void shouldCapitalizeWordsWithoutDestroyingWhitespace() {
+        assertEquals("How Can Mirrors Be Real", toJadenCase("How can mirrors be real"));
+        assertEquals("  Multiple  Words\tStay ", toJadenCase("  multiple  words\tstay "));
+        assertNull(toJadenCase(null));
+        assertNull(toJadenCase(""));
+    }
 }

@@ -21,4 +21,11 @@ public class FindDivisorTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.FindDivisor.class);
     }
+
+    @Test
+    void shouldHandleSquaresAndTheLargestInt() {
+        assertEquals(9, numberOFindDivisorivisors(36));
+        assertEquals(2, numberOFindDivisorivisors(Integer.MAX_VALUE));
+        assertThrows(IllegalArgumentException.class, () -> numberOFindDivisorivisors(0));
+    }
 }

@@ -46,6 +46,7 @@
 - **Coverage-gate**: JaCoCo ломает `mvn verify`, если покрытие ниже 70% строк, ветвлений
   или инструкций.
 - **Отдельный quality-гейт**: workflow `.github/workflows/quality.yml` для чистых статических проверок без прогона тестов.
+- **Офлайн-гейт**: Windows CI после явного заполнения кэша запускает PowerShell-проверку в строгом режиме без сети.
 - **Checkstyle / PMD / SpotBugs**: статические проверки заведены в quality-гейт.
 - **Checkstyle**: проектный набор правил в `config/checkstyle/checkstyle.xml` и явные suppressions для generated smoke-тестов.
 - **SpotBugs**: чистый отчёт с явными исключениями совместимости в `config/spotbugs-exclude.xml`.
@@ -62,6 +63,15 @@ mvn -B test -Dtest='quality.SmokeSuite'
 mvn -B test -Dtest='quality.IntegrationSuite'
 mvn -B test -Dtest='quality.PropertySuite'
 ```
+
+Полный локальный прогон без сети на PowerShell:
+
+```powershell
+.\scripts\run-offline-gate.ps1
+```
+
+Подробности о строгом режиме зависимостей и fallback на уже закэшированную версию JUnit
+описаны в [`TESTING.md`](TESTING.md).
 
 ### Что отражает репозиторий как "публично привлекательный"
 

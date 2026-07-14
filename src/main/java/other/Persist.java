@@ -8,10 +8,13 @@ public class Persist {
 
 
     public int persistence(long n) {
+        if (n < 0L) {
+            throw new IllegalArgumentException("number must not be negative");
+        }
         int result = 0;
         while (n > 9) {
             char[] s = String.valueOf(n).toCharArray();
-            int temp = Character.digit(s[0], 10);
+            long temp = Character.digit(s[0], 10);
             for (int i = 1; i < s.length; i++) {
                 temp *= Character.digit(s[i], 10);
             }

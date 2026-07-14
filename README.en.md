@@ -34,6 +34,7 @@ This repository is a portfolio-grade Java kata workspace focused on deterministi
 ## CI and Quality Signals
 
 - `.github/workflows/maven.yml` runs category jobs on JDK 21 and full `mvn verify` on JDK 17 and 21.
+- The same workflow validates the strict offline PowerShell gate on Windows after an explicit dependency-prime step.
 - `.github/workflows/quality.yml` runs Checkstyle, PMD, and SpotBugs without executing tests.
 - `.github/workflows/codeql-analysis.yml` runs security analysis.
 - `.github/dependabot.yml` keeps dependency automation visible.
@@ -57,6 +58,15 @@ mvn -B test -Dtest='quality.SmokeSuite'
 mvn -B test -Dtest='quality.IntegrationSuite'
 mvn -B test -Dtest='quality.PropertySuite'
 ```
+
+Run the complete PowerShell gate without network access:
+
+```powershell
+.\scripts\run-offline-gate.ps1
+```
+
+See [`TESTING.md`](TESTING.md) for strict dependency-cache mode and the documented
+cached-JUnit fallback.
 
 ## Reviewer Checklist
 

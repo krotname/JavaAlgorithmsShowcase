@@ -64,13 +64,28 @@ mvn -B test -Dtest='quality.PropertySuite'
   - line coverage: 70%
   - branch coverage: 70%
   - instruction coverage: 70%
-- Current verified local baseline: 455 tests, 91.4% line coverage,
-  85.1% branch coverage and 92.7% instruction coverage.
+- Current verified local baseline: 594 tests. Coverage is enforced by the ratios above;
+  the generated HTML/XML report under `target/site/jacoco` is the source of exact values.
 - Run:
 
 ```bash
 mvn -B verify
 ```
+
+### Offline gate (PowerShell)
+
+The repository also provides a network-free local gate:
+
+```powershell
+.\scripts\run-offline-gate.ps1
+.\scripts\run-offline-gate.ps1 -Goal test
+.\scripts\run-offline-gate.ps1 -StrictDependencies
+```
+
+The script always passes Maven `--offline`. By default, when the exact JUnit BOM from
+`pom.xml` is not present locally, it warns and uses the newest cached release from the
+same major line for validation. `-StrictDependencies` disables that fallback and fails
+unless the exact dependency set is already cached.
 
 - CI uploads `target/surefire-reports` and `target/site/jacoco`.
 
@@ -78,6 +93,7 @@ mvn -B verify
 
 - Category workflow: smoke/integration/property tags (JDK 21)
 - Full verify workflow: JDK 17 and 21
+- Strict offline PowerShell gate: Windows, JDK 21 (after an explicit cache-prime step)
 - Static workflow: static checks only (JDK 21)
 
 ## 7) UI category status

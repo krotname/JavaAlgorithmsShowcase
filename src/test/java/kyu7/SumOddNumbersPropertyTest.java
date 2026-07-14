@@ -6,7 +6,10 @@ import net.jqwik.api.Tag;
 import net.jqwik.api.constraints.IntRange;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static kyu7.SumOddNumbers.rowSumOddNumbers;
+
+import org.junit.jupiter.api.Test;
 
 @Tag("property")
 class SumOddNumbersPropertyTest {
@@ -16,5 +19,11 @@ class SumOddNumbersPropertyTest {
         int actual = rowSumOddNumbers(n);
         int expected = n * n * n;
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldRejectInvalidAndUnrepresentableRows() {
+        assertThrows(IllegalArgumentException.class, () -> rowSumOddNumbers(0));
+        assertThrows(ArithmeticException.class, () -> rowSumOddNumbers(1291));
     }
 }

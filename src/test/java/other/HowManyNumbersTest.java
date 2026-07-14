@@ -21,4 +21,16 @@ public class HowManyNumbersTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(other.HowManyNumbers.class);
     }
+
+    @Test
+    void shouldGenerateOnlyNonDecreasingDigitCombinations() {
+        other.HowManyNumbers numbers = new other.HowManyNumbers();
+
+        assertEquals(List.of(8L, 118L, 334L), numbers.findAll(10, 3));
+        assertEquals(List.of(1L, 999L, 999L), numbers.findAll(27, 3));
+        assertEquals(List.of(), numbers.findAll(84, 4));
+        assertEquals(List.of(123L, 116999L, 566666L), numbers.findAll(35, 6));
+        assertEquals(List.of(1L, 111111111111111111L, 111111111111111111L), numbers.findAll(18, 18));
+        assertThrows(IllegalArgumentException.class, () -> numbers.findAll(10, 19));
+    }
 }

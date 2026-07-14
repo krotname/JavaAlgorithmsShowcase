@@ -4,6 +4,7 @@ package kyu4;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -129,7 +130,7 @@ public class MorseCodeDecoder {
             }
             decodedWords.add(decodedWord.toString());
         }
-        return String.join(" ", decodedWords).toUpperCase();
+        return String.join(" ", decodedWords).toUpperCase(Locale.ROOT);
     }
 
     public static String encode(String toMorseCode) {
@@ -141,7 +142,7 @@ public class MorseCodeDecoder {
         for (String word : toMorseCode.trim().split("\\s+")) {
             StringJoiner letters = new StringJoiner(" ");
             for (char letter : word.toCharArray()) {
-                String morse = ALPHABET_TO_MORSE.get(String.valueOf(letter).toLowerCase());
+                String morse = ALPHABET_TO_MORSE.get(String.valueOf(letter).toLowerCase(Locale.ROOT));
                 if (morse == null) {
                     throw new IllegalArgumentException("Unsupported Morse character: " + letter);
                 }
