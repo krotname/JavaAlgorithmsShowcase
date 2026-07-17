@@ -25,7 +25,7 @@
         <junit.version>6.1.1</junit.version>
         <assertj.version>3.27.7</assertj.version>
         <jqwik.version>1.10.1</jqwik.version>
-        <junit.platform.version>6.1.1</junit.platform.version>
+        <junit.platform.version>6.1.2</junit.platform.version>
         <lombok.version>1.18.46</lombok.version>
         <coverage.line.minimum>0.70</coverage.line.minimum>
         <coverage.branch.minimum>0.70</coverage.branch.minimum>
