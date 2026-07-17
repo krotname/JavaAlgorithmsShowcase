@@ -2,14 +2,14 @@
 
 ## Supported versions
 
-Security fixes are handled on the default branch. This repository contains educational kata solutions, so release branches are not maintained separately.
+Security fixes are handled on the default branch. This repository publishes reference implementations rather than versioned release artifacts, so release branches are not maintained separately.
 
 ## Reporting vulnerabilities
 
 Do not open a public issue for suspected vulnerabilities, exploit details, or credential leaks.
 
 Report vulnerabilities through GitHub private vulnerability reporting:
-https://github.com/krotname/CodewarsKataJava/security/advisories/new
+https://github.com/krotname/JavaAlgorithmsShowcase/security/advisories/new
 
 Include:
 

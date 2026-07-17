@@ -4,7 +4,7 @@
         "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
-    <!-- Generated smoke wrappers intentionally stay close to the original kata surface. -->
+    <!-- Generated smoke wrappers intentionally stay close to the original API surface. -->
     <suppress
             files="[/\\]src[/\\]test[/\\]java[/\\](coderun|interview|kyu3|kyu4|kyu5|kyu6|kyu7|leetcode|other)[/\\](?!(AllMostPopularityKyu8Test|AnagramsTest|ArmstrongNumberTest|AverageElementTest|BattleFieldTest|BinaryArrayToNumberTest|BlockSequenceTest|BraceCheckerTest|BracketsTest|CallbackSchedulerTest|CompareTest|DigitalRootTest|DinglemouseTest|DirReductionTest|DistinctValueTest|ElementOccursMostOftenTest|FindMissingLetterTest|FindOddTest|FindOutlierTest|FindShortTest|FindUniqTest|GenerationOfBracketSequencesTest|HighAndLowTest|IntervalTest|LargestFiveDigitNumberTest|LikeItTest|MaximumSequenceWithOneZeroTest|MergeIntervalsTest|MetroTest|MoneyTest|MorseCodeDecoderTest|OrderWeightTest|PersistTest|PickPeaksTest|RailFenceCipherTest|RecursionMaxTest|RemovingDuplicatesYTest|ResistorColorCodes2Test|ReverseIntTest|RomanNumeralsTest|SequentialOneTest|SequentialOneYTest|StonesAndJewelryAlgorithmsTest|StonesAndJewelryTest|StreamMainTest|StringSplitTest|SumSquaredDivisorsTest|TemperatureServiceTest|TenMinWalkTest|TimeFormatterTest|TribonacciSequenceTest|ValidatePinTest|ValidParenthesesTest|VasyaClerkTest|VINCheckerTest|WhoIsNextTest|toCamelCaseTest|.*PropertyTest)\.java$).*Test\.java"
             checks=".*"/>
