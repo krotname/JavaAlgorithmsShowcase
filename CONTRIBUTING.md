@@ -41,4 +41,4 @@ Thank you for interest in this repository.
 - `mvn -B verify` runs the full quality stack: tests, coverage, checkstyle, PMD and SpotBugs.
 - CI enforces reproducible builds on Java 17 and 21.
 - Prefer explicit comments for non-obvious logic in complex methods.
-- If you touch static API in a kata class, keep test names meaningful and deterministic.
+- If you touch a source-compatible static API, keep test names meaningful and deterministic.

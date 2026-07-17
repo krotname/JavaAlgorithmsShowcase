@@ -19,6 +19,6 @@ jobs:
     steps:
       - name: Explain release policy
         run: |
-          echo "::error title=No releases::CodewarsKataJava is a kata practice repository and does not publish GitHub releases or release tags. Use the regular CI workflow for validation."
+          echo "::error title=No releases::JavaAlgorithmsShowcase publishes reference implementations without GitHub releases or release tags. Use the regular CI workflow for validation."
           echo "This workflow exists only to make accidental release or release-tag events visible."
           exit 1

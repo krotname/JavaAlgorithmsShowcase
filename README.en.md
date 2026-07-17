@@ -1,83 +1,71 @@
-# Codewars Solutions
+# Java Algorithms & Reliability Showcase
 
-[Russian](README.md)
+[Русская версия](README.md)
 
+Curated Java reference implementations for deterministic algorithms and stateful validation. The project demonstrates API design, edge-case handling, property-based testing, static analysis, and reproducible CI.
 
-This repository is a portfolio-grade Java kata workspace focused on deterministic algorithms, reproducible tests, visible quality workflows, readable production code, and bilingual project documentation.
+[![CI](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/maven.yml/badge.svg)](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/maven.yml)
+[![Quality Gates](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/quality.yml/badge.svg)](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/quality.yml)
+[![CodeQL](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/codeql-analysis.yml)
+[![Coverage](https://codecov.io/gh/krotname/JavaAlgorithmsShowcase/branch/main/graph/badge.svg)](https://app.codecov.io/gh/krotname/JavaAlgorithmsShowcase)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/krotname/JavaAlgorithmsShowcase/badge)](https://securityscorecards.dev/viewer/?uri=github.com/krotname/JavaAlgorithmsShowcase)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13151/badge)](https://www.bestpractices.dev/projects/13151)
+[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-0f8a16)](LICENSE)
+[![Java](https://img.shields.io/badge/Java-17%2B-007396.svg)](https://adoptium.net/)
+[![JUnit](https://img.shields.io/badge/JUnit-6-25A162.svg)](https://junit.org/)
+[![Maven](https://img.shields.io/badge/Maven-3.9%2B-C71A36.svg)](https://maven.apache.org/)
 
-## Why This Repository Exists
+![Java Algorithms & Reliability Showcase](docs/assets/project-icon.svg)
 
-- It demonstrates practical coding and test engineering from problem solving to delivery quality.
-- Solutions are organized by difficulty/source: kyu, LeetCode, interview, transactions, and other groups.
-- Static checks and tests are visible and runnable in one place.
+## Selected engineering components
 
-## Repository Map
+| Component | Engineering problem | What it demonstrates |
+| --- | --- | --- |
+| [Transaction validation](src/main/java/transactions) | Ordered, stateful operations; cascading invalidation; balance and overflow boundaries | Deterministic state transitions, immutable results, integration scenarios |
+| [Algorithm utilities](src/main/java/algorithms) | Boundary conditions, complexity, stream and file I/O | Deterministic APIs, explicit complexity tradeoffs, edge cases, and property-based invariants |
+| [Parsing / validation](src/main/java/common/SafeParse.java) | Malformed numeric and text input | Explicit contracts, preserved exception causality, unit tests, and static analysis |
 
-- `src/main/java` - production solutions and domain classes.
-- `src/test/java` - tests and quality suites:
-  - `quality.SmokeSuite` for unit/smoke tests.
-  - `quality.IntegrationSuite` for transaction scenario tests.
-  - `quality.PropertySuite` for curated property-based tests.
-- `.github` - CI workflows, Dependabot, and repository templates.
-- `ARCHITECTURE.md` - architectural and reviewability notes.
-- `CHANGELOG.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `TESTING.md` - project governance.
+This is an engineering demonstration repository, not a commercial product. Implementations are selected to make code quality, test strategy, and the development process directly reviewable.
 
-## Testing Strategy
+## Verification strategy
 
-- Smoke/unit tests cover each kata directly and are grouped by `quality.SmokeSuite`.
-- Integration tests cover transaction validation state and ordering through `quality.IntegrationSuite`.
-- Property-based tests are grouped in `quality.PropertySuite`.
-- UI tests are not applicable because this repository has no UI layer.
-- Static quality gates include Checkstyle, PMD, and SpotBugs in Maven verify.
-- JaCoCo fails `mvn verify` below 70% line, branch, or instruction coverage.
+- **Smoke / unit:** baseline contracts for public APIs.
+- **Integration:** transaction state and ordering, plus algorithm CLI contracts.
+- **Property-based (jqwik):** invariants over broad generated input sets.
+- **Static analysis:** Checkstyle, PMD, and SpotBugs with a zero-new-violation baseline.
+- **Coverage:** JaCoCo fails `mvn verify` below 70% line, branch, or instruction coverage.
+- **Security:** CodeQL, dependency review, and OpenSSF Scorecard.
+- **Reproducibility:** Java 17/21 CI and a strict offline Windows gate after Maven cache priming.
 
-## CI and Quality Signals
-
-- `.github/workflows/maven.yml` runs category jobs on JDK 21 and full `mvn verify` on JDK 17 and 21.
-- The same workflow validates the strict offline PowerShell gate on Windows after an explicit dependency-prime step.
-- `.github/workflows/quality.yml` runs Checkstyle, PMD, and SpotBugs without executing tests.
-- `.github/workflows/codeql-analysis.yml` runs security analysis.
-- `.github/dependabot.yml` keeps dependency automation visible.
-
-## Default Branch Governance
-
-`main` intentionally uses lightweight branch governance. This is a personal educational kata journal where small solution, test, and explanation updates are often pushed directly to keep a fast practice loop. Public quality assurance comes from CI, CodeQL, quality gates, Dependabot, the Security Policy, and reproducible local commands. Substantive changes that affect kata behavior or quality policy still use the normal PR/review workflow.
-
-The absence of branch protection on `main` is an intentional project-specific exception and should not be treated as a hardening defect.
-
-## Local Run
+## Local verification
 
 ```bash
 mvn -B verify
-mvn -B test
 mvn -B test -Dgroups='smoke'
 mvn -B test -Dgroups='integration'
 mvn -B test -Dgroups='property'
 mvn -B -DskipTests checkstyle:check pmd:check spotbugs:check
-mvn -B test -Dtest='quality.SmokeSuite'
-mvn -B test -Dtest='quality.IntegrationSuite'
-mvn -B test -Dtest='quality.PropertySuite'
 ```
 
-Run the complete PowerShell gate without network access:
+Run the complete offline gate in PowerShell:
 
 ```powershell
 .\scripts\run-offline-gate.ps1
 ```
 
-See [`TESTING.md`](TESTING.md) for strict dependency-cache mode and the documented
-cached-JUnit fallback.
+See [TESTING.md](TESTING.md) for the complete test matrix and dependency-cache rules.
 
-## Reviewer Checklist
+## Repository map
 
-- No hidden mutation of test inputs inside algorithmic methods.
-- Meaningful method-level comments in non-obvious logic.
-- Deterministic edge-case handling in boundary tests.
-- Governance artifacts for maintainability and process.
+- `src/main/java/transactions` — stateful validation and its transaction domain model.
+- `src/main/java/algorithms` — sorting, graphs, dynamic programming, data structures, and CLI algorithms.
+- `src/main/java/common`, `interview`, `leetcode`, `coderun`, `other`, `kyu*` — utilities and implementations with provenance-preserving layout.
+- `src/test/java/quality` — entry points for smoke, integration, and property suites.
+- `.github/workflows` — CI, quality gates, CodeQL, dependency review, and supply-chain checks.
+- [ARCHITECTURE.md](ARCHITECTURE.md), [TESTING.md](TESTING.md), and [SECURITY.md](SECURITY.md) — architecture, test strategy, and security policy.
 
-## Local Quality Policy
+## Sources & provenance
 
-- Use ASCII-only patch style unless a file already contains another script.
-- Keep public method behavior deterministic.
-- Add or adjust tests for changed branch behavior.
-- Keep comments close to complex algorithmic logic.
+Problems and APIs come from several sources: Codewars, LeetCode, Yandex algorithm tracks, CodeRun, interview tasks, and standalone exercises. Links to original statements and compatible signatures remain in the code where they help verification.
+
+The `kyu*` packages are retained as internal provenance and compatibility structure. They are not the project's primary taxonomy; the showcase is organized around engineering problems, contracts, and test strategy.

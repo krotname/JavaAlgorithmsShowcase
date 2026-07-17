@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: New kata, test strategy, or repository quality improvement
+about: New reference implementation, test strategy, or repository quality improvement
 title: "[feat] "
 labels: ["enhancement"]
 assignees: ["krotname"]
