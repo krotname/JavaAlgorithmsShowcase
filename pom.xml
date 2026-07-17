@@ -20,7 +20,7 @@
         <jacoco.version>0.8.15</jacoco.version>
         <checkstyle.version>3.6.0</checkstyle.version>
         <pmd.version>3.28.0</pmd.version>
-        <spotbugs.maven.version>4.9.8.5</spotbugs.maven.version>
+        <spotbugs.maven.version>4.10.3.0</spotbugs.maven.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>6.1.1</junit.version>
         <assertj.version>3.27.7</assertj.version>
