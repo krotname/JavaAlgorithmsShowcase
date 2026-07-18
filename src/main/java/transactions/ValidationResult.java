@@ -1,14 +1,10 @@
 package transactions;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-final class ValidationResult {
-    private final List<TransactionStatus> transactions;
-
-    public ValidationResult(List<TransactionStatus> transactions) {
-        this.transactions = List.copyOf(transactions);
+record ValidationResult(List<TransactionStatus> transactions) {
+    ValidationResult {
+        transactions = List.copyOf(transactions);
     }
 
     public static ValidationResult empty() {
@@ -16,6 +12,6 @@ final class ValidationResult {
     }
 
     public List<TransactionStatus> getTransactions() {
-        return Collections.unmodifiableList(new ArrayList<>(transactions));
+        return transactions;
     }
 }
