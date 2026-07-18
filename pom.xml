@@ -20,13 +20,18 @@
         <jacoco.version>0.8.15</jacoco.version>
         <checkstyle.version>3.6.0</checkstyle.version>
         <pmd.version>3.28.0</pmd.version>
-        <spotbugs.maven.version>4.9.8.5</spotbugs.maven.version>
+        <spotbugs.maven.version>4.10.3.0</spotbugs.maven.version>
+        <sonar.maven.version>5.7.0.6970</sonar.maven.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>6.1.1</junit.version>
+        <junit.version>6.1.2</junit.version>
         <assertj.version>3.27.7</assertj.version>
         <jqwik.version>1.10.1</jqwik.version>
-        <junit.platform.version>6.1.1</junit.platform.version>
+        <junit.platform.version>6.1.2</junit.platform.version>
         <lombok.version>1.18.46</lombok.version>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.organization>krotname</sonar.organization>
+        <sonar.projectKey>krotname_JavaAlgorithmsShowcase</sonar.projectKey>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <coverage.line.minimum>0.70</coverage.line.minimum>
         <coverage.branch.minimum>0.70</coverage.branch.minimum>
         <coverage.instruction.minimum>0.70</coverage.instruction.minimum>
@@ -232,6 +237,12 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar.maven.version}</version>
             </plugin>
         </plugins>
     </build>

@@ -11,8 +11,8 @@ import org.junit.platform.suite.api.Suite;
  * to additional property-oriented classes when needed.
  */
 @Suite
-@SelectPackages({"kyu6", "kyu7"})
-@IncludeClassNamePatterns(".*(toCamelCaseTest|SumOddNumbersPropertyTest|ValidatePinPropertyTest)")
+@SelectPackages({"kyu6", "kyu7", "transactions"})
+@IncludeClassNamePatterns(".*(toCamelCaseTest|SumOddNumbersPropertyTest|ValidatePinPropertyTest|InMemoryValidationServicePropertyTest)")
 @IncludeTags("property")
 public final class PropertySuite {
     private PropertySuite() {
