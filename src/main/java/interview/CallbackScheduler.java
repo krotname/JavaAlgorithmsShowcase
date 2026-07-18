@@ -14,7 +14,7 @@ import lombok.Value;
  * Класс CallbackSchedulerImpl планирует исполнение Runnable в заданный момент времени.
  * Задачи делегируются ScheduledExecutorService, чтобы не держать отдельный ручной worker-loop.
  */
-public class CallbackScheduler implements AutoCloseable {
+public final class CallbackScheduler implements AutoCloseable {
 
     private final ScheduledExecutorService scheduler;
 

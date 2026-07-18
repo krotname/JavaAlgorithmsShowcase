@@ -7,6 +7,7 @@ Curated Java reference implementations for deterministic algorithms and stateful
 [![CI](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/maven.yml/badge.svg)](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/maven.yml)
 [![Quality Gates](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/quality.yml/badge.svg)](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/quality.yml)
 [![CodeQL](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/codeql-analysis.yml)
+[![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=krotname_JavaAlgorithmsShowcase&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=krotname_JavaAlgorithmsShowcase)
 [![Coverage](https://codecov.io/gh/krotname/JavaAlgorithmsShowcase/branch/main/graph/badge.svg)](https://app.codecov.io/gh/krotname/JavaAlgorithmsShowcase)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/krotname/JavaAlgorithmsShowcase/badge)](https://securityscorecards.dev/viewer/?uri=github.com/krotname/JavaAlgorithmsShowcase)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13151/badge)](https://www.bestpractices.dev/projects/13151)
@@ -21,8 +22,8 @@ Curated Java reference implementations for deterministic algorithms and stateful
 
 | Компонент | Инженерная задача | Что демонстрирует |
 | --- | --- | --- |
-| [Transaction validation](src/main/java/transactions) | Порядок и состояние операций, каскадная невалидность, баланс и переполнение | Детерминированные переходы состояния, неизменяемый результат, интеграционные сценарии |
-| [Algorithm utilities](src/main/java/algorithms) | Граничные условия, сложность, поточный и файловый ввод-вывод | Детерминированные API, явные компромиссы по сложности, edge cases и property-based инварианты |
+| [Transaction validation](src/main/java/transactions) | Порядок и состояние операций, каскадная невалидность, баланс и переполнение | Детерминированные переходы состояния, неизменяемый результат, интеграционные и property-based тесты |
+| [Algorithm utilities](src/main/java/algorithms) | Граничные условия, сложность, поточный и файловый ввод-вывод | Детерминированные API, явные компромиссы по сложности и edge cases |
 | [Parsing / validation](src/main/java/common/SafeParse.java) | Некорректный числовой и текстовый ввод | Явные контракты, сохранение причины исключения, unit-тесты и статический анализ |
 
 Это демонстрационный инженерный репозиторий, а не коммерческий продукт. Реализации отобраны так, чтобы на ревью были видны качество кода, тестовая стратегия и воспроизводимый процесс разработки.

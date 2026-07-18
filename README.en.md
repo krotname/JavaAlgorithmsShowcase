@@ -7,6 +7,7 @@ Curated Java reference implementations for deterministic algorithms and stateful
 [![CI](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/maven.yml/badge.svg)](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/maven.yml)
 [![Quality Gates](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/quality.yml/badge.svg)](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/quality.yml)
 [![CodeQL](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/krotname/JavaAlgorithmsShowcase/actions/workflows/codeql-analysis.yml)
+[![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=krotname_JavaAlgorithmsShowcase&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=krotname_JavaAlgorithmsShowcase)
 [![Coverage](https://codecov.io/gh/krotname/JavaAlgorithmsShowcase/branch/main/graph/badge.svg)](https://app.codecov.io/gh/krotname/JavaAlgorithmsShowcase)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/krotname/JavaAlgorithmsShowcase/badge)](https://securityscorecards.dev/viewer/?uri=github.com/krotname/JavaAlgorithmsShowcase)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13151/badge)](https://www.bestpractices.dev/projects/13151)
@@ -21,8 +22,8 @@ Curated Java reference implementations for deterministic algorithms and stateful
 
 | Component | Engineering problem | What it demonstrates |
 | --- | --- | --- |
-| [Transaction validation](src/main/java/transactions) | Ordered, stateful operations; cascading invalidation; balance and overflow boundaries | Deterministic state transitions, immutable results, integration scenarios |
-| [Algorithm utilities](src/main/java/algorithms) | Boundary conditions, complexity, stream and file I/O | Deterministic APIs, explicit complexity tradeoffs, edge cases, and property-based invariants |
+| [Transaction validation](src/main/java/transactions) | Ordered, stateful operations; cascading invalidation; balance and overflow boundaries | Deterministic state transitions, immutable results, integration and property-based tests |
+| [Algorithm utilities](src/main/java/algorithms) | Boundary conditions, complexity, stream and file I/O | Deterministic APIs, explicit complexity tradeoffs, and edge cases |
 | [Parsing / validation](src/main/java/common/SafeParse.java) | Malformed numeric and text input | Explicit contracts, preserved exception causality, unit tests, and static analysis |
 
 This is an engineering demonstration repository, not a commercial product. Implementations are selected to make code quality, test strategy, and the development process directly reviewable.
