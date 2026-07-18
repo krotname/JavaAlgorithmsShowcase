@@ -1,5 +1,7 @@
 package transactions;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 record ValidationResult(List<TransactionStatus> transactions) {
@@ -12,6 +14,6 @@ record ValidationResult(List<TransactionStatus> transactions) {
     }
 
     public List<TransactionStatus> getTransactions() {
-        return transactions;
+        return Collections.unmodifiableList(new ArrayList<>(transactions));
     }
 }
