@@ -6,7 +6,7 @@
 
     <groupId>name.krot</groupId>
     <artifactId>java-algorithms-showcase</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <name>Java Algorithms &amp; Reliability Showcase</name>
     <description>Java reference implementations for algorithms and transaction validation: property-based tests, CI, CodeQL, and static quality gates.</description>
     <url>https://github.com/krotname/JavaAlgorithmsShowcase</url>
