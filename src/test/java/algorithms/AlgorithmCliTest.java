@@ -1,6 +1,7 @@
 package algorithms;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import java.io.ByteArrayInputStream;
@@ -31,6 +32,22 @@ class AlgorithmCliTest {
             String expectedOutput) throws Exception {
 
         assertEquals(normalizeLines(expectedOutput), normalizeLines(invokeWithStdio(className, methodName, input)));
+    }
+
+    @Test
+    void solution2RejectsMissingInputLine() {
+        assertThrows(IllegalArgumentException.class, () -> invokeWithStdio(
+                "algorithms.sprint1.Solution2",
+                "main",
+                "2%n1 2%n".formatted()));
+    }
+
+    @Test
+    void solution2RejectsOversizedLineCount() {
+        assertThrows(IllegalArgumentException.class, () -> invokeWithStdio(
+                "algorithms.sprint1.Solution2",
+                "main",
+                "1000001%n".formatted()));
     }
 
     @Test
