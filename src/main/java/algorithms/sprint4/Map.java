@@ -1,9 +1,12 @@
 package algorithms.sprint4;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.util.OptionalInt;
+import java.util.concurrent.ThreadLocalRandom;
 
 // https://contest.yandex.ru/contest/24414/run-report/160371601/
 
@@ -51,6 +54,8 @@ public class Map {
      */
 
     private static final int SIZE = 100_003;
+    private static final int MAX_COMMANDS = 100_000;
+    private static final int HASH_SEED = ThreadLocalRandom.current().nextInt();
 
     static class Node {
         int key;
@@ -68,11 +73,9 @@ public class Map {
         Node[] buckets = new Node[SIZE];
 
         int index(int key) {
-            int x = key % SIZE;
-            if (x < 0) {
-                x += SIZE;
-            }
-            return x;
+            int mixed = key ^ HASH_SEED;
+            mixed ^= (mixed >>> 16);
+            return Math.floorMod(mixed, SIZE);
         }
 
         void put(int key, int value) {
@@ -144,8 +147,15 @@ public class Map {
         }
 
         int nextInt() throws IOException {
+            return nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        }
+
+        int nextInt(int min, int max) throws IOException {
             int c = read();
             while (c <= ' ') {
+                if (c == -1) {
+                    throw new IOException("Unexpected end of input");
+                }
                 c = read();
             }
 
@@ -155,13 +165,24 @@ public class Map {
                 c = read();
             }
 
-            int num = 0;
+            if (c < '0' || c > '9') {
+                throw new IOException("Expected integer");
+            }
+
+            long num = 0;
             while (c > ' ') {
+                if (c < '0' || c > '9') {
+                    throw new IOException("Expected integer");
+                }
                 num = num * 10 + c - '0';
+                long signed = sign * num;
+                if (signed < min || signed > max) {
+                    throw new IOException("Input value exceeds limit");
+                }
                 c = read();
             }
 
-            return num * sign;
+            return (int) (num * sign);
         }
 
         char nextCommand() throws IOException {
@@ -181,11 +202,19 @@ public class Map {
     }
 
     public static void main(String[] args) throws Exception {
+        try {
+            solve();
+        } catch (IOException ignored) {
+            // Invalid or excessive input is rejected without exhausting memory or CPU.
+        }
+    }
+
+    private static void solve() throws IOException {
         Reader reader = new Reader();
         HashTable table = new HashTable();
-        StringBuilder out = new StringBuilder();
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int n = reader.nextInt();
+        int n = reader.nextInt(0, MAX_COMMANDS);
 
         for (int i = 0; i < n; i++) {
             char command = reader.nextCommand();
@@ -195,14 +224,18 @@ public class Map {
                 int value = reader.nextInt();
                 table.put(key, value);
             } else if (command == 'g') {
-                table.get(key).ifPresentOrElse(out::append, () -> out.append("None"));
-                out.append(System.lineSeparator());
+                OptionalInt result = table.get(key);
+                out.write(result.isPresent() ? String.valueOf(result.getAsInt()) : "None");
+                out.newLine();
+            } else if (command == 'd') {
+                OptionalInt result = table.delete(key);
+                out.write(result.isPresent() ? String.valueOf(result.getAsInt()) : "None");
+                out.newLine();
             } else {
-                table.delete(key).ifPresentOrElse(out::append, () -> out.append("None"));
-                out.append(System.lineSeparator());
+                throw new IOException("Unknown command");
             }
         }
 
-        System.out.print(out);
+        out.flush();
     }
 }
