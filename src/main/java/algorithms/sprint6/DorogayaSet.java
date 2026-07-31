@@ -43,8 +43,14 @@ import java.util.Arrays;
 public class DorogayaSet {
 
     static final String FAIL = "Oops! I did it again";
+    private static final int MAX_VERTICES = 200_000;
+    private static final int MAX_EDGES = 200_000;
 
     static long solve(int n, Edge[] edges) {
+        if (!isValidGraph(n, edges)) {
+            return -1;
+        }
+
         Arrays.sort(edges, (a, b) -> Integer.compare(b.weight, a.weight));
 
         DSU dsu = new DSU(n);
@@ -67,6 +73,24 @@ public class DorogayaSet {
         }
 
         return totalWeight;
+    }
+
+    private static boolean isValidGraph(int n, Edge[] edges) {
+        if (n < 1 || n > MAX_VERTICES || edges == null || edges.length > MAX_EDGES) {
+            return false;
+        }
+
+        for (Edge edge : edges) {
+            if (edge == null || !isValidVertex(edge.from, n) || !isValidVertex(edge.to, n)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean isValidVertex(int vertex, int n) {
+        return vertex >= 1 && vertex <= n;
     }
 
     static final class Edge {
@@ -236,17 +260,28 @@ public class DorogayaSet {
         int n = in.nextInt();
         int m = in.nextInt();
 
-        Edge[] edges = new Edge[m];
+        long answer = -1;
 
-        for (int i = 0; i < m; i++) {
-            int from = in.nextInt();
-            int to = in.nextInt();
-            int weight = in.nextInt();
+        if (n >= 1 && n <= MAX_VERTICES && m >= 0 && m <= MAX_EDGES) {
+            Edge[] edges = new Edge[m];
+            boolean validEdges = true;
 
-            edges[i] = new Edge(from, to, weight);
+            for (int i = 0; i < m; i++) {
+                int from = in.nextInt();
+                int to = in.nextInt();
+                int weight = in.nextInt();
+
+                if (!isValidVertex(from, n) || !isValidVertex(to, n)) {
+                    validEdges = false;
+                }
+
+                edges[i] = new Edge(from, to, weight);
+            }
+
+            if (validEdges) {
+                answer = solve(n, edges);
+            }
         }
-
-        long answer = solve(n, edges);
 
         if (answer == -1) {
             out.writeString(FAIL);
