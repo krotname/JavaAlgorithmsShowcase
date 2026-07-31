@@ -8,6 +8,9 @@ import java.io.InputStream;
 
 public class FastSort {
 
+    private static final int MAX_PARTICIPANTS = 100_000;
+    private static final int MAX_LOGIN_LENGTH = 256;
+
     /*
     Принцип работы алгоритма:
     1) Считываем n участников в массив.
@@ -140,24 +143,43 @@ public class FastSort {
             return buffer[ptr++];
         }
 
-        int nextInt() throws IOException {
-            int c;
-            do {
-                c = read();
-                if (c == -1) {
-                    throw new EOFException();
-                }
-            } while (c <= ' ');
-
+        int nextInt(String fieldName, int minValue, int maxValue) throws IOException {
+            int c = nextNonWhitespace();
             int value = 0;
+
             while (c > ' ') {
-                value = value * 10 + c - '0';
+                if (c < '0' || c > '9') {
+                    throw new IOException("Invalid integer token for " + fieldName);
+                }
+                int digit = c - '0';
+                if (value > (maxValue - digit) / 10) {
+                    throw new IOException("Integer token for " + fieldName + " exceeds " + maxValue);
+                }
+                value = value * 10 + digit;
                 c = read();
+            }
+
+            if (value < minValue) {
+                throw new IOException("Integer token for " + fieldName + " is below " + minValue);
             }
             return value;
         }
 
-        String next() throws IOException {
+        String next(int maxLength) throws IOException {
+            int c = nextNonWhitespace();
+            StringBuilder sb = new StringBuilder(Math.min(maxLength, 16));
+
+            while (c > ' ') {
+                if (sb.length() == maxLength) {
+                    throw new IOException("Token length exceeds " + maxLength);
+                }
+                sb.append((char) c);
+                c = read();
+            }
+            return sb.toString();
+        }
+
+        private int nextNonWhitespace() throws IOException {
             int c;
             do {
                 c = read();
@@ -165,26 +187,20 @@ public class FastSort {
                     throw new EOFException();
                 }
             } while (c <= ' ');
-
-            StringBuilder sb = new StringBuilder();
-            while (c > ' ') {
-                sb.append((char) c);
-                c = read();
-            }
-            return sb.toString();
+            return c;
         }
     }
 
     private static void run() throws Exception {
         FastIn in = new FastIn(System.in);
 
-        int n = in.nextInt(); // n — количество участников
+        int n = in.nextInt("participant count", 0, MAX_PARTICIPANTS); // n — количество участников
         Participant[] participants = new Participant[n];
 
         for (int i = 0; i < n; i++) {
-            String login = in.next();
-            int solved = in.nextInt();
-            int penalty = in.nextInt();
+            String login = in.next(MAX_LOGIN_LENGTH);
+            int solved = in.nextInt("solved", 0, Integer.MAX_VALUE);
+            int penalty = in.nextInt("penalty", 0, Integer.MAX_VALUE);
             participants[i] = new Participant(login, solved, penalty);
         }
 
