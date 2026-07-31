@@ -48,18 +48,21 @@ public class SleightOfHand {
             return val * sign;
         }
 
-        String next() throws IOException {
+        String next(int maxLength) throws IOException {
             int c;
             do {
                 c = read();
                 if (c == -1) throw new EOFException("Unexpected EOF");
             } while (c <= ' ');
 
-            byte[] tmp = new byte[32];
+            byte[] tmp = new byte[Math.min(32, maxLength)];
             int n = 0;
             while (c > ' ') {
+                if (n == maxLength) {
+                    throw new IOException("Token length exceeds " + maxLength);
+                }
                 if (n == tmp.length) {
-                    byte[] t2 = new byte[tmp.length * 2];
+                    byte[] t2 = new byte[Math.min(maxLength, tmp.length * 2)];
                     System.arraycopy(tmp, 0, t2, 0, tmp.length);
                     tmp = t2;
                 }
@@ -112,10 +115,14 @@ public class SleightOfHand {
     }
 
     public static void main(String[] args) throws Exception {
-        if (System.getProperty("os.name").startsWith("Windows")) {
-            test();
-        } else {
-            run();
+        try {
+            if (System.getProperty("os.name").startsWith("Windows")) {
+                test();
+            } else {
+                run();
+            }
+        } catch (IOException | IllegalArgumentException e) {
+            System.err.println(e.getMessage());
         }
     }
 
@@ -128,14 +135,17 @@ public class SleightOfHand {
         int[] count = new int[10];
 
         for (int r = 0; r < 4; r++) {
-            StringBuilder row = new StringBuilder(in.next());
+            StringBuilder row = new StringBuilder(in.next(4));
             // На всякий случай, если токенайзер разделит строку (обычно не будет)
             while (row.length() < 4) {
-                row.append(in.next());
+                row.append(in.next(4 - row.length()));
             }
             for (int c = 0; c < 4; c++) {
                 char ch = row.charAt(c);
                 if (ch != '.') {
+                    if (ch < '0' || ch > '9') {
+                        throw new IOException("Invalid grid cell: " + ch);
+                    }
                     count[ch - '0']++;
                 }
             }
@@ -219,7 +229,12 @@ public class SleightOfHand {
 
         for (int[] row : a) {
             for (int v : row) {
-                if (v != 0) count[v]++;
+                if (v != 0) {
+                    if (v < 0 || v > 9) {
+                        throw new IllegalArgumentException("Grid values must be between 0 and 9");
+                    }
+                    count[v]++;
+                }
             }
         }
 
