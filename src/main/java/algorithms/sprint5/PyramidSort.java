@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets;
 //https://contest.yandex.ru/contest/24810/run-report/160623687/
 
 public class PyramidSort {
+    private static final int MAX_PARTICIPANTS = 100_000;
+    private static final int MAX_LOGIN_BYTES = 1_024;
 
     /*
      * Принцип работы алгоритма:
@@ -147,11 +149,21 @@ public class PyramidSort {
             if (c == '-') {
                 sign = -1;
                 c = read();
+                if (c <= ' ') {
+                    throw new NumberFormatException("Expected digit after sign");
+                }
             }
 
             int val = 0;
             while (c > ' ') {
-                val = val * 10 + c - '0';
+                if (c < '0' || c > '9') {
+                    throw new NumberFormatException("Invalid integer input");
+                }
+                int digit = c - '0';
+                if (val > (Integer.MAX_VALUE - digit) / 10) {
+                    throw new NumberFormatException("Integer input is too large");
+                }
+                val = val * 10 + digit;
                 c = read();
             }
             return val * sign;
@@ -170,6 +182,9 @@ public class PyramidSort {
             int n = 0;
 
             while (c > ' ') {
+                if (n == MAX_LOGIN_BYTES) {
+                    throw new IOException("Login token is too long");
+                }
                 if (n == tmp.length) {
                     byte[] next = new byte[tmp.length * 2];
                     System.arraycopy(tmp, 0, next, 0, tmp.length);
@@ -219,6 +234,9 @@ public class PyramidSort {
         FastOut out = new FastOut(System.out);
 
         int n = in.nextInt();
+        if (n < 0 || n > MAX_PARTICIPANTS) {
+            throw new IllegalArgumentException("Participant count is out of range");
+        }
         Participant[] a = new Participant[n];
 
         for (int i = 0; i < n; i++) {
