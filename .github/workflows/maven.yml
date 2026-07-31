@@ -60,9 +60,6 @@ jobs:
   verify:
     name: Maven Verify (JDK ${{ matrix.java }})
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
     strategy:
       fail-fast: false
       matrix:
@@ -97,8 +94,27 @@ jobs:
           path: target/site/jacoco
           if-no-files-found: warn
 
+  codecov:
+    name: Upload coverage to Codecov
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - name: Set up JDK
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+      - name: Build trusted coverage report
+        run: mvn -B verify --file pom.xml
       - name: Upload coverage to Codecov
-        if: matrix.java == '21'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
           files: target/site/jacoco/jacoco.xml
