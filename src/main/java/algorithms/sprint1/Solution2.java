@@ -5,10 +5,13 @@ import static common.SafeParse.parseInt;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 
 public class Solution2 {
+    private static final int MAX_LINE_COUNT = 1_000_000;
+
     public static void solution(Node<String> head) {
         StringBuilder output = new StringBuilder();
         Node<String> current = head;
@@ -35,16 +38,47 @@ public class Solution2 {
     }
 
     public static void main(String[] args) throws IOException {
-        StringBuilder outputBuffer = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
-        int lineCount = parseInt(reader.readLine());
+        int lineCount = readLineCount(reader);
+        PrintWriter writer = new PrintWriter(System.out, false, StandardCharsets.UTF_8);
         for (int i = 0; i < lineCount; ++i) {
-            StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
-            int firstValue = parseInt(tokenizer.nextToken());
-            int secondValue = parseInt(tokenizer.nextToken());
-            int result = firstValue + secondValue;
-            outputBuffer.append(result).append("\n");
+            StringTokenizer tokenizer = new StringTokenizer(readInputLine(reader, i + 1));
+            int firstValue = parseInt(nextToken(tokenizer, i + 1));
+            int secondValue = parseInt(nextToken(tokenizer, i + 1));
+            if (tokenizer.hasMoreTokens()) {
+                throw new IllegalArgumentException("Line " + (i + 1) + " must contain exactly two integers");
+            }
+            int result = Math.addExact(firstValue, secondValue);
+            writer.println(result);
         }
-        System.out.println(outputBuffer);
+        writer.println();
+        writer.flush();
+    }
+
+    private static int readLineCount(BufferedReader reader) throws IOException {
+        String countLine = reader.readLine();
+        if (countLine == null) {
+            throw new IllegalArgumentException("Missing line count");
+        }
+        int lineCount = parseInt(countLine);
+        if (lineCount < 0 || lineCount > MAX_LINE_COUNT) {
+            throw new IllegalArgumentException("Line count must be between 0 and " + MAX_LINE_COUNT);
+        }
+        return lineCount;
+    }
+
+    private static String readInputLine(BufferedReader reader, int lineNumber) throws IOException {
+        String inputLine = reader.readLine();
+        if (inputLine == null) {
+            throw new IllegalArgumentException("Missing input line " + lineNumber);
+        }
+        return inputLine;
+    }
+
+    private static String nextToken(StringTokenizer tokenizer, int lineNumber) {
+        if (!tokenizer.hasMoreTokens()) {
+            throw new IllegalArgumentException("Line " + lineNumber + " must contain exactly two integers");
+        }
+        return tokenizer.nextToken();
     }
 }
