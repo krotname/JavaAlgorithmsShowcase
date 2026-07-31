@@ -40,12 +40,19 @@ public class PackedPrefix {
     private static final int MAX_UNPACKED_LENGTH = 100_000;
 
     static String solve(String[] packedStrings) {
+        if (packedStrings.length == 0 || !isValidPacked(packedStrings[0])) {
+            return "";
+        }
+
         String first = decodePrefix(packedStrings[0], MAX_UNPACKED_LENGTH);
         int prefixLength = first.length();
 
         for (int i = 1; i < packedStrings.length; i++) {
             if (prefixLength == 0) {
                 break;
+            }
+            if (!isValidPacked(packedStrings[i])) {
+                return "";
             }
             prefixLength = commonPrefixWithPacked(packedStrings[i], first, prefixLength);
         }
@@ -234,6 +241,45 @@ public class PackedPrefix {
         return matchingBracket;
     }
 
+    private static boolean isValidPacked(String packed) {
+        int top = 0;
+
+        for (int i = 0; i < packed.length(); i++) {
+            char current = packed.charAt(i);
+
+            if (current >= 'a' && current <= 'z') {
+                continue;
+            }
+
+            if (current >= '0' && current <= '9') {
+                if (i + 1 >= packed.length() || packed.charAt(i + 1) != '[') {
+                    return false;
+                }
+                continue;
+            }
+
+            if (current == '[') {
+                if (i == 0 || packed.charAt(i - 1) < '0' || packed.charAt(i - 1) > '9') {
+                    return false;
+                }
+                top++;
+                continue;
+            }
+
+            if (current == ']') {
+                if (top == 0) {
+                    return false;
+                }
+                top--;
+                continue;
+            }
+
+            return false;
+        }
+
+        return top == 0;
+    }
+
     // -------------------- FAST INPUT --------------------
     static final class FastIn {
         private final InputStream in;
@@ -357,7 +403,20 @@ public class PackedPrefix {
         FastOut out = new FastOut(System.out);
 
         int n = in.nextInt();
-        String first = decodePrefix(in.next(), MAX_UNPACKED_LENGTH);
+        if (n <= 0) {
+            out.writeByte('\n');
+            out.flush();
+            return;
+        }
+
+        String packedFirst = in.next();
+        if (!isValidPacked(packedFirst)) {
+            out.writeByte('\n');
+            out.flush();
+            return;
+        }
+
+        String first = decodePrefix(packedFirst, MAX_UNPACKED_LENGTH);
         int prefixLength = first.length();
 
         for (int i = 1; i < n; i++) {
@@ -366,6 +425,10 @@ public class PackedPrefix {
             }
 
             String packed = in.next();
+            if (!isValidPacked(packed)) {
+                prefixLength = 0;
+                break;
+            }
             prefixLength = commonPrefixWithPacked(packed, first, prefixLength);
         }
 
