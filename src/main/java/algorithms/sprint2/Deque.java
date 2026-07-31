@@ -68,11 +68,13 @@ public class Deque {
         }
 
         private int next(int i) {
-            return (i+1) % cap;
+            i++;
+            return i == cap ? 0 : i;
         }
 
         private int prev(int i) {
-            return (i-1+cap) % cap;
+            i--;
+            return i == -1 ? cap - 1 : i;
         }
 
         boolean isEmpty() {
