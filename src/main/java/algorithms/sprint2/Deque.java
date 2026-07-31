@@ -55,6 +55,8 @@ import java.nio.charset.StandardCharsets;
 public class Deque {
 
     // -------------------- RING BUFFER DEQUE --------------------
+    private static final int MAX_CAPACITY = 100_000;
+
     static final class RingDeque {
         private final int[] a;
         private final int cap;
@@ -63,8 +65,8 @@ public class Deque {
         private int size = 0;
 
         RingDeque(int cap) {
-            this.cap = cap;
-            this.a = new int[cap];
+            this.cap = safeCapacity(cap);
+            this.a = new int[this.cap];
         }
 
         private int next(int i) {
@@ -108,6 +110,13 @@ public class Deque {
             size--;
             return x;
         }
+    }
+
+    private static int safeCapacity(int cap) {
+        if (cap < 0) {
+            return 0;
+        }
+        return Math.min(cap, MAX_CAPACITY);
     }
 
     private static void process(FastIn in, FastOut out) throws Exception {
@@ -229,6 +238,27 @@ public class Deque {
                                 "push_front 1\n" +
                                 "push_back 2\n" +
                                 "pop_back\n" +
+                                "pop_front\n"
+                )
+        );
+
+        // Некорректная емкость из ввода не должна приводить к аварийному завершению
+        assertEq(
+                "error\nerror\n",
+                solveIO(
+                        "2\n" +
+                                "-1\n" +
+                                "push_back 1\n" +
+                                "pop_front\n"
+                )
+        );
+
+        // Слишком большая емкость ограничивается безопасным максимумом до выделения массива
+        assertEq(
+                "error\n",
+                solveIO(
+                        "1\n" +
+                                "1000000000\n" +
                                 "pop_front\n"
                 )
         );
