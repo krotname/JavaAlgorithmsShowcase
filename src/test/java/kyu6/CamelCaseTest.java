@@ -21,4 +21,14 @@ public class CamelCaseTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu6.CamelCase.class);
     }
+
+    @Test
+    void toCamelCaseShouldTreatRegexCharactersLiterally() {
+        assertEquals("[abc?def\\ghi$there", kyu6.CamelCase.toCamelCase("[abc ?def \\ghi $there"));
+    }
+
+    @Test
+    void toCamelCaseShouldHandleNullInput() {
+        assertEquals("", kyu6.CamelCase.toCamelCase(null));
+    }
 }
