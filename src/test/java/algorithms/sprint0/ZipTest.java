@@ -4,6 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Tag;
@@ -47,5 +52,33 @@ class ZipTest {
     void rejectsNullLists() {
         assertThrows(NullPointerException.class, () -> Zip.zip(null, List.of(2), 1));
         assertThrows(NullPointerException.class, () -> Zip.zip(List.of(1), null, 1));
+    }
+
+    @Test
+    void processAcceptsValidInput() throws IOException {
+        StringWriter output = new StringWriter();
+        BufferedWriter writer = new BufferedWriter(output);
+
+        Zip.process(new BufferedReader(new StringReader("3\n1 5 6\n7 8 9\n")), writer);
+        writer.flush();
+
+        assertEquals("1 7 5 8 6 9 ", output.toString());
+    }
+
+    @Test
+    void processRejectsMissingOrShortLists() {
+        assertThrows(IOException.class, () -> process("3\n1 2 3\n"));
+        assertThrows(IllegalArgumentException.class, () -> process("3\n1 2\n4 5 6\n"));
+    }
+
+    @Test
+    void processRejectsUnboundedSizesAndLines() {
+        assertThrows(IllegalArgumentException.class, () -> process("100001\n1\n2\n"));
+        String oversizedLine = "1".repeat(1_200_002);
+        assertThrows(IllegalArgumentException.class, () -> process("1\n" + oversizedLine + "\n2\n"));
+    }
+
+    private static void process(String input) throws IOException {
+        Zip.process(new BufferedReader(new StringReader(input)), new BufferedWriter(new StringWriter()));
     }
 }
