@@ -17,6 +17,7 @@ public class Distances {
     static int[] solve(int[] a) {
         int n = a.length;
         int[] dist = new int[n];
+        if (n == 0) return dist;
 
         int lastZero = -n;
         for (int i = 0; i < n; i++) {
@@ -149,6 +150,7 @@ public class Distances {
     }
 
     static void test() {
+        assertEq(new int[]{}, solve(new int[]{}), "empty");
         assertEq(new int[]{0, 1, 2, 1, 0}, solve(new int[]{0, 1, 4, 9, 0}), "sample1");
         assertEq(new int[]{0, 1, 2, 3, 4, 5}, solve(new int[]{0, 7, 9, 4, 8, 20}), "sample2");
         assertEq(new int[]{0}, solve(new int[]{0}), "n=1");
