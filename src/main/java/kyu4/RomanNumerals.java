@@ -84,15 +84,22 @@ public class RomanNumerals {
     }
 
     public static int fromRoman(String romanNumeral) {
+        if (romanNumeral == null) {
+            throw new IllegalArgumentException("Roman numeral must not be null");
+        }
+
         // Traverse from right to left: add when symbol value is >= previous,
         // subtract otherwise. This naturally applies the subtractive rule.
         StringBuilder stringBuilderReverse = new StringBuilder(romanNumeral).reverse();
         char[] chars = stringBuilderReverse.toString().toCharArray();
-        int result = 0;
+        long result = 0;
         int previous = 0;
         for (char c : chars
         ) {
             Integer integer = MAP_FROM.get(c);
+            if (integer == null) {
+                throw new IllegalArgumentException("Unsupported Roman numeral character: " + c);
+            }
             if (integer >= previous) {
                 result += integer;
             } else {
@@ -101,7 +108,7 @@ public class RomanNumerals {
             previous = integer;
         }
 
-        return result;
+        return Math.toIntExact(result);
     }
 
 
