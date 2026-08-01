@@ -20,9 +20,6 @@ class FindSystem {
     private static final int MAX_DOCUMENTS = 10_000;
     private static final int MAX_QUERIES = 10_000;
     private static final int MAX_LINE_LENGTH = 10_000;
-    private static final long MAX_TOTAL_DOCUMENT_CHARS = 2_000_000;
-    private static final long MAX_TOTAL_QUERY_CHARS = 2_000_000;
-    private static final long MAX_POSTING_VISITS = 20_000_000;
 
     /*
      * Принцип работы алгоритма:
@@ -89,17 +86,6 @@ class FindSystem {
     }
 
     private static String processQuery(String query, HashMap<String, ArrayList<int[]>> index) {
-        try {
-            return processQuery(query, index, Long.MAX_VALUE).output();
-        } catch (IOException impossible) {
-            throw new AssertionError(impossible);
-        }
-    }
-
-    private static QueryResult processQuery(
-            String query,
-            HashMap<String, ArrayList<int[]>> index,
-            long postingVisitBudget) throws IOException {
         HashSet<String> uniqueWords = new HashSet<>();
         StringTokenizer st = new StringTokenizer(query);
 
@@ -108,17 +94,12 @@ class FindSystem {
         }
 
         HashMap<Integer, Integer> relevance = new HashMap<>();
-        long postingVisits = 0;
 
         for (String word : uniqueWords) {
             ArrayList<int[]> docs = index.get(word);
             if (docs == null) {
                 continue;
             }
-            if (docs.size() > postingVisitBudget - postingVisits) {
-                throw new IOException("Aggregate query workload exceeds limit");
-            }
-            postingVisits += docs.size();
 
             for (int[] pair : docs) {
                 int docId = pair[0];
@@ -154,10 +135,7 @@ class FindSystem {
             sb.append(best.get(i)[0]);
         }
 
-        return new QueryResult(sb.toString(), postingVisits);
-    }
-
-    private record QueryResult(String output, long postingVisits) {
+        return sb.toString();
     }
 
     private static boolean isBetter(int docId1, int score1, int docId2, int score2) {
@@ -172,13 +150,8 @@ class FindSystem {
 
         int n = reader.nextInt(MAX_DOCUMENTS);
         String[] docs = new String[n];
-        long documentChars = 0;
         for (int i = 0; i < n; i++) {
             docs[i] = reader.nextLine(MAX_LINE_LENGTH);
-            documentChars += docs[i].length();
-            if (documentChars > MAX_TOTAL_DOCUMENT_CHARS) {
-                throw new IOException("Aggregate document input exceeds limit");
-            }
         }
 
         HashMap<String, ArrayList<int[]>> index = buildIndex(docs);
@@ -186,18 +159,10 @@ class FindSystem {
         int m = reader.nextInt(MAX_QUERIES);
         BufferedWriter out = new BufferedWriter(
                 new OutputStreamWriter(System.out, StandardCharsets.UTF_8));
-        long queryChars = 0;
-        long postingVisitsLeft = MAX_POSTING_VISITS;
 
         for (int i = 0; i < m; i++) {
             String query = reader.nextLine(MAX_LINE_LENGTH);
-            queryChars += query.length();
-            if (queryChars > MAX_TOTAL_QUERY_CHARS) {
-                throw new IOException("Aggregate query input exceeds limit");
-            }
-            QueryResult result = processQuery(query, index, postingVisitsLeft);
-            postingVisitsLeft -= result.postingVisits();
-            out.write(result.output());
+            out.write(processQuery(query, index));
             out.newLine();
         }
 
