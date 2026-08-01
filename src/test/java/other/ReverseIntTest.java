@@ -16,7 +16,9 @@ class ReverseIntTest {
             "-123, -321",
             "120, 21",
             "-120, -21",
-            "1000000001, 1000000001"
+            "1000000001, 1000000001",
+            "1534236469, 0",
+            "-2147483648, 0"
     })
     void shouldReverseIntegerDigits(int input, int expected) {
         assertEquals(expected, ReverseInt.reverse(input));

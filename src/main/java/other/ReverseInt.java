@@ -1,17 +1,13 @@
 package other;
 
 
-import static common.SafeParse.parseInt;
-
-
 public class ReverseInt {
 
     public static int reverse(int x) {
-        if (x >= 0) {
-            return parseInt(new StringBuilder(String.valueOf(x)).reverse().toString());
-        } else {
-            return parseInt(new StringBuilder(String.valueOf(x).substring(1)).reverse().toString()) * -1;
-        }
+        long reversed = Long.parseLong(new StringBuilder(String.valueOf(Math.abs((long) x))).reverse().toString());
+        reversed = x < 0 ? -reversed : reversed;
+
+        return reversed < Integer.MIN_VALUE || reversed > Integer.MAX_VALUE ? 0 : (int) reversed;
     }
 
 }
