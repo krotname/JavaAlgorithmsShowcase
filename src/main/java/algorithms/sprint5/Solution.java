@@ -26,7 +26,7 @@ public class Solution {
      *
      * Почему алгоритм корректен:
      * 1) По свойству BST искомый ключ может находиться только
-     *    в одном из двух поддеревьев, поэтому рекурсивный спуск
+     *    в одном из двух поддеревьев, поэтому спуск
      *    идёт ровно по нужному пути.
      *
      * 2) Если у удаляемой вершины не более одного ребёнка,
@@ -46,43 +46,49 @@ public class Solution {
      * Временная сложность: O(h), где h — высота дерева,
      * что в худшем случае даёт O(n), где n — число узлов в дереве.
      *
-     * Дополнительная пространственная сложность: O(h) из-за стека рекурсии,
-     * что в худшем случае даёт O(n).
+     * Дополнительная пространственная сложность: O(1), поскольку обход
+     * выполняется итеративно.
      */
 
     public static Node remove(Node root, int key) {
-        if (root == null) {
-            return null;
+        Node parent = null;
+        Node current = root;
+
+        while (current != null && current.getValue() != key) {
+            parent = current;
+            current = key < current.getValue() ? current.getLeft() : current.getRight();
         }
 
-        if (key < root.getValue()) {
-            root.setLeft(remove(root.getLeft(), key));
+        if (current == null) {
             return root;
         }
 
-        if (key > root.getValue()) {
-            root.setRight(remove(root.getRight(), key));
+        if (current.getLeft() != null && current.getRight() != null) {
+            Node predecessorParent = current;
+            Node predecessor = current.getLeft();
+            while (predecessor.getRight() != null) {
+                predecessorParent = predecessor;
+                predecessor = predecessor.getRight();
+            }
+
+            current.setValue(predecessor.getValue());
+            if (predecessorParent == current) {
+                predecessorParent.setLeft(predecessor.getLeft());
+            } else {
+                predecessorParent.setRight(predecessor.getLeft());
+            }
             return root;
         }
 
-        if (root.getLeft() == null) {
-            return root.getRight();
+        Node replacement = current.getLeft() != null ? current.getLeft() : current.getRight();
+        if (parent == null) {
+            return replacement;
         }
-
-        if (root.getRight() == null) {
-            return root.getLeft();
+        if (parent.getLeft() == current) {
+            parent.setLeft(replacement);
+        } else {
+            parent.setRight(replacement);
         }
-
-        Node predecessor = findMax(root.getLeft());
-        root.setValue(predecessor.getValue());
-        root.setLeft(remove(root.getLeft(), predecessor.getValue()));
         return root;
-    }
-
-    private static Node findMax(Node node) {
-        while (node.getRight() != null) {
-            node = node.getRight();
-        }
-        return node;
     }
 }
