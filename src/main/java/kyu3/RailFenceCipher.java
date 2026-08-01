@@ -11,6 +11,7 @@ public class RailFenceCipher {
     //3 https://www.codewars.com/kata/58c5577d61aefcf3ff000081/train/java
 
     static String encode(String s, int n) {
+        validateRailCount(n);
         // Distributes characters across rails using a periodic index that walks
         // up and down between boundary rails, then concatenates each rail content.
         Map<Integer, StringBuilder> map = new TreeMap<>();
@@ -37,6 +38,7 @@ public class RailFenceCipher {
     }
 
     static String decode(String s, int n) {
+        validateRailCount(n);
         // First computes the exact size of each rail, splits ciphertext into
         // contiguous rail segments, then reconstructs plaintext by replaying the
         // same rail traversal cycle.
@@ -78,6 +80,12 @@ public class RailFenceCipher {
         }
 
         return result.toString();
+    }
+
+    private static void validateRailCount(int railCount) {
+        if (railCount < 2) {
+            throw new IllegalArgumentException("Rail count must be at least 2");
+        }
     }
 
     private static int sumArr(int[] arr, int i) {
