@@ -55,6 +55,8 @@ import java.nio.charset.StandardCharsets;
 public class Deque {
 
     // -------------------- RING BUFFER DEQUE --------------------
+    private static final int MAX_CAPACITY = 100_000;
+
     static final class RingDeque {
         private final int[] a;
         private final int cap;
@@ -63,8 +65,8 @@ public class Deque {
         private int size = 0;
 
         RingDeque(int cap) {
-            this.cap = cap;
-            this.a = new int[cap];
+            this.cap = validateCapacity(cap);
+            this.a = new int[this.cap];
         }
 
         private int next(int i) {
@@ -112,9 +114,19 @@ public class Deque {
         }
     }
 
+    private static int validateCapacity(int cap) {
+        if (cap < 0 || cap > MAX_CAPACITY) {
+            throw new IllegalArgumentException("Deque capacity is out of range");
+        }
+        return cap;
+    }
+
     private static void process(FastIn in, FastOut out) throws Exception {
         int n = in.nextInt();
         int m = in.nextInt();
+        if (n < 0 || n > MAX_CAPACITY) {
+            throw new IllegalArgumentException("Command count is out of range");
+        }
 
         RingDeque dq = new RingDeque(m);
 
@@ -235,6 +247,10 @@ public class Deque {
                 )
         );
 
+        // Некорректная емкость отклоняется, а не меняет заявленную семантику дека.
+        assertRejected("2\n-1\npush_back 1\npop_front\n");
+        assertRejected("1\n1000000000\npop_front\n");
+
         // Wrap-around: head/tail должны корректно "перепрыгивать" границу массива
         assertEq(
                 "1\n4\n2\n3\n",
@@ -258,6 +274,15 @@ public class Deque {
     static void assertEq(String exp, String act) {
         if (!exp.equals(act)) {
             throw new AssertionError("Expected:\n" + exp + "\nActual:\n" + act);
+        }
+    }
+
+    private static void assertRejected(String input) throws Exception {
+        try {
+            solveIO(input);
+            throw new AssertionError("Expected invalid deque capacity to be rejected");
+        } catch (IllegalArgumentException expected) {
+            // Expected validation failure.
         }
     }
 

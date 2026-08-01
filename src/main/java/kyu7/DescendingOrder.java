@@ -1,6 +1,8 @@
 package kyu7;
 
 
+import static common.SafeParse.parseUnsignedInt;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -18,12 +20,12 @@ public class DescendingOrder {
             arrayList.add(i);
         }
         arrayList.sort(Comparator.reverseOrder());
-        int result = 0;
+        StringBuilder result = new StringBuilder();
         for (int i : arrayList
         ) {
-            result = result * 10 + i;
+            result.append(i);
         }
-        return result;
+        return parseUnsignedInt(result);
     }
 
 }

@@ -27,8 +27,12 @@ import java.nio.charset.StandardCharsets;
 Пространственная сложность: O(min(n, m)), потому что хранится только две строки динамики.
 */
 public class LevenshteinDistance {
+    private static final int MAX_LINE_LENGTH = 1000;
 
     static int solve(String first, String second) {
+        if (first.length() > MAX_LINE_LENGTH || second.length() > MAX_LINE_LENGTH) {
+            throw new IllegalArgumentException("Input line is too long");
+        }
         String s = first;
         String t = second;
 
@@ -94,8 +98,8 @@ public class LevenshteinDistance {
             return buf[ptr++];
         }
 
-        String nextLine() throws IOException {
-            byte[] tmp = new byte[1024];
+        String nextLine(int maxLength) throws IOException {
+            byte[] tmp = new byte[Math.min(1024, maxLength + 1)];
             int size = 0;
             int c = read();
 
@@ -104,15 +108,23 @@ public class LevenshteinDistance {
             }
 
             while (c != -1 && c != '\n') {
-                if (c != '\r') {
-                    if (size == tmp.length) {
-                        byte[] grown = new byte[tmp.length * 2];
-                        System.arraycopy(tmp, 0, grown, 0, tmp.length);
-                        tmp = grown;
-                    }
-                    tmp[size++] = (byte) c;
+                if (size == maxLength + 1) {
+                    throw new IOException("Input line is too long");
                 }
+                if (size == tmp.length) {
+                    byte[] grown = new byte[Math.min(tmp.length * 2, maxLength + 1)];
+                    System.arraycopy(tmp, 0, grown, 0, tmp.length);
+                    tmp = grown;
+                }
+                tmp[size++] = (byte) c;
                 c = read();
+            }
+
+            if (size > 0 && tmp[size - 1] == '\r') {
+                size--;
+            }
+            if (size > maxLength) {
+                throw new IOException("Input line is too long");
             }
 
             return new String(tmp, 0, size, StandardCharsets.UTF_8);
@@ -169,8 +181,8 @@ public class LevenshteinDistance {
         FastIn in = new FastIn(System.in);
         FastOut out = new FastOut(System.out);
 
-        String s = in.nextLine();
-        String t = in.nextLine();
+        String s = in.nextLine(MAX_LINE_LENGTH);
+        String t = in.nextLine(MAX_LINE_LENGTH);
 
         out.writeInt(solve(s, t));
         out.writeByte('\n');

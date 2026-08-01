@@ -18,6 +18,11 @@ import static kyu7.DescendingOrder.*;
 @Tag("smoke")
 public class DescendingOrderTest {
     @Test
+    void rejectsReorderedValuesOutsideIntegerRange() {
+        assertThrows(NumberFormatException.class, () -> sortDesc(2_147_483_647));
+    }
+
+    @Test
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.DescendingOrder.class);
     }

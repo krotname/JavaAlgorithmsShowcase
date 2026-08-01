@@ -1,10 +1,11 @@
 package kyu7;
 
 
-import static common.SafeParse.parseInt;
-
+import static common.SafeParse.parseUnsignedInt;
 
 public class SquareDigit {
+
+    private static final String MAX_INT = Integer.toString(Integer.MAX_VALUE);
 
     //7 https://www.codewars.com/kata/546e2562b03326a88e000020/train/java
 
@@ -16,7 +17,12 @@ public class SquareDigit {
             n /= 10;
             stringBuilder.insert(0, i * i);
         }
-        return parseInt(stringBuilder.toString());
+        String result = stringBuilder.toString();
+        if (result.length() > MAX_INT.length()
+                || result.length() == MAX_INT.length() && result.compareTo(MAX_INT) > 0) {
+            return Integer.MAX_VALUE;
+        }
+        return parseUnsignedInt(result);
     }
 
 }

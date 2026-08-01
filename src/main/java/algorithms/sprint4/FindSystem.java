@@ -9,10 +9,17 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 
 // https://contest.yandex.ru/contest/24414/run-report/160043341/
 
 class FindSystem {
+
+    private static final int MAX_DOCUMENTS = 10_000;
+    private static final int MAX_QUERIES = 10_000;
+    private static final int MAX_LINE_LENGTH = 10_000;
 
     /*
      * Принцип работы алгоритма:
@@ -141,23 +148,25 @@ class FindSystem {
     private static void solve() throws Exception {
         FastReader reader = new FastReader(System.in);
 
-        int n = reader.nextInt();
+        int n = reader.nextInt(MAX_DOCUMENTS);
         String[] docs = new String[n];
         for (int i = 0; i < n; i++) {
-            docs[i] = reader.nextLine();
+            docs[i] = reader.nextLine(MAX_LINE_LENGTH);
         }
 
         HashMap<String, ArrayList<int[]>> index = buildIndex(docs);
 
-        int m = reader.nextInt();
-        StringBuilder out = new StringBuilder();
+        int m = reader.nextInt(MAX_QUERIES);
+        BufferedWriter out = new BufferedWriter(
+                new OutputStreamWriter(System.out, StandardCharsets.UTF_8));
 
         for (int i = 0; i < m; i++) {
-            String query = reader.nextLine();
-            out.append(processQuery(query, index)).append('\n');
+            String query = reader.nextLine(MAX_LINE_LENGTH);
+            out.write(processQuery(query, index));
+            out.newLine();
         }
 
-        System.out.print(out);
+        out.flush();
     }
 
     private static void test() {
@@ -229,7 +238,7 @@ class FindSystem {
             return buffer[ptr++];
         }
 
-        int nextInt() throws IOException {
+        int nextInt(int max) throws IOException {
             int c;
             do {
                 c = read();
@@ -238,15 +247,21 @@ class FindSystem {
                 }
             } while (c <= ' ');
 
-            int value = 0;
+            long value = 0;
             while (c > ' ') {
+                if (c < '0' || c > '9') {
+                    throw new IOException("Expected a non-negative integer");
+                }
                 value = value * 10 + c - '0';
+                if (value > max) {
+                    throw new IOException("Input value exceeds limit");
+                }
                 c = read();
             }
-            return value;
+            return (int) value;
         }
 
-        String nextLine() throws IOException {
+        String nextLine(int maxLength) throws IOException {
             int c = read();
 
             while (c == '\n' || c == '\r') {
@@ -255,6 +270,9 @@ class FindSystem {
 
             StringBuilder sb = new StringBuilder();
             while (c != -1 && c != '\n' && c != '\r') {
+                if (sb.length() == maxLength) {
+                    throw new IOException("Input line exceeds limit");
+                }
                 sb.append((char) c);
                 c = read();
             }

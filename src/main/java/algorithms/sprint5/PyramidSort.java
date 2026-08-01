@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets;
 //https://contest.yandex.ru/contest/24810/run-report/160623687/
 
 public class PyramidSort {
+    private static final int MAX_PARTICIPANTS = 100_000;
+    private static final int MAX_LOGIN_BYTES = 1_024;
 
     /*
      * Принцип работы алгоритма:
@@ -143,18 +145,33 @@ public class PyramidSort {
                 }
             } while (c <= ' ');
 
-            int sign = 1;
-            if (c == '-') {
-                sign = -1;
+            boolean negative = c == '-';
+            if (negative) {
                 c = read();
+                if (c <= ' ') {
+                    throw new NumberFormatException("Expected digit after sign");
+                }
             }
 
-            int val = 0;
+            int limit = negative ? Integer.MIN_VALUE : -Integer.MAX_VALUE;
+            int multiplyLimit = limit / 10;
+            int value = 0;
             while (c > ' ') {
-                val = val * 10 + c - '0';
+                if (c < '0' || c > '9') {
+                    throw new NumberFormatException("Invalid integer input");
+                }
+                int digit = c - '0';
+                if (value < multiplyLimit) {
+                    throw new NumberFormatException("Integer input is out of range");
+                }
+                value *= 10;
+                if (value < limit + digit) {
+                    throw new NumberFormatException("Integer input is out of range");
+                }
+                value -= digit;
                 c = read();
             }
-            return val * sign;
+            return negative ? value : -value;
         }
 
         String next() throws IOException {
@@ -170,6 +187,9 @@ public class PyramidSort {
             int n = 0;
 
             while (c > ' ') {
+                if (n == MAX_LOGIN_BYTES) {
+                    throw new IOException("Login token is too long");
+                }
                 if (n == tmp.length) {
                     byte[] next = new byte[tmp.length * 2];
                     System.arraycopy(tmp, 0, next, 0, tmp.length);
@@ -219,6 +239,9 @@ public class PyramidSort {
         FastOut out = new FastOut(System.out);
 
         int n = in.nextInt();
+        if (n < 0 || n > MAX_PARTICIPANTS) {
+            throw new IllegalArgumentException("Participant count is out of range");
+        }
         Participant[] a = new Participant[n];
 
         for (int i = 0; i < n; i++) {

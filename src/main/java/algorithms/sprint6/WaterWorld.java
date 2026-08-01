@@ -32,8 +32,25 @@ import java.io.OutputStream;
 
 public class WaterWorld {
 
+    private static final int MAX_CELLS = 10_000_000;
+
+    private static int checkedTotalCells(int n, int m) {
+        if (n <= 0 || m <= 0) {
+            throw new IllegalArgumentException("Dimensions must be positive");
+        }
+
+        long total = (long) n * m;
+        if (total > MAX_CELLS) {
+            throw new IllegalArgumentException("Map is too large");
+        }
+        return (int) total;
+    }
+
     static int[] solve(byte[] map, int n, int m) {
-        int total = n * m;
+        int total = checkedTotalCells(n, m);
+        if (map.length != total) {
+            throw new IllegalArgumentException("Map size does not match dimensions");
+        }
         int[] queue = new int[total];
 
         int islandCount = 0;
@@ -130,10 +147,17 @@ public class WaterWorld {
 
             int val = 0;
             while (c > ' ') {
-                val = val * 10 + c - '0';
+                if (c < '0' || c > '9') {
+                    throw new IOException("Invalid integer token");
+                }
+                int digit = c - '0';
+                if (val > (Integer.MAX_VALUE - digit) / 10) {
+                    throw new IOException("Integer token is too large");
+                }
+                val = val * 10 + digit;
                 c = read();
             }
-            return val * sign;
+            return sign * val;
         }
 
         byte[] nextBytes(int length) throws IOException {
@@ -209,7 +233,8 @@ public class WaterWorld {
 
         int n = in.nextInt();
         int m = in.nextInt();
-        byte[] map = new byte[n * m];
+        int total = checkedTotalCells(n, m);
+        byte[] map = new byte[total];
 
         for (int row = 0; row < n; row++) {
             byte[] line = in.nextBytes(m);
@@ -288,7 +313,11 @@ public class WaterWorld {
         if (System.getProperty("os.name").startsWith("Windows")) {
             test();
         } else {
-            run();
+            try {
+                run();
+            } catch (IllegalArgumentException | IOException ignored) {
+                // Invalid input is rejected before allocating arrays.
+            }
         }
     }
 }
