@@ -8,6 +8,9 @@ public class NumberInExpandedForm {
     //6 https://www.codewars.com/kata/5842df8ccbd22792a4000245/train/java
 
     public static String expandedForm(int num) {
+        if (num == 0) {
+            return "0";
+        }
         StringBuilder result = new StringBuilder();
         char[] chars = String.valueOf(num).toCharArray();
         for (int i = 0; i < chars.length; i++) {

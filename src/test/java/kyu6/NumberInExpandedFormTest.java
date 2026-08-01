@@ -18,6 +18,11 @@ import static kyu6.NumberInExpandedForm.*;
 @Tag("smoke")
 public class NumberInExpandedFormTest {
     @Test
+    void zeroShouldRemainZero() {
+        assertEquals("0", expandedForm(0));
+    }
+
+    @Test
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu6.NumberInExpandedForm.class);
     }
