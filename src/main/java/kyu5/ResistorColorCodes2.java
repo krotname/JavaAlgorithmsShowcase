@@ -9,9 +9,13 @@ public class ResistorColorCodes2 {
 
     public static String encodeResistorColors(String ohmsString) {
         if (ohmsString == null || !ohmsString.endsWith(" ohms")) return "";
-        int resistorOhms = encodeResistorOhms(ohmsString);
-        int[] resistorOhmsArr = encodeResistorOhmsToArr(resistorOhms);
-        return encodeResistorArrToColor(resistorOhmsArr);
+        try {
+            int resistorOhms = encodeResistorOhms(ohmsString);
+            int[] resistorOhmsArr = encodeResistorOhmsToArr(resistorOhms);
+            return encodeResistorArrToColor(resistorOhmsArr);
+        } catch (IllegalArgumentException e) {
+            return "";
+        }
     }
 
     private static int encodeResistorOhms(String ohmsString) {
@@ -22,6 +26,9 @@ public class ResistorColorCodes2 {
         else if (tempArray[0].endsWith("M"))
             tempValue = parseDouble(tempArray[0].trim().substring(0, tempArray[0].length() - 1)) * 1_000_000;
         else tempValue = parseDouble(tempArray[0].trim());
+        if (!Double.isFinite(tempValue) || tempValue < 10 || tempValue > 990_000_000) {
+            throw new IllegalArgumentException("Resistance must be between 10 and 990M ohms");
+        }
         return (int) Math.round(tempValue);
     }
 
