@@ -18,6 +18,13 @@ import static kyu7.MinimumLine.*;
 @Tag("smoke")
 public class MinimumLineTest {
     @Test
+    void rejectsConcatenatedValuesOutsideIntegerRange() {
+        int[] values = {9, 8, 7, 6, 5, 4, 3, 2, 1, 99};
+
+        assertThrows(NumberFormatException.class, () -> minValue(values));
+    }
+
+    @Test
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.MinimumLine.class);
     }
