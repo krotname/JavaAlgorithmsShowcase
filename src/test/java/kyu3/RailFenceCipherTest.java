@@ -20,6 +20,12 @@ class RailFenceCipherTest {
         assertEquals("WEAREDISCOVEREDFLEEATONCE", RailFenceCipher.decode(encoded, 3));
     }
 
+    @Test
+    void shouldDecodeWithoutAllocatingForUnusedRails() {
+        assertEquals("", RailFenceCipher.decode("", Integer.MAX_VALUE));
+        assertEquals("abc", RailFenceCipher.decode("abc", Integer.MAX_VALUE));
+    }
+
     @ParameterizedTest
     @MethodSource("roundTripCases")
     void shouldRoundTripPlainTextForDifferentRails(String text, int rails) {
