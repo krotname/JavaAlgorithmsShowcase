@@ -10,11 +10,8 @@ import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -33,23 +30,6 @@ class AlgorithmCliTest {
         assertEquals(normalizeLines(expectedOutput), normalizeLines(invokeWithStdio(className, methodName, input)));
     }
 
-    @Test
-    void distancesRunReadsAndWritesContestFiles() throws Exception {
-        Path input = Path.of("input.txt");
-        Path output = Path.of("output.txt");
-        Files.writeString(input, "5%n0 1 4 9 0%n".formatted(), StandardCharsets.UTF_8);
-        Files.deleteIfExists(output);
-
-        try {
-            invokeNoArg("algorithms.sprint1.Distances", "run");
-
-            assertEquals("0 1 2 1 0\n", normalizeLines(Files.readString(output, StandardCharsets.UTF_8)));
-        } finally {
-            Files.deleteIfExists(input);
-            Files.deleteIfExists(output);
-        }
-    }
-
     private static Stream<Arguments> stdioCases() {
         return Stream.of(
                 arguments("algorithms.sprint0.SlidingAverage", "main",
@@ -61,6 +41,9 @@ class AlgorithmCliTest {
                 arguments("algorithms.sprint1.SleightOfHand", "run",
                         "3%n1231%n2..2%n2..2%n2..2%n".formatted(),
                         "2%n".formatted()),
+                arguments("algorithms.sprint1.Distances", "run",
+                        "5%n0 1 4 9 0%n".formatted(),
+                        "0 1 2 1 0%n".formatted()),
                 arguments("algorithms.sprint1.Solution2", "main",
                         "2%n1 2%n3 4%n".formatted(),
                         "3%n7%n%n".formatted()),
@@ -152,10 +135,6 @@ class AlgorithmCliTest {
             System.setIn(oldIn);
             System.setOut(oldOut);
         }
-    }
-
-    private static void invokeNoArg(String className, String methodName) throws Exception {
-        invoke(className, methodName);
     }
 
     private static void invoke(String className, String methodName) throws Exception {

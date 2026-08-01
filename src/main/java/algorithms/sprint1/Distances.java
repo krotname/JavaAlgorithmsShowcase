@@ -3,8 +3,6 @@ package algorithms.sprint1;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,6 +10,7 @@ import java.util.Arrays;
 
 // https://contest.yandex.ru/contest/22450/run-report/157289807/
 public class Distances {
+    private static final int MAX_INPUT_SIZE = 100_000;
 
     // -------------------- SOLUTION --------------------
     static int[] solve(int[] a) {
@@ -113,18 +112,20 @@ public class Distances {
         void flush() throws IOException {
             out.write(buf, 0, p);
             p = 0;
+            out.flush();
         }
     }
 
     // -------------------- INPUT / OUTPUT --------------------
-    static void run() {
-
-        try (InputStream input = new BufferedInputStream(new FileInputStream("input.txt"));
-             OutputStream output = new BufferedOutputStream(new FileOutputStream("output.txt"))) {
-            FastIn in = new FastIn(input);
-            FastOut out = new FastOut(output);
+    static void run(InputStream input, OutputStream output) {
+        try {
+            FastIn in = new FastIn(new BufferedInputStream(input));
+            FastOut out = new FastOut(new BufferedOutputStream(output));
 
             int n = in.nextInt();
+            if (n < 1 || n > MAX_INPUT_SIZE) {
+                throw new IllegalArgumentException("Input size must be between 1 and " + MAX_INPUT_SIZE);
+            }
             int[] a = new int[n];
             for (int i = 0; i < n; i++) a[i] = in.nextInt();
 
@@ -139,6 +140,10 @@ public class Distances {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    static void run() {
+        run(System.in, System.out);
     }
 
     // -------------------- TESTS --------------------
