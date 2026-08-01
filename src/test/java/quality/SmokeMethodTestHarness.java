@@ -58,7 +58,7 @@ public final class SmokeMethodTestHarness {
         }
 
         String summary = String.format("%s attempted=%d failed=%d", clazz.getSimpleName(), attempted, failed);
-        Assertions.assertTrue(failed < attempted, () -> "Every executable smoke path failed: " + summary);
+        Assertions.assertEquals(0, failed, () -> "Executable smoke path failed: " + summary);
     }
 
     private static Object resolveTargetInstance(Method method, Class<?> clazz) throws Exception {
