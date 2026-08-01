@@ -3,6 +3,7 @@ package other;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Tag;
@@ -27,6 +28,13 @@ class RecursionMaxTest {
 
         assertEquals(8, RecursionMax.recursionMax(values));
         assertEquals(List.of(3, 8, 1, 5), values);
+    }
+
+    @Test
+    void shouldHandleLargeListsWithoutExhaustingTheStack() {
+        List<Integer> values = Collections.nCopies(100_000, 42);
+
+        assertEquals(42, RecursionMax.recursionMax(values));
     }
 
     private static Stream<Arguments> maxCases() {
