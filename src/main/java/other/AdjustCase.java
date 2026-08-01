@@ -13,7 +13,7 @@ public class AdjustCase {
     public String adjustCaseToLower(String string) {
         if (string == null || string.length() == 0) return string;
         if (string.length() == 1) return string.toUpperCase(Locale.ROOT);
-        var stringLover = string.toLowerCase(Locale.ROOT).substring(1);
+        var stringLover = string.substring(1).toLowerCase(Locale.ROOT);
         var firstChar = string.substring(0, 1).toUpperCase(Locale.ROOT);
         return firstChar + stringLover;
     }
