@@ -18,6 +18,16 @@ import static kyu7.SquareDigit.*;
 @Tag("smoke")
 public class SquareDigitTest {
     @Test
+    void squaresDigitsWhenResultFitsInAnInteger() {
+        assertEquals(811181, squareDigits(9119));
+    }
+
+    @Test
+    void capsResultsThatExceedIntegerRange() {
+        assertEquals(Integer.MAX_VALUE, squareDigits(99999));
+    }
+
+    @Test
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.SquareDigit.class);
     }
