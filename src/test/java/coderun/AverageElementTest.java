@@ -29,4 +29,31 @@ class AverageElementTest {
 
         assertEquals("5", output.toString());
     }
+
+    @Test
+    void shouldIgnoreInvalidOrInsufficientInput() throws IOException {
+        assertProducesNoOutput("");
+        assertProducesNoOutput("   ");
+        assertProducesNoOutput("5");
+        assertProducesNoOutput("1 invalid 3");
+    }
+
+    @Test
+    void shouldRejectAnOversizedInputLine() throws IOException {
+        assertProducesNoOutput("1 ".repeat(2049));
+    }
+
+    @Test
+    void shouldFindSecondValueWithoutSortingTheInput() {
+        assertEquals(2, AverageElement.average(new String[]{"4", "2", "3", "1"}));
+        assertEquals(1, AverageElement.average(new String[]{"1", "1"}));
+    }
+
+    private static void assertProducesNoOutput(String input) throws IOException {
+        StringWriter output = new StringWriter();
+
+        AverageElement.solve(new StringReader(input), output);
+
+        assertEquals("", output.toString());
+    }
 }

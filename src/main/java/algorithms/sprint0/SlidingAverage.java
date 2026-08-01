@@ -28,7 +28,7 @@ public class SlidingAverage {
         }
         result.add(sum / (double) windowSize);
         for (int i = windowSize; i < minSize; i++) {
-            sum += arr.get(i) - arr.get(i - windowSize);
+            sum += (long) arr.get(i) - arr.get(i - windowSize);
             result.add(sum / (double) windowSize);
         }
         return result;

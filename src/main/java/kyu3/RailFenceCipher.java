@@ -1,7 +1,6 @@
 package kyu3;
 
 
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -11,6 +10,7 @@ public class RailFenceCipher {
     //3 https://www.codewars.com/kata/58c5577d61aefcf3ff000081/train/java
 
     static String encode(String s, int n) {
+        validateRailCount(n);
         // Distributes characters across rails using a periodic index that walks
         // up and down between boundary rails, then concatenates each rail content.
         Map<Integer, StringBuilder> map = new TreeMap<>();
@@ -37,57 +37,41 @@ public class RailFenceCipher {
     }
 
     static String decode(String s, int n) {
+        validateRailCount(n);
         // First computes the exact size of each rail, splits ciphertext into
         // contiguous rail segments, then reconstructs plaintext by replaying the
         // same rail traversal cycle.
+        if (s.isEmpty() || n >= s.length()) {
+            return s;
+        }
+
         int[] size = new int[n];
         Counter counter = new Counter(n - 1);
         for (int i = 0; i < s.length(); i++) {
             int tik = counter.tik();
             size[tik]++;
         }
-        Map<Integer, StringBuilder> map = new TreeMap<>();
-        StringBuilder result = new StringBuilder();
+        int[] position = new int[n];
+        int start = 0;
         for (int i = 0; i < n; i++) {
-            StringBuilder stringBuilder = new StringBuilder();
-            if (i == 0) {
-                stringBuilder.append(s, 0, size[0]);
-            } else {
-                int start = sumArr(size, i);
-                int end = start + size[i];
-                stringBuilder.append(s, start, end);
-            }
-            map.put(i, stringBuilder);
+            position[i] = start;
+            start += size[i];
         }
 
-        Map<Integer, LinkedList<String>> map2 = new TreeMap<>();
-
-        for (Map.Entry<Integer, StringBuilder> e : map.entrySet()
-        ) {
-            LinkedList<String> strings = new LinkedList<>();
-            for (char c : e.getValue().toString().toCharArray()) {
-                strings.add(String.valueOf(c));
-            }
-            map2.put(e.getKey(), strings);
-        }
-
+        StringBuilder result = new StringBuilder(s.length());
         Counter counterRes = new Counter(n - 1);
         for (int i = 0; i < s.length(); i++) {
             int tik = counterRes.tik();
-            result.append(map2.get(tik).poll());
+            result.append(s.charAt(position[tik]++));
         }
 
         return result.toString();
     }
 
-    private static int sumArr(int[] arr, int i) {
-        // Sum widths of all previous rails to determine the start offset
-        // of the current rail segment.
-        int result = 0;
-        for (int j = 0; j < i; j++) {
-            result += arr[j];
+    private static void validateRailCount(int railCount) {
+        if (railCount < 2) {
+            throw new IllegalArgumentException("Rail count must be at least 2");
         }
-        return result;
     }
 
     /**

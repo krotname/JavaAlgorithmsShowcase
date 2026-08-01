@@ -1,7 +1,6 @@
 package interview;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,24 +15,20 @@ public class MaximumSequenceWithOneZero {
         if (b.size() == 1 && b.get(0) == 1) return 1;
         if (b.size() == 1 && b.get(0) == 0) return 0;
 
-        List<Integer> bytes = new ArrayList<>(b);
         int maxCount = 0;
-        int count = 0;
-        if (bytes.get(0) == 1) count++;
+        int previousCount = 0;
+        int currentCount = 0;
 
-        for (int i = 1; i < bytes.size(); i++) {
-            if (bytes.get(i) == 1 && bytes.get(i - 1) == 1) {
-                count++;
-            }
-            if (bytes.get(i) == 1 && bytes.get(i - 1) == 0) {
-                count++;
-            }
-            if (bytes.get(i) == 0 && bytes.get(i - 1) == 0) {
-                maxCount = Math.max(count, maxCount);
-                count = 0;
+        for (Integer value : b) {
+            if (value == 1) {
+                currentCount++;
+                maxCount = Math.max(maxCount, previousCount + currentCount);
+            } else {
+                previousCount = currentCount;
+                currentCount = 0;
             }
         }
-        return Math.max(count, maxCount);
+        return maxCount;
     }
 
 

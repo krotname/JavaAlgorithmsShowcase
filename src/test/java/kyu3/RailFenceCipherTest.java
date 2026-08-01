@@ -1,6 +1,7 @@
 package kyu3;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Tag;
@@ -20,6 +21,12 @@ class RailFenceCipherTest {
         assertEquals("WEAREDISCOVEREDFLEEATONCE", RailFenceCipher.decode(encoded, 3));
     }
 
+    @Test
+    void shouldDecodeWithoutAllocatingForUnusedRails() {
+        assertEquals("", RailFenceCipher.decode("", Integer.MAX_VALUE));
+        assertEquals("abc", RailFenceCipher.decode("abc", Integer.MAX_VALUE));
+    }
+
     @ParameterizedTest
     @MethodSource("roundTripCases")
     void shouldRoundTripPlainTextForDifferentRails(String text, int rails) {
@@ -28,11 +35,28 @@ class RailFenceCipherTest {
         assertEquals(text, RailFenceCipher.decode(encoded, rails));
     }
 
+    @ParameterizedTest
+    @MethodSource("invalidRailCounts")
+    void shouldRejectInvalidRailCounts(int rails) {
+        assertThrows(IllegalArgumentException.class,
+                () -> RailFenceCipher.encode("ABC", rails));
+        assertThrows(IllegalArgumentException.class,
+                () -> RailFenceCipher.decode("ABC", rails));
+    }
+
     private static Stream<Arguments> roundTripCases() {
         return Stream.of(
                 Arguments.of("", 2),
                 Arguments.of("Hello, World!", 4),
                 Arguments.of("Rail fence cipher keeps punctuation.", 5)
+        );
+    }
+
+    private static Stream<Arguments> invalidRailCounts() {
+        return Stream.of(
+                Arguments.of(-1),
+                Arguments.of(0),
+                Arguments.of(1)
         );
     }
 }

@@ -21,7 +21,9 @@ public class PigLatin {
         String[] words = str.split("\\s");
         for (String w : words
         ) {
-            if (!w.matches("\\W")) {
+            if (w.isEmpty()) {
+                continue;
+            } else if (!w.matches("\\W")) {
                 stringBuilder.append(w.substring(1)).append(w.charAt(0)).append(AY);
             } else {
                 stringBuilder.append(w).append(" ");

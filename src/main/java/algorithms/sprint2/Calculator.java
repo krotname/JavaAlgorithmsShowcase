@@ -45,8 +45,15 @@ public class Calculator {
             if (t.length() == 1) {
                 char op = t.charAt(0);
                 if (op == '+' || op == '-' || op == '*' || op == '/') {
+                    if (st.size() < 2) {
+                        throw new IllegalArgumentException("Operator requires two operands: " + op);
+                    }
                     int b = st.pop();
                     int a = st.pop();
+
+                    if (op == '/' && b == 0) {
+                        throw new IllegalArgumentException("Division by zero");
+                    }
 
                     int r;
                     if (op == '+') {
@@ -64,9 +71,16 @@ public class Calculator {
                 }
             }
 
-            st.push(parseInt(t));
+            try {
+                st.push(parseInt(t));
+            } catch (NumberFormatException exception) {
+                throw new IllegalArgumentException("Invalid token: " + t, exception);
+            }
         }
 
+        if (st.size() != 1) {
+            throw new IllegalArgumentException("Expression must produce exactly one result");
+        }
         return st.peek();
     }
 
@@ -74,7 +88,13 @@ public class Calculator {
         FastIn in = new FastIn(System.in);
         FastOut out = new FastOut(System.out);
 
-        int ans = eval(in);
+        final int ans;
+        try {
+            ans = eval(in);
+        } catch (IllegalArgumentException exception) {
+            System.err.println("Invalid expression: " + exception.getMessage());
+            return;
+        }
 
         out.writeInt(ans);
         out.writeByte('\n');

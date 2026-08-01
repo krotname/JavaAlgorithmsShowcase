@@ -31,5 +31,9 @@ class TribonacciSequenceTest {
         assertThrows(IllegalArgumentException.class, () -> TribonacciSequence.tribonacci(null, 1));
         assertThrows(IllegalArgumentException.class, () -> TribonacciSequence.tribonacci(new double[]{1, 1}, 2));
         assertThrows(IllegalArgumentException.class, () -> TribonacciSequence.tribonacci(new double[]{1, 1, 1}, -1));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> TribonacciSequence.tribonacci(new double[]{1, 1, 1}, Integer.MAX_VALUE)
+        );
     }
 }
