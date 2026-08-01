@@ -29,9 +29,10 @@ public class CamelCase {
     }
 
     public static String toCamelCase(String str) {
+        if (str == null || str.isEmpty()) return "";
         return Arrays.stream(str.split(" "))
                 .filter(s -> s.length() > 0)
-                .map(s -> s.replaceFirst(s.substring(0, 1), s.substring(0, 1).toUpperCase(Locale.ROOT)))
+                .map(s -> s.substring(0, 1).toUpperCase(Locale.ROOT) + s.substring(1))
                 .collect(Collectors.joining()).trim();
     }
 
