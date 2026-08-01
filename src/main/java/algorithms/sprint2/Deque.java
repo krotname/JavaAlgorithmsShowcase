@@ -65,7 +65,7 @@ public class Deque {
         private int size = 0;
 
         RingDeque(int cap) {
-            this.cap = safeCapacity(cap);
+            this.cap = validateCapacity(cap);
             this.a = new int[this.cap];
         }
 
@@ -114,16 +114,19 @@ public class Deque {
         }
     }
 
-    private static int safeCapacity(int cap) {
-        if (cap < 0) {
-            return 0;
+    private static int validateCapacity(int cap) {
+        if (cap < 0 || cap > MAX_CAPACITY) {
+            throw new IllegalArgumentException("Deque capacity is out of range");
         }
-        return Math.min(cap, MAX_CAPACITY);
+        return cap;
     }
 
     private static void process(FastIn in, FastOut out) throws Exception {
         int n = in.nextInt();
         int m = in.nextInt();
+        if (n < 0 || n > MAX_CAPACITY) {
+            throw new IllegalArgumentException("Command count is out of range");
+        }
 
         RingDeque dq = new RingDeque(m);
 
@@ -244,26 +247,9 @@ public class Deque {
                 )
         );
 
-        // Некорректная емкость из ввода не должна приводить к аварийному завершению
-        assertEq(
-                "error\nerror\n",
-                solveIO(
-                        "2\n" +
-                                "-1\n" +
-                                "push_back 1\n" +
-                                "pop_front\n"
-                )
-        );
-
-        // Слишком большая емкость ограничивается безопасным максимумом до выделения массива
-        assertEq(
-                "error\n",
-                solveIO(
-                        "1\n" +
-                                "1000000000\n" +
-                                "pop_front\n"
-                )
-        );
+        // Некорректная емкость отклоняется, а не меняет заявленную семантику дека.
+        assertRejected("2\n-1\npush_back 1\npop_front\n");
+        assertRejected("1\n1000000000\npop_front\n");
 
         // Wrap-around: head/tail должны корректно "перепрыгивать" границу массива
         assertEq(
@@ -288,6 +274,15 @@ public class Deque {
     static void assertEq(String exp, String act) {
         if (!exp.equals(act)) {
             throw new AssertionError("Expected:\n" + exp + "\nActual:\n" + act);
+        }
+    }
+
+    private static void assertRejected(String input) throws Exception {
+        try {
+            solveIO(input);
+            throw new AssertionError("Expected invalid deque capacity to be rejected");
+        } catch (IllegalArgumentException expected) {
+            // Expected validation failure.
         }
     }
 

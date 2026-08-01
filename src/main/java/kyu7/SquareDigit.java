@@ -1,6 +1,8 @@
 package kyu7;
 
 
+import static common.SafeParse.parseUnsignedInt;
+
 public class SquareDigit {
 
     private static final String MAX_INT = Integer.toString(Integer.MAX_VALUE);
@@ -20,7 +22,7 @@ public class SquareDigit {
                 || result.length() == MAX_INT.length() && result.compareTo(MAX_INT) > 0) {
             return Integer.MAX_VALUE;
         }
-        return Integer.parseInt(result);
+        return parseUnsignedInt(result);
     }
 
 }

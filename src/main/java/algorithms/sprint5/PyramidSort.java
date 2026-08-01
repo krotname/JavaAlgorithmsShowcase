@@ -145,28 +145,33 @@ public class PyramidSort {
                 }
             } while (c <= ' ');
 
-            int sign = 1;
-            if (c == '-') {
-                sign = -1;
+            boolean negative = c == '-';
+            if (negative) {
                 c = read();
                 if (c <= ' ') {
                     throw new NumberFormatException("Expected digit after sign");
                 }
             }
 
-            int val = 0;
+            int limit = negative ? Integer.MIN_VALUE : -Integer.MAX_VALUE;
+            int multiplyLimit = limit / 10;
+            int value = 0;
             while (c > ' ') {
                 if (c < '0' || c > '9') {
                     throw new NumberFormatException("Invalid integer input");
                 }
                 int digit = c - '0';
-                if (val > (Integer.MAX_VALUE - digit) / 10) {
-                    throw new NumberFormatException("Integer input is too large");
+                if (value < multiplyLimit) {
+                    throw new NumberFormatException("Integer input is out of range");
                 }
-                val = val * 10 + digit;
+                value *= 10;
+                if (value < limit + digit) {
+                    throw new NumberFormatException("Integer input is out of range");
+                }
+                value -= digit;
                 c = read();
             }
-            return val * sign;
+            return negative ? value : -value;
         }
 
         String next() throws IOException {

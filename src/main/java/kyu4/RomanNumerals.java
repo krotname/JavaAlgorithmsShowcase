@@ -108,7 +108,11 @@ public class RomanNumerals {
             previous = integer;
         }
 
-        return Math.toIntExact(result);
+        int value = Math.toIntExact(result);
+        if (value < 1 || value > 3_999 || !toRoman(value).equals(romanNumeral)) {
+            throw new IllegalArgumentException("Roman numeral is not canonical: " + romanNumeral);
+        }
+        return value;
     }
 
 

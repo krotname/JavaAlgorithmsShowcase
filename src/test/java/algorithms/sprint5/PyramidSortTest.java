@@ -23,6 +23,16 @@ class PyramidSortTest {
     }
 
     @Test
+    void fastInAcceptsMinimumInteger() throws Exception {
+        assertEquals(Integer.MIN_VALUE, fastIn("-2147483648 ").nextInt());
+    }
+
+    @Test
+    void fastInRejectsValuesBelowMinimumInteger() {
+        assertThrows(NumberFormatException.class, () -> fastIn("-2147483649 ").nextInt());
+    }
+
+    @Test
     void fastInRejectsOversizedLoginToken() {
         PyramidSort.FastIn in = fastIn("a".repeat(1_025) + " ");
 

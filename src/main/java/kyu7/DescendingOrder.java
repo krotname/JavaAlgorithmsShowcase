@@ -1,6 +1,8 @@
 package kyu7;
 
 
+import static common.SafeParse.parseUnsignedInt;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -23,7 +25,7 @@ public class DescendingOrder {
         ) {
             result.append(i);
         }
-        return Integer.parseInt(result.toString());
+        return parseUnsignedInt(result);
     }
 
 }

@@ -62,6 +62,6 @@ class RomanNumeralsTest {
     }
 
     private static Stream<String> invalidRomanNumerals() {
-        return Stream.of((String) null, "A", "MCMX?");
+        return Stream.of((String) null, "", "A", "MCMX?", "IIII", "VX", "MMMM");
     }
 }

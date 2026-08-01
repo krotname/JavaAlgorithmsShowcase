@@ -66,6 +66,17 @@ class ZipTest {
     }
 
     @Test
+    void processAcceptsCrOnlyLineEndings() throws IOException {
+        StringWriter output = new StringWriter();
+        BufferedWriter writer = new BufferedWriter(output);
+
+        Zip.process(new BufferedReader(new StringReader("3\r1 3 5\r2 4 6\r")), writer);
+        writer.flush();
+
+        assertEquals("1 2 3 4 5 6 ", output.toString());
+    }
+
+    @Test
     void processRejectsMissingOrShortLists() {
         assertThrows(IOException.class, () -> process("3\n1 2 3\n"));
         assertThrows(IllegalArgumentException.class, () -> process("3\n1 2\n4 5 6\n"));

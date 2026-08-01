@@ -1,6 +1,8 @@
 package kyu7;
 
 
+import static common.SafeParse.parseUnsignedInt;
+
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -15,7 +17,7 @@ public class MinimumLine {
                 .distinct()
                 .mapToObj(String::valueOf)
                 .collect(Collectors.joining());
-        return Integer.parseInt(result);
+        return parseUnsignedInt(result);
     }
 
 }

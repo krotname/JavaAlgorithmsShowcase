@@ -33,9 +33,7 @@ public class DigitalRoot {
      *
      * @param n a non-negative integer
      * @return the digital root of {@code n}
-     * @deprecated use {@link #digitalRoot(int)} instead
      */
-    @Deprecated
     public static int digital_root(int n) {
         return digitalRoot(n);
     }

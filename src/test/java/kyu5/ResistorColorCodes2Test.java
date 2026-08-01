@@ -26,6 +26,7 @@ class ResistorColorCodes2Test {
         assertEquals("", ResistorColorCodes2.encodeResistorColors("abc ohms"));
         assertEquals("", ResistorColorCodes2.encodeResistorColors("-1 ohms"));
         assertEquals("", ResistorColorCodes2.encodeResistorColors("1e309 ohms"));
+        assertEquals("", ResistorColorCodes2.encodeResistorColors("47 garbage ohms"));
     }
 
     private static Stream<Arguments> resistorCases() {

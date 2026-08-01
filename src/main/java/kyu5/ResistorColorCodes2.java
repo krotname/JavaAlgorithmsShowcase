@@ -4,8 +4,14 @@ package kyu5;
 import static common.SafeParse.parseDouble;
 
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ResistorColorCodes2 {
     //5
+
+    private static final Pattern OHMS_PATTERN =
+            Pattern.compile("([0-9]+(?:\\.[0-9]+)?)([kM]?) ohms");
 
     public static String encodeResistorColors(String ohmsString) {
         if (ohmsString == null || !ohmsString.endsWith(" ohms")) return "";
@@ -19,13 +25,17 @@ public class ResistorColorCodes2 {
     }
 
     private static int encodeResistorOhms(String ohmsString) {
-        double tempValue;
-        String[] tempArray = ohmsString.split("\\s");
-        if (tempArray[0].endsWith("k"))
-            tempValue = parseDouble(tempArray[0].trim().substring(0, tempArray[0].length() - 1)) * 1_000;
-        else if (tempArray[0].endsWith("M"))
-            tempValue = parseDouble(tempArray[0].trim().substring(0, tempArray[0].length() - 1)) * 1_000_000;
-        else tempValue = parseDouble(tempArray[0].trim());
+        Matcher matcher = OHMS_PATTERN.matcher(ohmsString);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Invalid resistance format");
+        }
+
+        double tempValue = parseDouble(matcher.group(1));
+        if (matcher.group(2).equals("k")) {
+            tempValue *= 1_000;
+        } else if (matcher.group(2).equals("M")) {
+            tempValue *= 1_000_000;
+        }
         if (!Double.isFinite(tempValue) || tempValue < 10 || tempValue > 990_000_000) {
             throw new IllegalArgumentException("Resistance must be between 10 and 990M ohms");
         }

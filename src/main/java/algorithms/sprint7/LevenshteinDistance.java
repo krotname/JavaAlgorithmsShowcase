@@ -108,18 +108,23 @@ public class LevenshteinDistance {
             }
 
             while (c != -1 && c != '\n') {
-                if (c != '\r') {
-                    if (size == maxLength) {
-                        throw new IOException("Input line is too long");
-                    }
-                    if (size == tmp.length) {
-                        byte[] grown = new byte[Math.min(tmp.length * 2, maxLength)];
-                        System.arraycopy(tmp, 0, grown, 0, tmp.length);
-                        tmp = grown;
-                    }
-                    tmp[size++] = (byte) c;
+                if (size == maxLength + 1) {
+                    throw new IOException("Input line is too long");
                 }
+                if (size == tmp.length) {
+                    byte[] grown = new byte[Math.min(tmp.length * 2, maxLength + 1)];
+                    System.arraycopy(tmp, 0, grown, 0, tmp.length);
+                    tmp = grown;
+                }
+                tmp[size++] = (byte) c;
                 c = read();
+            }
+
+            if (size > 0 && tmp[size - 1] == '\r') {
+                size--;
+            }
+            if (size > maxLength) {
+                throw new IOException("Input line is too long");
             }
 
             return new String(tmp, 0, size, StandardCharsets.UTF_8);

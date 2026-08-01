@@ -115,14 +115,10 @@ public class SleightOfHand {
     }
 
     public static void main(String[] args) throws Exception {
-        try {
-            if (System.getProperty("os.name").startsWith("Windows")) {
-                test();
-            } else {
-                run();
-            }
-        } catch (IOException | IllegalArgumentException e) {
-            System.err.println(e.getMessage());
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            test();
+        } else {
+            run();
         }
     }
 

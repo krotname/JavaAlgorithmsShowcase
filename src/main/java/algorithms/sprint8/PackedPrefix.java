@@ -247,34 +247,23 @@ public class PackedPrefix {
         for (int i = 0; i < packed.length(); i++) {
             char current = packed.charAt(i);
 
-            if (current >= 'a' && current <= 'z') {
-                continue;
-            }
-
-            if (current >= '0' && current <= '9') {
+            if (current >= '1' && current <= '9') {
                 if (i + 1 >= packed.length() || packed.charAt(i + 1) != '[') {
                     return false;
                 }
-                continue;
-            }
-
-            if (current == '[') {
-                if (i == 0 || packed.charAt(i - 1) < '0' || packed.charAt(i - 1) > '9') {
+            } else if (current == '[') {
+                if (i == 0 || packed.charAt(i - 1) < '1' || packed.charAt(i - 1) > '9') {
                     return false;
                 }
                 top++;
-                continue;
-            }
-
-            if (current == ']') {
-                if (top == 0) {
+            } else if (current == ']') {
+                if (top == 0 || packed.charAt(i - 1) == '[') {
                     return false;
                 }
                 top--;
-                continue;
+            } else if (current < 'a' || current > 'z') {
+                return false;
             }
-
-            return false;
         }
 
         return top == 0;

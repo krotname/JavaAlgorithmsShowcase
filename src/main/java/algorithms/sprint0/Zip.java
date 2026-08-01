@@ -65,12 +65,16 @@ public class Zip {
     private static String readBoundedLine(BufferedReader reader) throws IOException {
         StringBuilder line = new StringBuilder();
         int character;
-        while ((character = reader.read()) != -1 && character != '\n') {
+        while ((character = reader.read()) != -1 && character != '\n' && character != '\r') {
             if (line.length() == MAX_INPUT_LINE_LENGTH) {
                 throw new IllegalArgumentException("Input line is too long");
             }
-            if (character != '\r') {
-                line.append((char) character);
+            line.append((char) character);
+        }
+        if (character == '\r') {
+            reader.mark(1);
+            if (reader.read() != '\n') {
+                reader.reset();
             }
         }
         return character == -1 && line.length() == 0 ? null : line.toString();

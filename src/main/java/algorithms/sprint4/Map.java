@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.OptionalInt;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -212,7 +213,8 @@ public class Map {
     private static void solve() throws IOException {
         Reader reader = new Reader();
         HashTable table = new HashTable();
-        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedWriter out = new BufferedWriter(
+                new OutputStreamWriter(System.out, StandardCharsets.UTF_8));
 
         int n = reader.nextInt(0, MAX_COMMANDS);
 

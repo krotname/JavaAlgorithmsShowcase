@@ -25,6 +25,15 @@ public class AdjustCaseTest {
     }
 
     @Test
+    void preservesContextSensitiveFinalSigmaAcrossImplementations() {
+        other.AdjustCase adjustCase = new other.AdjustCase();
+
+        assertEquals("Aς", adjustCase.adjustCaseToLower("AΣ"));
+        assertEquals("Aς", adjustCase.adjustCaseStream("AΣ"));
+        assertEquals("Aς", adjustCase.adjustCaseFor("AΣ"));
+    }
+
+    @Test
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(other.AdjustCase.class);
     }
