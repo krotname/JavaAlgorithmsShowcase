@@ -7,9 +7,9 @@ public class EncryptThis {
     //6 https://www.codewars.com/kata/5848565e273af816fb000449/train/java
 
     public static String encryptThis(String text) {
-        if (text == null || text.isEmpty()) return "";
+        if (text == null || text.isBlank()) return "";
         StringBuilder stringBuilder = new StringBuilder();
-        String[] split = text.trim().split("\\s");
+        String[] split = text.trim().split("\\s+");
         for (String s : split) {
             String res = "";
             if (s.length() == 1) {
