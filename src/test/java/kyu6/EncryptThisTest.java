@@ -18,6 +18,17 @@ import static kyu6.EncryptThis.*;
 @Tag("smoke")
 public class EncryptThisTest {
     @Test
+    void encryptsWordsSeparatedByWhitespace() {
+        assertEquals("65 66", encryptThis("A  B"));
+        assertEquals("65 66", encryptThis(" A\tB "));
+    }
+
+    @Test
+    void returnsEmptyStringForBlankInput() {
+        assertEquals("", encryptThis(" \t\n"));
+    }
+
+    @Test
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu6.EncryptThis.class);
     }
