@@ -21,4 +21,11 @@ public class PigLatinTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu5.PigLatin.class);
     }
+
+    @Test
+    void handlesEmptyTokensWithoutThrowing() {
+        assertEquals("", pigIt(""));
+        assertEquals("eadinglay", pigIt(" leading"));
+        assertEquals("igPay atinlay", pigIt("Pig  latin"));
+    }
 }
