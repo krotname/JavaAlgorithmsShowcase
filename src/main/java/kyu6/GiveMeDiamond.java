@@ -11,10 +11,10 @@ public class GiveMeDiamond {
         int count = n / 2 + 1;
         StringBuilder strings = new StringBuilder();
         for (int i = 1; i <= count; i++) {
-            strings.append(" ".repeat(count - i)).append("*".repeat(i * 2 - 1)).append(System.lineSeparator());
+            strings.append(" ".repeat(count - i)).append("*".repeat(i * 2 - 1)).append('\n');
         }
         for (int i = count - 1; i >= 1; i--) {
-            strings.append(" ".repeat(count - i)).append("*".repeat(i * 2 - 1)).append(System.lineSeparator());
+            strings.append(" ".repeat(count - i)).append("*".repeat(i * 2 - 1)).append('\n');
         }
         return strings.toString();
     }

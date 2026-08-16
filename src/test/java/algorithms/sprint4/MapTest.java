@@ -1,11 +1,17 @@
 package algorithms.sprint4;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.OptionalInt;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 @Tag("unit")
 class MapTest {
@@ -21,6 +27,23 @@ class MapTest {
         assertEquals(OptionalInt.of(20), table.delete(1));
         assertTrue(table.get(1).isEmpty());
         assertTrue(table.delete(1).isEmpty());
+    }
+
+    @Test
+    @Timeout(10)
+    void readerReportsEndOfInputInsteadOfReplayingTheBuffer() throws IOException {
+        InputStream original = System.in;
+        try {
+            System.setIn(new ByteArrayInputStream("g 7".getBytes(StandardCharsets.UTF_8)));
+            Map.Reader reader = new Map.Reader();
+
+            assertEquals('g', reader.nextCommand());
+            assertEquals(7, reader.nextInt());
+            assertThrows(IOException.class, reader::nextCommand);
+            assertThrows(IOException.class, reader::nextInt);
+        } finally {
+            System.setIn(original);
+        }
     }
 
     @Test

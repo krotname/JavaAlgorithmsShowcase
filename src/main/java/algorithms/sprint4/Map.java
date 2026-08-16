@@ -137,7 +137,7 @@ public class Map {
         private int len = 0;
 
         int read() throws IOException {
-            if (ptr == len) {
+            if (ptr >= len) {
                 len = in.read(buffer);
                 ptr = 0;
                 if (len == -1) {
@@ -189,6 +189,9 @@ public class Map {
         char nextCommand() throws IOException {
             int c = read();
             while (c <= ' ') {
+                if (c == -1) {
+                    throw new IOException("Unexpected end of input");
+                }
                 c = read();
             }
 

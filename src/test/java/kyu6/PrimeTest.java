@@ -21,4 +21,16 @@ public class PrimeTest {
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu6.Prime.class);
     }
+
+    @ParameterizedTest
+    @ValueSource(ints = {2, 3, 5, 7, 11, 13, 101, 7919, 2147483647})
+    void shouldAcceptPrimes(int candidate) {
+        assertTrue(isPrime(candidate));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-7, -1, 0, 1, 4, 9, 15, 25, 49, 121, 7917, 2147483645})
+    void shouldRejectNonPrimes(int candidate) {
+        assertFalse(isPrime(candidate));
+    }
 }
