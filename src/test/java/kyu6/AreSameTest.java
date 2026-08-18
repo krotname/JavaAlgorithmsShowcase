@@ -18,6 +18,12 @@ import static kyu6.AreSame.*;
 @Tag("smoke")
 public class AreSameTest {
     @Test
+    void rejectsOverflowedSquares() {
+        assertFalse(comp(new int[]{46341}, new int[]{-2147479015}));
+        assertFalse(comp(new int[]{Integer.MIN_VALUE}, new int[]{0}));
+    }
+
+    @Test
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu6.AreSame.class);
     }
