@@ -12,10 +12,11 @@ public class AreSame {
     public static boolean comp(int[] a, int[] b) {
         return a != null && b != null && Arrays.equals(
                 Arrays.stream(a)
-                        .map(i -> i * i)
+                        .mapToLong(i -> (long) i * i)
                         .sorted()
                         .toArray(),
                 Arrays.stream(b)
+                        .mapToLong(i -> i)
                         .sorted()
                         .toArray());
     }
