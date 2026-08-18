@@ -12,6 +12,7 @@ public class WhichAreIn {
         return Stream.of(array1)
                 .filter(word -> Stream.of(array2)
                         .anyMatch(bigWord -> bigWord.contains(word)))
+                .distinct()
                 .sorted().toList()
                 .toArray(String[]::new);
     }

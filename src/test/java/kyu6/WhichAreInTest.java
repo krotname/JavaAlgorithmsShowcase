@@ -1,24 +1,39 @@
+package kyu6;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+
 import org.junit.jupiter.api.Tag;
-import java.util.*;
-import java.util.stream.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
-import net.jqwik.api.Property;
-import net.jqwik.api.ForAll;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
-import static kyu6.WhichAreIn.*;
+
 @Tag("smoke")
-public class WhichAreInTest {
+class WhichAreInTest {
+
     @Test
     void smokeTestsShouldExecuteApi() {
-        quality.SmokeMethodTestHarness.verify(kyu6.WhichAreIn.class);
+        quality.SmokeMethodTestHarness.verify(WhichAreIn.class);
+    }
+
+    @Test
+    void shouldReturnSortedSubstringsFromTheKataExample() {
+        String[] a1 = {"live", "arp", "strong"};
+        String[] a2 = {"lively", "alive", "harp", "sharp", "armstrong"};
+
+        assertArrayEquals(new String[]{"arp", "live", "strong"}, WhichAreIn.inArray(a1, a2));
+    }
+
+    @Test
+    void shouldReturnEmptyArrayWhenNothingIsContained() {
+        String[] a1 = {"tarp", "mice", "bull"};
+        String[] a2 = {"lively", "alive", "harp", "sharp", "armstrong"};
+
+        assertArrayEquals(new String[0], WhichAreIn.inArray(a1, a2));
+    }
+
+    @Test
+    void shouldNotRepeatWordsThatOccurTwiceInTheFirstArray() {
+        String[] a1 = {"arp", "live", "strong", "arp", "live"};
+        String[] a2 = {"lively", "alive", "harp", "sharp", "armstrong"};
+
+        assertArrayEquals(new String[]{"arp", "live", "strong"}, WhichAreIn.inArray(a1, a2));
     }
 }
