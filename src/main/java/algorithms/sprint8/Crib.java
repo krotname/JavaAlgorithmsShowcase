@@ -35,12 +35,22 @@ import java.nio.charset.StandardCharsets;
 public class Crib {
 
     static boolean solve(String text, String[] words) {
-        int totalLength = 0;
-        for (String word : words) {
-            totalLength += word.length();
+        if (!isLowercaseWord(text)) {
+            return false;
         }
 
-        Trie trie = new Trie(totalLength + 1);
+        long totalLength = 0;
+        for (String word : words) {
+            if (!isLowercaseWord(word)) {
+                return false;
+            }
+            totalLength += word.length();
+            if (totalLength >= Integer.MAX_VALUE) {
+                return false;
+            }
+        }
+
+        Trie trie = new Trie((int) totalLength + 1);
         for (String word : words) {
             trie.add(word);
         }
@@ -74,6 +84,17 @@ public class Crib {
         }
 
         return dp[chars.length];
+    }
+
+    private static boolean isLowercaseWord(String word) {
+        for (int i = 0; i < word.length(); i++) {
+            char current = word.charAt(i);
+            if (current < 'a' || current > 'z') {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     static final class Trie {
@@ -207,6 +228,13 @@ public class Crib {
 
         String text = in.next();
         int n = in.nextInt();
+        if (n < 0) {
+            out.writeString("NO");
+            out.writeByte('\n');
+            out.flush();
+            return;
+        }
+
         String[] words = new String[n];
 
         for (int i = 0; i < n; i++) {

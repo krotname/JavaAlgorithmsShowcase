@@ -3,7 +3,6 @@ package coderun;
 
 import static common.SafeParse.parseInt;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,11 +10,12 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 
 
 public class AverageElement {
+
+    private static final int MAX_INPUT_CHARACTERS = 4096;
 
     /**
      * Для чтения входных данных необходимо получить их
@@ -58,26 +58,52 @@ public class AverageElement {
     }
 
     static void solve(Reader input, Writer output) throws IOException {
-        BufferedReader reader = new BufferedReader(input);
         BufferedWriter writer = new BufferedWriter(output);
-        String line = reader.readLine();
-        if (line == null) {
+        String line = readBoundedLine(input);
+        if (line == null || line.isBlank()) {
             return;
         }
         String[] parts = line.trim().split("\\s+");
 
-        writer.write(String.valueOf(average(parts)));
+        try {
+            writer.write(String.valueOf(average(parts)));
+        } catch (IllegalArgumentException ignored) {
+            return;
+        }
         writer.flush();
     }
 
     static Integer average(String[] list) {
-        return Arrays
-                .stream(list)
-                .sequential()
-                .map(AverageElement::parseInteger)
-                .sorted()
-                .toList()
-                .get(1);
+        if (list.length < 2) {
+            throw new IllegalArgumentException("At least two integers are required");
+        }
+
+        int smallest = Integer.MAX_VALUE;
+        int secondSmallest = Integer.MAX_VALUE;
+        for (String value : list) {
+            int number = parseInteger(value);
+            if (number < smallest) {
+                secondSmallest = smallest;
+                smallest = number;
+            } else if (number < secondSmallest) {
+                secondSmallest = number;
+            }
+        }
+        return secondSmallest;
+    }
+
+    private static String readBoundedLine(Reader input) throws IOException {
+        StringBuilder line = new StringBuilder();
+        for (int character = input.read(); character != -1 && character != '\n'; character = input.read()) {
+            if (character == '\r') {
+                break;
+            }
+            if (line.length() == MAX_INPUT_CHARACTERS) {
+                return null;
+            }
+            line.append((char) character);
+        }
+        return line.isEmpty() ? null : line.toString();
     }
 
     private static Integer parseInteger(String value) {

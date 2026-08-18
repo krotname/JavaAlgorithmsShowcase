@@ -29,6 +29,11 @@ class MaximumSequenceWithOneZeroTest {
     }
 
     @Test
+    void shouldNotCountAcrossMultipleSeparatedZeros() {
+        assertEquals(2, maximumSequenceWithOneZero(List.of(1, 0, 1, 0, 1)));
+    }
+
+    @Test
     void shouldCountAllOnesWhenThereIsNoZeroSeparator() {
         assertEquals(5, maximumSequenceWithOneZero(List.of(1, 1, 1, 1, 1)));
     }

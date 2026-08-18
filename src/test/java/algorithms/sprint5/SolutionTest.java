@@ -51,6 +51,28 @@ class SolutionTest {
         assertEquals(5, result.getRight().getValue());
     }
 
+    @Test
+    void removeHandlesDeepSkewedTreeWithoutOverflowingStack() {
+        Node root = node(null, null, 0);
+        Node current = root;
+        for (int value = 1; value < 100_000; value++) {
+            Node next = node(null, null, value);
+            current.setRight(next);
+            current = next;
+        }
+
+        Node result = Solution.remove(root, 99_999);
+
+        assertEquals(0, result.getValue());
+        assertNull(current.getRight());
+        current = result;
+        for (int value = 0; value < 99_999; value++) {
+            assertEquals(value, current.getValue());
+            current = current.getRight();
+        }
+        assertNull(current);
+    }
+
     private static Node node(Node left, Node right, int value) {
         return new Node(left, right, value);
     }

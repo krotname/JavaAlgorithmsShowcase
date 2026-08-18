@@ -49,6 +49,13 @@ class SlidingAverageTest {
         assertListDoubles(SlidingAverage.movingAverage(4, List.of(max, max, max, max), 2), max, max, max);
     }
 
+    @Test
+    void extremeValuesDoNotOverflowTheRollingUpdate() {
+        assertListDoubles(SlidingAverage.movingAverage(
+                2, List.of(Integer.MIN_VALUE, Integer.MAX_VALUE), 1),
+                Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
     private static void assertListDoubles(List<Double> actual, double... expected) {
         assertEquals(expected.length, actual.size(), "size");
         for (int i = 0; i < expected.length; i++) {

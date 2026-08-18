@@ -51,6 +51,7 @@ class MorseCodeDecoderTest {
                 Arguments.of(".... . -.--", "HEY"),
                 Arguments.of("...---...", "SOS"),
                 Arguments.of("  .... . -.--   .--- ..- -.. .  ", "HEY JUDE"),
+                Arguments.of("---... -.-.-.", ":;"),
                 Arguments.of("", "")
         );
     }

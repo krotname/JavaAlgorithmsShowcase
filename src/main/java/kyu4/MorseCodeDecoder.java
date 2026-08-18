@@ -56,8 +56,6 @@ public class MorseCodeDecoder {
         ALPHABET_TO_MORSE.put("0", "-----");
         ALPHABET_TO_MORSE.put(" ", "   ");
 
-        MORSE_TO_ALPHABET.put("a", "b");
-        MORSE_TO_ALPHABET.put("c", "d");
         MORSE_TO_ALPHABET.put("-.-.-.", ";");
         MORSE_TO_ALPHABET.put("-...-", "=");
         MORSE_TO_ALPHABET.put("---", "O");
@@ -84,7 +82,7 @@ public class MorseCodeDecoder {
         MORSE_TO_ALPHABET.put("-.", "N");
         MORSE_TO_ALPHABET.put("..---", "2");
         MORSE_TO_ALPHABET.put("-....", "6");
-        MORSE_TO_ALPHABET.put("---...", ";");
+        MORSE_TO_ALPHABET.put("---...", ":");
         MORSE_TO_ALPHABET.put(".-.-.", "+");
         MORSE_TO_ALPHABET.put(".--.-.", "@");
         MORSE_TO_ALPHABET.put("....-", "4");

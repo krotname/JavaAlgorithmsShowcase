@@ -18,6 +18,11 @@ import static kyu7.Maskify.*;
 @Tag("smoke")
 public class MaskifyTest {
     @Test
+    void nullInputShouldRemainNull() {
+        assertNull(maskify(null));
+    }
+
+    @Test
     void smokeTestsShouldExecuteApi() {
         quality.SmokeMethodTestHarness.verify(kyu7.Maskify.class);
     }

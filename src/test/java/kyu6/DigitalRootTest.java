@@ -21,5 +21,6 @@ class DigitalRootTest {
     void shouldReduceNumberToSingleDigit(int value, int expected) {
         assertEquals(expected, DigitalRoot.digitalRoot(value));
         assertEquals(expected, DigitalRoot.digitalRootRecursiveStream(value));
+        assertEquals(expected, DigitalRoot.digital_root(value));
     }
 }

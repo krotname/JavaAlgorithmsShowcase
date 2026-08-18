@@ -1,9 +1,11 @@
 package kyu4;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -30,6 +32,19 @@ class RomanNumeralsTest {
         assertEquals(value, RomanNumerals.fromRoman(RomanNumerals.toRoman(value)));
     }
 
+    @ParameterizedTest
+    @MethodSource("invalidRomanNumerals")
+    void shouldRejectInvalidRomanNumerals(String romanNumeral) {
+        assertThrows(IllegalArgumentException.class, () -> RomanNumerals.fromRoman(romanNumeral));
+    }
+
+    @Test
+    void shouldRejectResultsOutsideIntegerRange() {
+        String romanNumeral = "M".repeat(2_147_484);
+
+        assertThrows(ArithmeticException.class, () -> RomanNumerals.fromRoman(romanNumeral));
+    }
+
     private static Stream<Arguments> romanCases() {
         return Stream.of(
                 Arguments.of(1, "I"),
@@ -44,5 +59,9 @@ class RomanNumeralsTest {
                 Arguments.of(2_008, "MMVIII"),
                 Arguments.of(3_999, "MMMCMXCIX")
         );
+    }
+
+    private static Stream<String> invalidRomanNumerals() {
+        return Stream.of((String) null, "", "A", "MCMX?", "IIII", "VX", "MMMM");
     }
 }

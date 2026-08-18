@@ -3,8 +3,6 @@ package algorithms.sprint1;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,11 +10,13 @@ import java.util.Arrays;
 
 // https://contest.yandex.ru/contest/22450/run-report/157289807/
 public class Distances {
+    private static final int MAX_INPUT_SIZE = 100_000;
 
     // -------------------- SOLUTION --------------------
     static int[] solve(int[] a) {
         int n = a.length;
         int[] dist = new int[n];
+        if (n == 0) return dist;
 
         int lastZero = -n;
         for (int i = 0; i < n; i++) {
@@ -113,18 +113,20 @@ public class Distances {
         void flush() throws IOException {
             out.write(buf, 0, p);
             p = 0;
+            out.flush();
         }
     }
 
     // -------------------- INPUT / OUTPUT --------------------
-    static void run() {
-
-        try (InputStream input = new BufferedInputStream(new FileInputStream("input.txt"));
-             OutputStream output = new BufferedOutputStream(new FileOutputStream("output.txt"))) {
-            FastIn in = new FastIn(input);
-            FastOut out = new FastOut(output);
+    static void run(InputStream input, OutputStream output) {
+        try {
+            FastIn in = new FastIn(new BufferedInputStream(input));
+            FastOut out = new FastOut(new BufferedOutputStream(output));
 
             int n = in.nextInt();
+            if (n < 1 || n > MAX_INPUT_SIZE) {
+                throw new IllegalArgumentException("Input size must be between 1 and " + MAX_INPUT_SIZE);
+            }
             int[] a = new int[n];
             for (int i = 0; i < n; i++) a[i] = in.nextInt();
 
@@ -141,6 +143,10 @@ public class Distances {
         }
     }
 
+    static void run() {
+        run(System.in, System.out);
+    }
+
     // -------------------- TESTS --------------------
     static void assertEq(int[] exp, int[] act, String name) {
         if (!Arrays.equals(exp, act)) {
@@ -149,6 +155,7 @@ public class Distances {
     }
 
     static void test() {
+        assertEq(new int[]{}, solve(new int[]{}), "empty");
         assertEq(new int[]{0, 1, 2, 1, 0}, solve(new int[]{0, 1, 4, 9, 0}), "sample1");
         assertEq(new int[]{0, 1, 2, 3, 4, 5}, solve(new int[]{0, 7, 9, 4, 8, 20}), "sample2");
         assertEq(new int[]{0}, solve(new int[]{0}), "n=1");

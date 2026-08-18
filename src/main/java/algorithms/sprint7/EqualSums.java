@@ -31,18 +31,30 @@ import java.io.OutputStream;
 Пространственная сложность — O(S / 64).
 */
 public class EqualSums {
+    private static final int MAX_GAMES = 300;
+    private static final int MAX_TOTAL = MAX_GAMES * 300;
 
     static boolean solve(int[] points) {
-        int total = 0;
-        for (int point : points) {
-            total += point;
+        if (points.length > MAX_GAMES) {
+            throw new IllegalArgumentException("Too many games");
         }
 
-        if ((total & 1) == 1) {
+        long total = 0;
+        for (int point : points) {
+            if (point < 0) {
+                throw new IllegalArgumentException("Point value is out of range");
+            }
+            total += point;
+            if (total > MAX_TOTAL) {
+                throw new IllegalArgumentException("Total points are out of range");
+            }
+        }
+
+        if ((total & 1L) == 1L) {
             return false;
         }
 
-        int target = total / 2;
+        int target = (int) (total / 2);
         long[] reachable = new long[(target >> 6) + 1];
         reachable[0] = 1L;
 
@@ -168,10 +180,17 @@ public class EqualSums {
         FastOut out = new FastOut(System.out);
 
         int n = in.nextInt();
+        if (n < 0 || n > MAX_GAMES) {
+            throw new IOException("Number of games is out of range");
+        }
         int[] points = new int[n];
 
         for (int i = 0; i < n; i++) {
-            points[i] = in.nextInt();
+            int point = in.nextInt();
+            if (point < 0) {
+                throw new IOException("Point value is out of range");
+            }
+            points[i] = point;
         }
 
         out.writeAscii(solve(points) ? "True" : "False");
