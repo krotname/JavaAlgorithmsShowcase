@@ -32,12 +32,14 @@ jobs:
           name: checkstyle-report
           path: target/checkstyle-result.xml
           if-no-files-found: ignore
+          retention-days: 7
       - name: Upload pmd report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: pmd-report
           path: target/pmd.xml
           if-no-files-found: ignore
+          retention-days: 7
       - name: Upload spotbugs report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -45,6 +47,7 @@ jobs:
           path: target/spotbugsXml.xml
           if-no-files-found: ignore
 
+          retention-days: 7
   sonarcloud:
     name: SonarCloud analysis
     if: github.event_name == 'push' && github.actor != 'dependabot[bot]'
