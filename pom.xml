@@ -25,7 +25,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>6.1.3</junit.version>
         <assertj.version>3.27.7</assertj.version>
-        <jqwik.version>1.10.1</jqwik.version>
+        <jqwik.version>1.10.2</jqwik.version>
         <junit.platform.version>6.1.3</junit.platform.version>
         <lombok.version>1.18.48</lombok.version>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
