@@ -13,6 +13,9 @@ updates:
     target-branch: main
     open-pull-requests-limit: 2
     groups:
+      codeql:
+        patterns:
+          - "github/codeql-action*"
       github-actions:
         patterns:
           - "*"
