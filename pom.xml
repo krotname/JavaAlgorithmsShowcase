@@ -16,7 +16,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
-        <maven.surefire.version>3.6.0</maven.surefire.version>
+        <maven.surefire.version>3.6.1</maven.surefire.version>
         <jacoco.version>0.8.15</jacoco.version>
         <checkstyle.version>3.6.0</checkstyle.version>
         <pmd.version>3.28.0</pmd.version>
